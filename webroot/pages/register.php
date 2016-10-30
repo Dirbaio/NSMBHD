@@ -205,7 +205,7 @@ if(isset($_POST['name']))
 			$reasons[] = 'tor';
 		}
 
-		$s = new StopForumSpam('zzz');
+		$s = new StopForumSpam($stopForumSpamKey);
 
 		if($s->is_spammer(array('email' => $_POST['email'], 'ip' => $_SERVER['REMOTE_ADDR'], 'username' => $_POST['name'] ))) {
 			$reasons[] = 'sfs';
