@@ -8,6 +8,7 @@ $themeFile = "themes/$theme/style.css";
 if(!file_exists($themeFile))
 	$themeFile = "themes/$theme/style.php";
 
+$themeFile = resourceLink($themeFile);
 
 checkForImage($layout_logopic, true, "logos/logo_$theme.png");
 checkForImage($layout_logopic, true, "logos/logo_$theme.jpg");
