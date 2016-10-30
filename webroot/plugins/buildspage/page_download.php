@@ -32,7 +32,6 @@ else
 		</tr>
 		<tr>
 			<td class=\"cell0\" colspan=\"6\" style=\"text-align:center; padding:18px;\">
-				$adsense<br>
 				<h3>Thanks for downloading NSMB Editor.</h3>
 				Your download should start shortly.	If it doesn't, click <a href=\"$url\">here</a>.
 				<iframe style=\"visibility:hidden;display:none\" width=\"1\" height=\"1\" frameborder=\"0\" src=\"$url\"></iframe>

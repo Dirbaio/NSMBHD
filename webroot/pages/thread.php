@@ -90,9 +90,9 @@ if(isset($_GET['vote']))
 		if(!$existing)
 			Query("insert into {pollvotes} (poll, choiceid, user) values ({0}, {1}, {2})", $thread['poll'], $vote, $loguserid);
 	}
-	
+
 	redirectAction("thread", $tid, $fromstring);
-	
+
 }
 
 if(!$thread['sticky'] && Settings::get("oldThreadThreshold") > 0 && $thread['lastpostdate'] < time() - (2592000 * Settings::get("oldThreadThreshold")))
@@ -155,7 +155,7 @@ if($thread['poll'])
 							(SELECT COUNT(*) FROM {pollvotes} pv WHERE pv.poll = p.id) as votes
 						 FROM {poll} p
 						 WHERE p.id={0}", $thread['poll']));
-						 
+
 	if(!$poll)
 		Kill(__("Poll not found"));
 
@@ -207,7 +207,7 @@ if($thread['poll'])
 		</td>
 	</tr>";
 	}
-	
+
 	$voters = $poll["users"];
 	$bottom = format($voters == 1 ? __("{0} user has voted so far.") : __("{0} users have voted so far."), $voters);
 	if($poll["doublevote"])
@@ -273,10 +273,6 @@ if(NumRows($rPosts))
 		$post['closed'] = $thread['closed'];
 		MakePost($post, POST_NORMAL, array('tid'=>$tid, 'fid'=>$fid));
 		$ii++;
-		if($ii == 1)
-		{
-			makeAdsense();
-		}
 	}
 }
 

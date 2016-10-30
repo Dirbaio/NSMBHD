@@ -81,7 +81,6 @@ include("ranksets.php");
 include("post.php");
 include("log.php");
 include("onlineusers.php");
-include("adsense.php");
 
 include("htmlfilter.php");
 include("smilies.php");
@@ -96,4 +95,3 @@ include("lists.php");
 
 $mainPage = "board";
 $bucket = "init"; include('lib/pluginloader.php');
-
