@@ -1,6 +1,6 @@
 FROM ubuntu:16.04
 
-RUN apt-get update && apt-get install -y nano nginx php-mysql php-fpm php-curl php-xml supervisor git curl phpmyadmin
+RUN apt-get update && apt-get install -y nano nginx php-mysql php-fpm php-curl php-xml supervisor git curl php-gd
 
 RUN ln -sf /app/conf/nginx.conf /etc/nginx/nginx.conf && \
     ln -sf /app/conf/php-fpm.conf /etc/php/7.0/fpm/php-fpm.conf && \
