@@ -4,12 +4,8 @@ $tables["uploader"] = array
 	(
 		"fields" => array
 		(
-			"id" => $AI,
-			"filename" => "varchar(512)".$notNull,
+			"id" => $var256,
 			"description" => $var1024,
-			"user" => $genericInt,
-			"date" => $genericInt,
-			"downloads" => $genericInt,
 			"private" => $bool,
 			"category" => $genericInt,
 		),

@@ -4,8 +4,6 @@ $title = __("Uploader");
 
 AssertForbidden("viewUploader");
 
-$rootdir = $dataDir."uploader";
-
 if($uploaderWhitelist)
 	$goodfiles = explode(" ", $uploaderWhitelist);
 
@@ -13,17 +11,17 @@ $badfiles = array("html", "htm", "php", "php2", "php3", "php4", "php5", "php6", 
 
 function listCategory($cat)
 {
-	global $loguser, $loguserid, $rootdir, $userSelectUsers, $boardroot;
+	global $loguser, $loguserid, $dataDir, $userSelectUsers, $boardroot;
 
-	if(isset($_GET['sort']) && $_GET['sort'] == "filename" || $_GET['sort'] == "date")
+	if(isset($_GET['sort']) && $_GET['sort'] == "name" || $_GET['sort'] == "date")
 		$skey = $_GET['sort'];
 	else
 		$skey = "date";
 
 	$sortOptions = "<div class=\"margin smallFonts\">".__("Sort order").": <ul class=\"pipemenu\">";
-	$sortOptions .= ($skey == "filename")
+	$sortOptions .= ($skey == "name")
 			?"<li>".__("Name")."</li>"
-			:actionLinkTagItem(__("Name"), "uploaderlist", "", "cat=${_GET["cat"]}&sort=filename");
+			:actionLinkTagItem(__("Name"), "uploaderlist", "", "cat=${_GET["cat"]}&sort=name");
 	$sortOptions .= ($skey == "date")
 			?"<li>".__("Date")."</li>"
 			:actionLinkTagItem(__("Date"), "uploaderlist", "", "cat=${_GET["cat"]}&sort=date");
@@ -34,7 +32,7 @@ function listCategory($cat)
 	print $sortOptions;
 
 	if($cat == -1)
-		$condition = "up.user = ".$loguserid." and up.private = 1";
+		$condition = "f.user = ".$loguserid." and up.private = 1";
 	else if($cat == -2 && $loguser['powerlevel'] > 2)
 		$condition = "up.private = 1";
 	else
@@ -45,10 +43,11 @@ function listCategory($cat)
 		$errormsg = __("You have no private files.");
 
 	$entries = Query("SELECT
-			up.*,
+			up.id, f.name, f.hash, up.description, f.downloads,
 			u.(_userfields)
 			FROM {uploader} up
-			LEFT JOIN {users} u on up.user = u.id
+			JOIN {files} f on up.id = f.id
+			LEFT JOIN {users} u on f.user = u.id
 			WHERE $condition
 			ORDER BY ".$skey.$sdir, $cat);
 
@@ -121,9 +120,7 @@ function listCategory($cat)
 			}
 			$cellClass = ($cellClass+1) % 2;
 
-			$filepath = $rootdir."/".$entry['filename'];
-			if($entry['private'])
-				$filepath = $rootdir."/".$entry['user']."/".$entry['filename'];
+			$filepath = $dataDir."uploads/".substr($entry['hash'], 0, 2).'/'.$entry['hash'];
 
 			print format(
 			"
@@ -145,7 +142,7 @@ function listCategory($cat)
 					{8}
 				</td>
 			</tr>
-			",	$cellClass, $entry['id'], $entry['filename'], $delete, $entry['description'],
+			",	$cellClass, $entry['id'], htmlspecialchars($entry['name']), $delete, htmlspecialchars($entry['description']),
 				BytesToSize(@filesize($filepath)), UserLink(getDataPrefix($entry, "u_")), $multidel, $entry["downloads"]);
 		}
 

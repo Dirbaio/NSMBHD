@@ -4,16 +4,6 @@ $title = __("Uploader");
 
 AssertForbidden("viewUploader");
 
-$rootdir = $dataDir."uploader";
-if(!is_file($rootdir."/.htaccess"))
-{
-	$here = $_SERVER['SCRIPT_FILENAME'];
-	$here = substr($here, 0, strrpos($here, '/') + 1);
-	$here = str_replace($_SERVER['DOCUMENT_ROOT'], '', $here);
-	@mkdir('uploader');
-	file_put_contents($rootdir."/.htaccess", "RewriteEngine On\nRewriteRule ^(.+)$ ".$here."get.php?file=$1 [PT,L,QSA]\nRewriteRule ^$ ".$here."get.php?error [PT,L,QSA]");
-}
-
 if($uploaderWhitelist)
 	$goodfiles = explode(" ", Settings::pluginGet('uploaderWhitelist'));
 
@@ -26,7 +16,6 @@ if(isset($_POST['fid']))
 
 $quota = Settings::pluginGet('uploaderCap') * 1024 * 1024;
 $pQuota = Settings::pluginGet('personalCap') * 1024 * 1024;
-$totalsize = foldersize($rootdir);
 
 $maxSizeMult = Settings::pluginGet('uploaderMaxFileSize') * 1024 * 1024;
 
@@ -38,7 +27,7 @@ if($_GET['action'] == "uploadform")
 		Kill('Invalid category');
 
 	$cat = getCategory($_GET["cat"]);
-	
+
 	$crumbs = new PipeMenu();
 	$crumbs->add(new PipeMenuLinkEntry(__("Uploader"), "uploader"));
 	$crumbs->add(new PipeMenuLinkEntry($cat["name"], "uploaderlist", "", "cat=".$cat["id"]));
@@ -93,59 +82,47 @@ else if($_GET['action'] == __("Upload"))
 	if($loguserid)
 	{
 		$cat = getCategory($_POST["cat"]);
-		$targetdir = $rootdir;
-		$quot = $quota;
+		$file = $_FILES['newfile'];
 		$privateFlag = 0;
 		if($_POST['cat'] == -1)
-		{
-			$quot = $pQuota;
-			$targetdir = $rootdir."/".$loguserid;
 			$privateFlag = 1;
+		var_dump($file);
+		if($file['size'] == 0)
+		{
+			if($file['tmp_name'] == "")
+				Alert(__("No file given."));
+			else
+				Alert(__("File is empty."));
 		}
-		$totalsize = foldersize($targetdir);
-
-		mkdir($targetdir);
-		$files = scandir($targetdir);
-		if(in_array($_FILES['newfile']['name'], $files))
-			Alert(format(__("The file \"{0}\" already exists. Please delete the old copy before uploading a new one."), $_FILES['newfile']['name']));
+		else if($file['size'] > Settings::pluginGet('uploaderMaxFileSize') * 1024 * 1024)
+		{
+			Alert(format(__("File is too large. Maximum size is {0}."), BytesToSize(Settings::pluginGet('uploaderMaxFileSize') * 1024 * 1024)));
+		}
 		else
 		{
-			if($_FILES['newfile']['size'] == 0)
+			$extension = strtolower(end(explode(".", $file['name'])));
+
+			if(in_array(strtolower($extension), $badfiles) || is_array($goodfiles) && !in_array(strtolower($extension), $goodfiles))
 			{
-				if($_FILES['newfile']['tmp_name'] == "")
-					Alert(__("No file given."));
-				else
-					Alert(__("File is empty."));
-			}
-			else if($_FILES['newfile']['size'] > Settings::pluginGet('uploaderMaxFileSize') * 1024 * 1024)
-			{
-				Alert(format(__("File is too large. Maximum size is {0}."), BytesToSize(Settings::pluginGet('uploaderMaxFileSize') * 1024 * 1024)));
+				Alert(__("Forbidden file type."));
 			}
 			else
 			{
-				$fname = $_FILES['newfile']['name'];
-				$temp = $_FILES['newfile']['tmp_name'];
-				$size = $_FILES['size']['size'];
-				$parts = explode(".", $fname);
-				$extension = end($parts);
-				if($totalsize + $size > $quot)
-					Alert(format(__("Uploading \"{0}\" would break the quota."), $fname));
-				else if(in_array(strtolower($extension), $badfiles) || is_array($goodfiles) && !in_array(strtolower($extension), $goodfiles))
-				{
-					Alert(__("Forbidden file type."));
-				}
-				else
-				{
-					$description = htmlspecialchars($_POST['description']);
+				$id = Shake();
+				$hash = md5_file($file['tmp_name']);
 
-					Query("insert into {uploader} (filename, description, date, user, private, category) values ({0}, {1}, {2}, {3}, {4}, {5})",
-						$fname, $description, time(), $loguserid, $privateFlag, $_POST['cat']);
+				Query("insert into {files} (id, name, hash, date, user) values ({0}, {1}, {2}, {3}, {4})",
+					$id, $file['name'], $hash, time(), $loguserid);
 
-					copy($temp, $targetdir."/".$fname);
-					Report("[b]".$loguser['name']."[/] uploaded file \"[b]".$fname."[/]\"".($privateFlag ? " (privately)" : ""), $privateFlag);
+				Query("insert into {uploader} (id, description, private, category) values ({0}, {1}, {2}, {3})",
+					$id, $_POST['description'], $privateFlag, $_POST['cat']);
 
-					die(header("Location: ".actionLink("uploaderlist", "", "cat=".$_POST["cat"])));
-				}
+				$dir = $dataDir."uploads/".substr($hash, 0, 2).'/';
+				mkdir($dir);
+				copy($file['tmp_name'], $dir.$hash);
+				//Report("[b]".$loguser['name']."[/] uploaded file \"[b]".$fname."[/]\"".($privateFlag ? " (privately)" : ""), $privateFlag);
+
+				die(header("Location: ".actionLink("uploaderlist", "", "cat=".$_POST["cat"])));
 			}
 		}
 	}
@@ -160,15 +137,10 @@ else if($loguserid && $_GET['action'] == "multidel" && $_POST['del']) //several 
 		if($loguser['powerlevel'] > 2)
 			$check = FetchResult("select count(*) from {uploader} where id = {0}", $fid);
 		else
-			$check = FetchResult("select count(*) from {uploader} where user = {0} and id = {1}", $loguserid, $fid);
+			$check = FetchResult("select count(*) from {uploader} u join {files} f on u.id=f.id where f.user = {0} and u.id = {1}", $loguserid, $fid);
 
 		if($check)
 		{
-			$entry = Fetch(Query("select * from {uploader} where id = {0}", $fid));
-			if($entry['private'])
-				@unlink($rootdir."/".$entry['user']."/".$entry['filename']);
-			else
-				@unlink($rootdir."/".$entry['filename']);
 			Query("delete from {uploader} where id = {0}", $fid);
 			$deleted++;
 		}
@@ -188,7 +160,7 @@ else if($loguserid && $_GET['action'] == "multimove" && $_POST['del']) //several
 		if($loguser['powerlevel'] > 2)
 			$check = FetchResult("select count(*) from {uploader} where id = {0}", $fid);
 		else
-			$check = FetchResult("select count(*) from {uploader} where user = {0} and id = {1}", $loguserid, $fid);
+			$check = FetchResult("select count(*) from {uploader} u join {files} f on u.id=f.id where f.user = {0} and u.id = {1}", $loguserid, $fid);
 
 		if($check)
 		{
@@ -209,17 +181,11 @@ else if($_GET['action'] == "delete") //single file
 	if($loguser['powerlevel'] > 2)
 		$check = FetchResult("select count(*) from {uploader} where id = {0}", $fid);
 	else
-		$check = FetchResult("select count(*) from {uploader} where user = {0} and id = {1}", $loguserid, $fid);
+		$check = FetchResult("select count(*) from {uploader} u join {files} f on u.id=f.id where f.user = {0} and u.id = {1}", $loguserid, $fid);
 
 	if($check)
 	{
-		$entry = Fetch(Query("select * from {uploader} where id = {0}", $fid));
-		if($entry['private'])
-			@unlink($rootdir."/".$entry['user']."/".$entry['filename']);
-		else
-			@unlink($rootdir."/".$entry['filename']);
 		Query("delete from {uploader} where id = {0}", $fid);
-		Report("[b]".$loguser['name']."[/] deleted \"[b]".$entry['filename']."[/]\".", 1);
 		die(header("Location: ".actionLink("uploaderlist", "", "cat=".$_GET["cat"])));
 	}
 	else
@@ -281,7 +247,7 @@ else
 
 		if($loguserid)
 		{
-			$filecount = FetchResult("select count(*) from {uploader} where uploader.user = {0} and uploader.private = 1", $loguserid);
+			$filecount = FetchResult("select count(*) from {uploader} u join {files} f on u.id=f.id where f.user = {0} and u.private = 1", $loguserid);
 
 			print "<tr class=\"cell$cellClass\"><td>";
 			print actionLinkTag("Private files", "uploaderlist", "", "cat=-1");
@@ -308,20 +274,6 @@ else
 		}
 		print "</table>";
 	}
-}
-
-//From the PHP Manual User Comments
-function foldersize($path)
-{
-	$total_size = 0;
-	$files = scandir($path);
-	$files = array_slice($files, 2);
-	foreach($files as $t)
-	{
-		$size = filesize($path . "/" . $t);
-		$total_size += $size;
-	}
-	return $total_size;
 }
 
 function getCategory($cat)
