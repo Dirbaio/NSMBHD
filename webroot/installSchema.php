@@ -35,7 +35,7 @@ $tables = array
 		),
 		"special" => "unique key `mainkey` (`plugin`,`name`)"
 	),
-	
+
 	//Weird column names: An entry means that "blockee" has blocked the layout of "user"
 	"blockedlayouts" => array
 	(
@@ -69,7 +69,7 @@ $tables = array
 		"fields" => array
 		(
 			"forum" => $genericInt,
-			"user" => $genericInt,			
+			"user" => $genericInt,
 		),
 		"special" => "key `mainkey` (`forum`, `user`)"
 	),
@@ -103,7 +103,7 @@ $tables = array
 			"date" => $genericInt,
 			"lasturl" => "varchar(100)".$notNull,
 			"lastforum" => $genericInt,
-			"useragent" => "varchar(100)".$notNull,			
+			"useragent" => "varchar(1000)".$notNull,
 			"bot" => $bool,
 		),
 		"special" => $keyID.", key `ip` (`ip`), key `bot` (`bot`)"
@@ -113,7 +113,7 @@ $tables = array
 		"fields" => array
 		(
 			"uid" => $genericInt,
-			"fid" => $genericInt,			
+			"fid" => $genericInt,
 		),
 		"special" => "key `mainkey` (`uid`, `fid`)"
 	),
@@ -123,7 +123,7 @@ $tables = array
 		(
 			"ip_from" => "bigint(12) NOT NULL DEFAULT '0'",
 			"ip_to" => "bigint(12) NOT NULL DEFAULT '0'",
-			"cc" => "varchar(2) DEFAULT ''",			
+			"cc" => "varchar(2) DEFAULT ''",
 		),
 		"special" => "key `ip_from` (`ip_from`)"
 	),
@@ -132,8 +132,8 @@ $tables = array
 		"fields" => array
 		(
 			"ip" => "varchar(45)".$notNull,
-			"reason" => "varchar(100)".$notNull,			
-			"date" => $genericInt,			
+			"reason" => "varchar(100)".$notNull,
+			"date" => $genericInt,
 			"whitelisted" => $bool,
 		),
 		"special" => "unique key `ip` (`ip`), key `date` (`date`)"
@@ -144,7 +144,7 @@ $tables = array
 		(
 			"version" => $genericInt,
 			"views" => $genericInt,
-			"hotcount" => $genericInt,			
+			"hotcount" => $genericInt,
 			"maxusers" => $genericInt,
 			"maxusersdate" => $genericInt,
 			"maxuserstext" => $text,
@@ -160,8 +160,8 @@ $tables = array
 		"fields" => array
 		(
 			"id" => $AI,
-			"uid" => $genericInt,			
-			"mid" => $genericInt,			
+			"uid" => $genericInt,
+			"mid" => $genericInt,
 			"name" => $var256,
 		),
 		"special" => $keyID. ", key `mainkey` (`uid`, `mid`)"
@@ -236,7 +236,7 @@ $tables = array
 			"num" => $genericInt,
 			"deleted" => $bool,
 			"deletedby" => $genericInt,
-			"reason" => "varchar(300)".$notNull,
+			"reason" => $text,
 			"options" => "tinyint(4) NOT NULL DEFAULT '0'",
 			"mood" => $genericInt,
 			"currentrevision" => $genericInt,
@@ -259,7 +259,7 @@ $tables = array
 	(
 		"fields" => array
 		(
-			"id" => $AI,			
+			"id" => $AI,
 			"ip" => "varchar(45)".$notNull,
 		),
 		"special" => $keyID.", unique key `ip` (`ip`)"
@@ -268,10 +268,10 @@ $tables = array
 	(
 		"fields" => array
 		(
-			"id" => $AI,		
-			"user" => $genericInt,	
+			"id" => $AI,
+			"user" => $genericInt,
 			"ip" => "varchar(50)".$notNull,
-			"time" => $genericInt,	
+			"time" => $genericInt,
 			"query" => $text,
 			"get" => $text,
 			"post" => $text,
@@ -395,7 +395,7 @@ $tables = array
 			"birthday" => $genericInt,
 			"email" => "varchar(60)".$notNull,
 			"homepageurl" => "varchar(80)".$notNull,
-			"homepagename" => "varchar(100)".$notNull,			
+			"homepagename" => "varchar(100)".$notNull,
 			"lastposttime" => $genericInt,
 			"lastactivity" => $genericInt,
 			"lastip" => "varchar(50)".$notNull,
@@ -425,6 +425,7 @@ $tables = array
 			"convertpassword" => $var256,
 			"convertpasswordsalt" => $var256,
 			"convertpasswordtype" => $var256,
+			"slowbanned" => $bool,
 		),
 		"special" => $keyID.", key `posts` (`posts`), key `name` (`name`), key `lastforum` (`lastforum`), key `lastposttime` (`lastposttime`), key `lastactivity` (`lastactivity`)"
 	),
