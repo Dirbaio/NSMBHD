@@ -12,7 +12,6 @@ print "
 	</tr>
 	<tr class=\"cell0\">
 		<td style='padding:20px;'>
-			$adsense<br>
 			Here you can download the latest builds of NSMB Editor.<br>
 			These are built automatically from <a href=\"https://github.com/Dirbaio/NSMB-Editor\">the GitHub repository</a>.<br><br>
 		<div style='font-size:17px; text-align:center; width:100%;'>NSMB Editor 5.2 latest version: Build $latest<br>
@@ -26,4 +25,3 @@ print "
 </table>
 ";
 write('</td><td style="border: 0px none; vertical-align: top; padding-right: 1em; padding-bottom: 1em;">');
-

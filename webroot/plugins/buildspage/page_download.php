@@ -1,20 +1,7 @@
 <?php
-$adsense = '<div id="adsense" style="margin-left:auto; margin-right:auto;"><script type="text/javascript"><!--
-google_ad_client = "ca-pub-0261153085306189";
-/* NSMBHD downloads page */
-google_ad_slot = "1980530756";
-google_ad_width = 728;
-google_ad_height = 90;
-//-->
-</script>
-<script type="text/javascript"
-src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
-</script></div>';
-
-$adsense = "";
 
 $title = "Download NSMB Editor";
-	
+
 $crumbs = new PipeMenu();
 $crumbs->add(new PipeMenuLinkEntry(__("NSMB Editor Downloads"), "download"));
 makeBreadcrumbs($crumbs);
@@ -33,10 +20,10 @@ else
 	$rev = $_GET["id"];
 	if($rev == "latest")
 		$rev = $latest;
-	
+
 	$code = doHash($_SERVER["REMOTE_ADDR"]."LOLfoahcmpughapw9hgcapuhcgn".$rev);
 	$url = actionLink("getdownload", $rev, "c=$code");
-	
+
 	$regurl = actionLink("register");
 	print "
 	<table class=\"outline margin\" style=\"width: 60%; margin: auto;  margin-top: 30px; margin-bottom:30px;\">
@@ -64,5 +51,5 @@ else
 		<a rel=\"nofollow\" class='cell1' style='font-size:17px; border: 1px solid black; padding: 5px; margin: 5px; display:block;' href='$regurl'>&raquo; Click HERE to register! &laquo;</a>
 			</td>
 		</tr>
-	</table>";	
+	</table>";
 }
