@@ -110,15 +110,15 @@ if($canMod)
 				else
 					Kill(__("Unknown forum ID."));
 			}
-			
+
 			//Tweak forum counters
-			$rForum = Query("update {forums} set numthreads=numthreads-1, numposts=numposts-{0} where id={1}", 
+			$rForum = Query("update {forums} set numthreads=numthreads-1, numposts=numposts-{0} where id={1}",
 							$thread['replies']+1, $thread['forum']);
 
-			$rForum = Query("update {forums} set numthreads=numthreads+1, numposts=numposts+{0} where id={1}", 
+			$rForum = Query("update {forums} set numthreads=numthreads+1, numposts=numposts+{0} where id={1}",
 							$thread['replies']+1, $moveto);
 
-			$rThread = Query("update {threads} set forum={0} where id={1}", 
+			$rThread = Query("update {threads} set forum={0} where id={1}",
 							(int)$_POST['moveTo'], $tid);
 
 			// Tweak forum counters #2
@@ -133,7 +133,7 @@ if($canMod)
 				logAction('trashthread', array('forum' => $fid, 'thread' => $tid, 'user2' => $thread["user"]));
 			else
 				logAction('movethread', array('forum' => $fid, 'thread' => $tid, 'forum2' => $moveto, 'user2' => $thread["user"]));
-				
+
 			recalculateKarma($thread["user"]);
 		}
 	}
@@ -159,7 +159,7 @@ if($canMod)
 			logAction('closethread', array('forum' => $fid, 'thread' => $tid, 'user2' => $thread["user"]));
 		if($thread["closed"] && !$isClosed)
 			logAction('openthread', array('forum' => $fid, 'thread' => $tid, 'user2' => $thread["user"]));
-		
+
 		Query("update {threads} set closed={0}, sticky={1} where id={2} limit 1", $isClosed, $isSticky, $tid);
 	}
 }
@@ -170,6 +170,7 @@ if($_GET['action'] == "edit")
 	$trimmedTitle = trim(str_replace('&nbsp;', ' ', $_POST['title']));
 	if($trimmedTitle != "")
 	{
+		$iconurl = '';
 		if($_POST['iconid'])
 		{
 			$_POST['iconid'] = (int)$_POST['iconid'];
@@ -178,7 +179,7 @@ if($_GET['action'] == "edit")
 			else
 				$iconurl = $_POST["iconurl"];
 		}
-		
+
 		if($thread["title"] != $_POST['title'] || $thread["icon"] != $iconurl)
 			logAction('editthread', array('forum' => $fid, 'thread' => $tid, 'user2' => $thread["user"]));
 
