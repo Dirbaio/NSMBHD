@@ -31,6 +31,7 @@ case $task in
             -p 0.0.0.0:80:80 \
             --link abxd_db:db \
             -v $PWD:/app \
+            -v $PWD/data:/data \
             abxd
         ;;
     stop)
