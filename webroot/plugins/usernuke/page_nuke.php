@@ -12,7 +12,7 @@ if(!$user)
 
 if($user["powerlevel"] > 0)
 	kill("You can't nuke a staff member. Demote him first.");
-	
+
 $passwordFailed = false;
 
 if(isset($_POST["currpassword"]))
@@ -20,7 +20,7 @@ if(isset($_POST["currpassword"]))
 	$sha = doHash($_POST["currpassword"].$salt.$loguser['pss']);
 	if($loguser['password'] == $sha)
 	{
-		
+
 		//Delete posts from threads by user
 		query("delete pt from {posts_text} pt
 				left join {posts} p on pt.pid = p.id
@@ -30,13 +30,13 @@ if(isset($_POST["currpassword"]))
 				left join {threads} t on p.thread = t.id
 				where t.user={0}", $uid);
 
-		//Delete posts by user			
+		//Delete posts by user
 		query("delete pt from {posts_text} pt
 				left join {posts} p on pt.pid = p.id
 				where p.user={0}", $uid);
 		query("delete p from {posts} p
 				where p.user={0}", $uid);
-		
+
 		//Delete threads by user
 		query("delete t from {threads} t
 				where t.user={0}", $uid);
@@ -45,15 +45,22 @@ if(isset($_POST["currpassword"]))
 		query("delete from {usercomments}
 				where uid={0} or cid={0}", $uid);
 
+		//Delete PMs by user
+		query("delete pt from {pmsgs_text} pt
+				left join {pmsgs} p on pt.pid = p.id
+				where p.userfrom={0} or p.userto={0}", $uid);
+		query("delete p from {pmsgs} p
+				where p.userfrom={0} or p.userto={0}", $uid);
+
 		//Delete THE USER ITSELF
 		query("delete from {users}
 				where id={0}", $uid);
 
 		//and then IP BAN HIM
-		query("insert into {ipbans} (ip, reason, date) 
+		query("insert into {ipbans} (ip, reason, date)
 				values ({0}, {1}, 0)
 				on duplicate key update ip=ip", $user["lastip"], "Nuking ".$user["name"]);
-				
+
 		echo "User nuked!<br/>";
 		echo "You will need to ", actionLinkTag("Recalculate statistics now", "recalc");
 
@@ -98,4 +105,3 @@ echo "
 		</tr>
 	</table>
 </form>";
-
