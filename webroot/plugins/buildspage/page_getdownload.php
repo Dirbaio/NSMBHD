@@ -1,25 +1,25 @@
 <?php
 	$ajaxPage = true;
-	
+
 	$rev = (int) $_GET["id"];
 	$c = $_GET["c"];
 	$code = doHash($_SERVER["REMOTE_ADDR"]."LOLfoahcmpughapw9hgcapuhcgn".$rev);
-	
+
 	if($c != $code)
 		redirectAction("download");
 	else
 	{
-		$path = "/home/nsmbhd/build/revs/nsmb-editor-$rev.zip";
+		$path = $dataDir."builds/nsmb-editor-$rev.zip";
 		$fname = "nsmb-editor-$rev.zip";
-		
+
 		if(!file_exists($path))
 			die("No such file.");
-	
+
 		$fsize = filesize($path);
 		$parts = pathinfo($path);
 		$ext = strtolower($parts["extension"]);
 		$download = true;
-	
+
 		switch ($ext)
 		{
 			case "gif": $ctype="image/gif"; $download = false; break;
@@ -32,7 +32,7 @@
 			case "swf": $ctype="application/x-shockwave-flash"; $download = false; break;
 			case "pdf": $ctype="application/pdf"; $download = false; break;
 			default: $ctype="application/force-download"; break;
-		} 
+		}
 
 		header("Pragma: public");
 		header("Expires: 0");
