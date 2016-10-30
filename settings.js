@@ -29,13 +29,13 @@ exports.settings = {
 			channels: {
 				"#nsmbhd": {
 					modules: {
-						report: {port: 1337},
+						report: {port: 1337, allowedip: 'any'},
 					}
 				},
 				"#nsmbhd-staff": {
 					key: process.env.STAFF_CHANNEL_KEY,
 					modules: {
-						report: {port: 1336},
+						report: {port: 1336, allowedip: 'any'},
 					}
 				}
 			}
