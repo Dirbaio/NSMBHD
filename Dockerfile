@@ -13,8 +13,7 @@ COPY . /app
 
 RUN groupadd -r app -g 1000 && \
     useradd -u 1000 -r -g app -d /app -s /bin/bash -c "Docker image user" app && \
-    chown -R app:app /app && \
-    mkdir -p /var/log/supervisor
+    chown -R app:app /app
 
 EXPOSE 80
 CMD ["/app/conf/launch.sh"]
