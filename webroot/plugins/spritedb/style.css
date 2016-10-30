@@ -1,0 +1,34 @@
+.percentbar 
+{ 
+	border: 1px solid #000; 
+	text-align: center; 
+	font-size: 11px; 
+	line-height: 16px; 
+	float: left; 
+	height: 16px;
+}
+
+.unknownp { background: #612;}
+.knownp { background: #840;}
+.completep { background: #041;}
+
+table.data {margin-left: 14px; margin-top:6px;}
+table.sprites td { padding: 2px; }
+table.data td { font-size: 12px; }
+
+.unknownp table.data td { background: #501; color: #C88}
+.knownp table.data td { background: #720; color: #CA7}
+.completep table.data td { background: #031; color: #8C9}
+
+table.origdata td { }
+table.origdata tr.datarow td { border-top: 1px solid #000; font-family: monospace; padding: 0px; }
+div.groupbox { border: 1px solid #000; width: 80%; padding: 2px; }
+div.groupbox div.header { background: #d1ecff; padding: 2px; }
+div.groupbox div.content { padding: 6px; }
+div.groupbox form { margin: 0px; }
+div.groupbox input.submit { margin: 6px 4px 0px 4px; }
+div.groupbox input.text, div.groupbox select { border: 1px solid #303030; font-family: Arial, sans-serif; font-size: 12px; }
+
+table.fieldeditor td { padding: 0px; }
+table.fieldeditor tr.header td { font-size: 9px; }
+

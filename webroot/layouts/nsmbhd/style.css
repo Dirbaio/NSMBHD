@@ -1,0 +1,84 @@
+/* 
+	CSS file for the NSMBHD Layout file 
+	By Dirbaio
+*/
+
+.navigation-fixed
+{
+	position:fixed;
+	top:35px;
+/*	right:6px;*/
+}
+.userpanel-fixed
+{
+	position:fixed;
+	top:0px;
+/*	right:0px;*/
+	border: 1px solid black;
+	padding-right:4px!important;
+}
+
+#userpanel
+{
+	padding:5px;
+	border-top:1px solid black;
+	border-left:1px solid black;
+}
+
+#boardheader
+{
+	width:100%;
+	border-bottom: 1px solid black;
+}
+
+#boardheader2
+{
+	width:100%;
+	margin-bottom:6px;
+	border-bottom: 1px solid black;
+	font-size:0.85em;
+	text-align:center;
+	padding-top:3px;
+	padding-bottom:3px;
+}
+
+#sidebar
+{
+	float:right;
+	width:130px;
+	padding:6px;
+}
+
+#main
+{
+	margin-right:140px;
+	padding:6px;
+}
+
+ul.sidemenu
+{
+	text-align:left;
+	font-size: .85em; /* 8pt; */
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
+ul.sidemenu li a
+{
+	display: block;
+	padding: 4px;
+	padding-right: 4px;
+}
+
+ul.sidemenu li
+{
+	display: block;
+}
+
+ul.sidemenu li.sidemenuseparator
+{
+	margin:5px;
+}
+
+

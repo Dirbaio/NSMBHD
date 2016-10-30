@@ -1,0 +1,51 @@
+.mainMenu, .userMenu {
+	list-style-type: none;
+	margin: 0px;
+	padding: 0px;
+}
+
+.mainMenu li, .mainMenu li a {
+	display: inline-block;
+	line-height: 24px;
+	padding-left: 6px;
+	padding-right: 6px;
+}
+
+.mainMenu li a {
+	height: 24px;
+}
+
+.userDropdownContainer {
+	float: right;
+	line-height: 24px;
+	text-align: right;
+}
+
+.userMenu {
+	background: #202020;
+	text-align: left;
+	margin: 0px;
+	margin-bottom: -1000%; /* The hax, it burns... */
+	z-index: 999;
+	position: relative;
+	display: none;
+}
+
+.userDropdownContainer:hover .userMenu {
+	display: block;
+}
+
+.userMenu li {
+	height: 24px;
+}
+
+.userMenu li a {
+	padding-left: 16px;
+	padding-right: 16px;
+	display: block;
+}
+
+.nOnlineUsers > span {
+	display: block;
+	text-align: right;
+}

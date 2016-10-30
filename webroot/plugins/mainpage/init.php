@@ -1,0 +1,3 @@
+<?php
+
+$mainPage = "blog";

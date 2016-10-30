@@ -1,0 +1,121 @@
+@import url('../../css/roundcorners.css');
+
+/* ABXD 3.0, default theme
+   Designed by Nina */
+
+.faq {
+	border: 1px solid hsl(0, 0%, 25%);
+	background: hsl(0, 0%, 10%);
+}
+
+#body {
+	background: hsl(240, 20%, 15%) url(noise-texture.png);
+	color: #FFFFFF;
+}
+
+.header0, .header1 {
+	border: 0px none;
+}
+
+.header0 th, .header1 th {
+	background: linear-gradient(hsl(240, 50%, 15%) 0px, hsl(240, 50%, 50%) 2px, hsl(240, 50%, 35%) 4px, hsla(0, 0%, 0%, 0.3) 4px, hsla(0, 0%, 0%, 0));
+	padding-top: 4px;
+	color: #FFFFFF;
+}
+
+.header1:first-child th, .header0:first-child th, .errort {
+	background: linear-gradient(hsl(240, 40%, 40%), hsl(240, 40%, 30%));
+	border-bottom: 0px none;
+	padding-bottom: 4px;
+}
+
+.cell2 {
+}
+
+.cell1, table.post td.side, table.post td.userlink, table.post td.meta {
+}
+
+.cell0, table.post td.post, .faq {
+}
+
+table.outline, .errorc, table.post {
+	background: linear-gradient(hsl(240, 20%, 15%), hsl(240, 20%, 10%) 120px);
+	box-shadow: 4px 4px 16px rgba(0, 0, 0, 0.35);
+	border-radius: 8px;
+	border: 1px solid hsl(240, 20%, 10%);
+}
+
+table.post > tbody > tr:first-child td {
+	background: linear-gradient(hsl(240, 50%, 15%) 0px, hsl(240, 50%, 50%) 2px, hsl(240, 50%, 35%) 4px, hsla(0, 0%, 0%, 0.3) 4px, hsla(0, 0%, 0%, 0));
+	padding-top: 4px;
+}
+
+button, input[type="submit"] {
+	border: 0px none;
+	background: linear-gradient(hsl(240, 20%, 15%), hsl(240, 20%, 12.5%));
+	border-radius: 4px;
+	color: #FFF;
+}
+
+input[type="text"], input[type="password"], input[type="file"], input[type="email"], select, textarea {
+	background: linear-gradient(hsl(240, 20%, 18%), hsl(240, 20%, 15%));
+	border-radius: 4px;
+	border: 1px solid hsl(240, 20%, 25%);
+	color: white;
+}
+
+input[type="checkbox"], input[type="radio"] {
+	background: hsl(240, 20%, 15%);
+	border: 0px none;
+	border-radius: 4px;
+	color: hsl(0, 0%, 15%);
+	transition: 0.2s linear;
+}
+
+input[type="radio"] {
+	border-radius: 8px;
+}
+
+input[type="text"]:focus, input[type="password"]:focus, input[type="file"]:focus, input[type="email"]:focus, select:focus, textarea:focus {
+	background: linear-gradient(hsl(240, 20%, 21%), hsl(240, 20%, 18%));
+	border-color: hsl(240, 50%, 45%);
+}
+
+div#tabs {
+	margin-left: 2px;
+}
+
+div#tabs button {
+	border-radius: 0px;
+	border-top-left-radius: 8px;
+	border-top-right-radius: 8px;
+	padding-left: 8px;
+	padding-right: 8px;
+	margin-bottom: 2px;
+}
+
+div#tabs button.selected {
+	background: hsl(240, 40%, 40%);
+}
+
+.themeselector input:checked + label, .fe_selected {
+	background: hsl(0, 0%, 15%);
+}
+
+
+/* Mobile layout */
+
+#drawer {
+	background: hsl(240, 20%, 10%) url(noise-texture.png);
+	box-shadow: 4px 0px 4px rgba(0, 0, 0, 0.5);
+}
+
+#drawer a:active {
+
+}
+
+#mobile-headerBar {
+	background: linear-gradient(hsl(240, 20%, 15%), hsl(240, 20%, 10%)), url(noise-texture.png);
+	border-bottom: 0px none;
+	box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.5);
+}

@@ -1,0 +1,12 @@
+@import url('../../css/roundcorners.css');
+@import url('../../css/borders.css');
+
+td, tr, th, table
+{
+	border-color:white;
+}
+
+table.post, table.outline, table.message
+{
+	border:1px solid red;
+}
