@@ -1,0 +1,54 @@
+// Bot configuration file - rename to settings.js after config
+
+exports.settings = {
+	// Name of bot
+	globalNick: "YourBot",
+	// Username of bot
+	globalUserName: "YourBot",
+	// Realname of bot
+	globalRealName: "Your bot",
+	// prefix of most commands for bot
+	defaultCommandPrefix: "!",
+
+	// These modules will be loaded in all channels.
+	globalServModules: {
+		ctcp: {}
+	},
+	// These modules will be loaded in all channels.
+	globalModules: {
+		yesno: {},
+		chance: {},
+		tell: {},
+		calc: {},
+		chatbot: {},
+		seen: {},
+		ddg: {},
+		fire: {},
+		flipcoin: {},
+		rolldice: {},
+		time: {},
+		truefalse: {},
+		welcome: {},
+		excuse: {}
+		say: {},
+		about: {},
+		cookie: {}
+	},
+	
+	servers: {
+		djbouche: {
+			// irc server's address
+			address: 'irc.someserver.net',
+			// port of irc server
+			port: 6667,
+			modules: {},
+			channels: {
+				// channel to join
+				"#testchannel": {
+					// extra modules to load to this channel
+					donotslap: {},
+				},
+			}
+		}
+	}
+}
