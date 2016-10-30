@@ -12,7 +12,6 @@ if($haveSecurimage)
 
 $title = __("Register");
 
-
 class StopForumSpam
 {
     /**
@@ -207,7 +206,7 @@ if(isset($_POST['name']))
 
 		$s = new StopForumSpam($stopForumSpamKey);
 
-		if($s->is_spammer(array('email' => $_POST['email'], 'ip' => $_SERVER['REMOTE_ADDR'], 'username' => $_POST['name'] ))) {
+		if($s->is_spammer(array('email' => $_POST['email'], 'ip' => $_SERVER['REMOTE_ADDR'] ))) {
 			$reasons[] = 'sfs';
 		}
 

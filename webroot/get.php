@@ -28,12 +28,12 @@ if(NumRows($entry))
 
 	if(!file_exists($path))
 		die("No such file.");
-	
+
 	$fsize = filesize($path);
 	$parts = pathinfo($path);
 	$ext = strtolower($parts["extension"]);
 	$download = true;
-	
+
 	switch ($ext)
 	{
 		case "gif": $ctype="image/gif"; $download = false; break;
@@ -46,7 +46,7 @@ if(NumRows($entry))
 		case "swf": $ctype="application/x-shockwave-flash"; $download = false; break;
 		case "pdf": $ctype="application/pdf"; $download = false; break;
 		default: $ctype="application/force-download"; break;
-	} 
+	}
 
 	header("Pragma: public");
 	header("Expires: 0");
