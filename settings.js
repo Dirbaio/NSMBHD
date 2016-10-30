@@ -35,7 +35,7 @@ exports.settings = {
 				"#nsmbhd-staff": {
 					key: process.env.STAFF_CHANNEL_KEY,
 					modules: {
-						report: {port: 1338},
+						report: {port: 1336},
 					}
 				}
 			}
