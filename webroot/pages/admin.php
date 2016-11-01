@@ -7,6 +7,7 @@ AssertForbidden("viewAdminRoom");
 
 if($loguser['powerlevel'] < 3)
 	Kill(__("You're not an administrator. There is nothing for you here."));
+$lastUrlMinPower = 3;
 
 $title = __("Administration");
 

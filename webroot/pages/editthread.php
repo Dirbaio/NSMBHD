@@ -43,6 +43,7 @@ if(NumRows($rFora))
 	$forum = Fetch($rFora);
 else
 	Kill(__("Unknown forum ID."));
+$lastUrlMinPower = $forum['minpower'];
 
 if($forum['minpower'] > $loguser['powerlevel'])
 	Kill(__("You are not allowed to edit threads."));

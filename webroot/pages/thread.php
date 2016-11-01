@@ -50,6 +50,7 @@ setUrlName("editthread", $tid, $thread["title"]);
 
 $threadtags = ParseThreadTags($thread['title']);
 $title = $threadtags[0];
+$lastUrlMinPower = $forum['minpower'];
 
 Query("update {threads} set views=views+1 where id={0} limit 1", $tid);
 

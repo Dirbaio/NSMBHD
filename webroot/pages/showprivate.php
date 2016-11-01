@@ -17,8 +17,10 @@ $pmid = $id;
 
 if(isset($_GET['snooping']))
 {
-	if($loguser['powerlevel'] > 2)
+	if($loguser['powerlevel'] > 2) {
 		$rPM = Query("select * from {pmsgs} left join {pmsgs_text} on pid = {pmsgs}.id where {pmsgs}.id = {0}", $id);
+		$lastUrlMinPower = 3;
+	}
 	else
 		Kill(__("No snooping for you."));
 }

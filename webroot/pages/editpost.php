@@ -53,6 +53,7 @@ if(NumRows($rFora))
 	$forum = Fetch($rFora);
 else
 	Kill(__("Unknown forum ID."));
+$lastUrlMinPower = $forum['minpower'];
 
 if ($loguser['powerlevel'] < $forum['minpower'])
 	Kill(__("You are not allowed to browse this forum."));
@@ -201,4 +202,3 @@ $form = "
 doPostForm($form);
 
 doThreadPreview($tid);
-

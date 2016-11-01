@@ -2,6 +2,7 @@
 
 if($loguser['powerlevel'] < 3)
 	Kill(__("You're not an administrator. There is nothing for you here."));
+$lastUrlMinPower = 3;
 
 $ip = $_GET["id"];
 if(!filter_var($ip, FILTER_VALIDATE_IP))
@@ -101,5 +102,3 @@ echo "
 
 echo "<h3>".__("Log entries from this IP")."</h3>";
 doLogList("l.ip='".sqlEscape($ip)."'");
-
-

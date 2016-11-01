@@ -5,6 +5,8 @@ AssertForbidden("optimize");
 if($loguser['powerlevel'] < 3)
 	Kill(__("You're not an administrator. There is nothing for you here."));
 
+$lastUrlMinPower = 3;
+
 $crumbs = new PipeMenu();
 $crumbs->add(new PipeMenuLinkEntry(__("Admin"), "admin"));
 $crumbs->add(new PipeMenuLinkEntry(__("Optimize tables"), "optimize"));

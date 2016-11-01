@@ -44,8 +44,12 @@ if(NumRows($rUsers))
 	while($user = Fetch($rUsers))
 	{
 		$cellClass = ($cellClass+1) % 2;
-		if($user['lasturl'])
-			$lastUrl = "<a href=\"".FilterURL($user['lasturl'])."\">".FilterURL($user['lasturl'])."</a>";
+		if($user['lasturl']) {
+			if($user['lasturlminpower'] > $loguser['powerlevel'])
+				$lastUrl = __("In a restricted area.");
+			else
+				$lastUrl = "<a href=\"".FilterURL($user['lasturl'])."\">".FilterURL($user['lasturl'])."</a>";
+		}
 		else
 			$lastUrl = __("None");
 
@@ -73,7 +77,7 @@ function listGuests($rGuests, $noMsg)
 
 	if(!NumRows($rGuests))
 		return "<tr class=\"cell0\"><td colspan=\"6\">$noMsg</td></tr>";
-		
+
 	$i = 1;
 	while($guest = Fetch($rGuests))
 	{

@@ -36,6 +36,7 @@ else
 	Kill("Unknown forum ID.");
 $fid = $forum['id'];
 AssertForbidden("viewForum", $fid);
+$lastUrlMinPower = $forum['minpower'];
 
 $isHidden = (int)($forum['minpower'] > 0);
 
@@ -290,4 +291,3 @@ $form = "
 doPostForm($form);
 
 doThreadPreview($tid);
-

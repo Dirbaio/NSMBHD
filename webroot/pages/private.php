@@ -12,6 +12,7 @@ if(!$loguserid)
 $user = $loguserid;
 if(isset($_GET['id']) && $loguser['powerlevel'] > 2)
 {
+	$lastUrlMinPower = 3;
 	$user = (int)$_GET['id'];
 	$snoop = "&snooping=1";
 	$userGet = $user;
@@ -22,7 +23,7 @@ else
 if(isset($_POST['action']))
 {
 	if ($_POST['token'] !== $loguser['token']) Kill('No.');
-	
+
 	if($_POST['action'] == "multidel" && $_POST['delete'] && $snoop != 1)
 	{
 		$deleted = 0;
@@ -51,7 +52,7 @@ if(isset($_POST['action']))
 if(isset($_GET['del']))
 {
 	if ($_GET['token'] !== $loguser['token']) Kill('No.');
-	
+
 	$pid = (int)$_GET['del'];
 	$rPM = Query("select * from {pmsgs} where id = {0} and (userto = {1} or userfrom = {1})", $pid, $loguserid);
 	if(NumRows($rPM))

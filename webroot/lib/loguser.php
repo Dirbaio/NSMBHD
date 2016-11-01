@@ -68,7 +68,7 @@ Query("delete from {sessions} where expiration != 0 and expiration < {0}", time(
 function isIPBanned($ip)
 {
 	$rIPBan = Query("select * from {ipbans} where instr({0}, ip)=1", $ip);
-	
+
 	$result = false;
 	while($ipban = Fetch($rIPBan))
 	{
@@ -134,7 +134,10 @@ else
 
 function setLastActivity()
 {
-	global $loguserid, $isBot, $lastKnownBrowser, $ipban;
+	global $loguserid, $isBot, $lastKnownBrowser, $ipban, $lastUrlMinPower;
+
+	if(!$lastUrlMinPower)
+		$lastUrlMinPower = 0;
 
 	Query("delete from {guests} where ip = {0}", $_SERVER['REMOTE_ADDR']);
 
@@ -150,8 +153,8 @@ function setLastActivity()
 	}
 	else
 	{
-		Query("update {users} set lastactivity={0}, lastip={1}, lasturl={2}, lastknownbrowser={3}, loggedin=1 where id={4}",
-			time(), $_SERVER['REMOTE_ADDR'], getRequestedURL(), $lastKnownBrowser, $loguserid);
+		Query("update {users} set lastactivity={0}, lastip={1}, lasturl={2}, lasturlminpower={3}, lastknownbrowser={4}, loggedin=1 where id={5}",
+			time(), $_SERVER['REMOTE_ADDR'], getRequestedURL(), $lastUrlMinPower, $lastKnownBrowser, $loguserid);
 	}
 }
 

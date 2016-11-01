@@ -9,6 +9,8 @@ AssertForbidden("editIPBans");
 if($loguser['powerlevel'] < 3)
 	Kill(__("Only administrators get to manage IP bans."));
 
+$lastUrlMinPower = 3;
+
 $crumbs = new PipeMenu();
 $crumbs->add(new PipeMenuLinkEntry(__("Admin"), "admin"));
 $crumbs->add(new PipeMenuLinkEntry(__("IP bans"), "ipbans"));

@@ -2,6 +2,7 @@
 
 if($loguser['powerlevel'] < 3)
 	Kill(__("Access denied."));
+$lastUrlMinPower = 3;
 
 $crumbs = new PipeMenu();
 $crumbs->add(new PipeMenuLinkEntry(__("Admin"), "admin"));

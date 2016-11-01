@@ -6,6 +6,7 @@ AssertForbidden("managePlugins");
 
 if($loguser['powerlevel'] < 3)
 	Kill(__("You must be an administrator to manage plugins."));
+$lastUrlMinPower = 3;
 
 $crumbs = new PipeMenu();
 $crumbs->add(new PipeMenuLinkEntry(__("Admin"), "admin"));

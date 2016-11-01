@@ -6,6 +6,7 @@ AssertForbidden("editSmilies");
 
 if($loguser['powerlevel'] < 3)
 	Kill("You must be an administrator to edit the smiley table.");
+$lastUrlMinPower = 3;
 
 
 $crumbs = new PipeMenu();

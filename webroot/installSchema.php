@@ -400,6 +400,7 @@ $tables = array
 			"lastactivity" => $genericInt,
 			"lastip" => "varchar(50)".$notNull,
 			"lasturl" => $var128,
+			"lasturlminpower" => $smallerInt,
 			"lastforum" => $genericInt,
 			"postsperpage" => "int(8) NOT NULL DEFAULT '20'",
 			"threadsperpage" => "int(8) NOT NULL DEFAULT '50'",

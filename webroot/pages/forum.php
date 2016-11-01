@@ -29,6 +29,7 @@ if(NumRows($rFora))
 } else
 	Kill(__("Unknown forum ID."));
 
+$lastUrlMinPower = $forum['minpower'];
 $title = $forum['title'];
 
 setUrlName("newthread", $fid, $forum["title"]);
@@ -123,7 +124,7 @@ printRefreshCode();
 function fj_forumBlock($fora, $catid, $selID, $indent)
 {
 	$ret = '';
-	
+
 	foreach ($fora[$catid] as $forum)
 	{
 		$ret .=
@@ -134,7 +135,7 @@ function fj_forumBlock($fora, $catid, $selID, $indent)
 		if (!empty($fora[-$forum['id']]))
 			$ret .= fj_forumBlock($fora, -$forum['id'], $selID, $indent+1);
 	}
-	
+
 	return $ret;
 }
 
@@ -144,7 +145,7 @@ function ForumJump()
 
 	$pl = $loguser['powerlevel'];
 	if($pl < 0) $pl = 0;
-	
+
 	$rCats = Query("SELECT id, name FROM {categories} WHERE 1 ORDER BY corder, id");
 	$cats = array();
 	while ($cat = Fetch($rCats))
@@ -156,7 +157,7 @@ function ForumJump()
 							{forums} f
 						WHERE ".forumAccessControlSQL().(($pl < 1) ? " AND f.hidden=0" : '')."
 						ORDER BY f.forder, f.id");
-						
+
 	$fora = array();
 	while($forum = Fetch($rFora))
 		$fora[$forum['catid']][] = $forum;
@@ -166,8 +167,8 @@ function ForumJump()
 	{
 		if (empty($fora[$cid]))
 			continue;
-			
-		$theList .= 
+
+		$theList .=
 '			<optgroup label="'.htmlspecialchars($cname).'">
 '.fj_forumBlock($fora, $cid, $fid, 0).
 '			</optgroup>

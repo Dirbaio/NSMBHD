@@ -13,8 +13,11 @@ if (isset($_POST['action']) && $loguser['token'] != $_POST['key'])
 if(isset($_POST['editusermode']) && $_POST['editusermode'] != 0)
 	$_GET['id'] = $_POST['userid'];
 
-if($loguser['powerlevel'] > 2)
+if($loguser['powerlevel'] > 2) {
 	$userid = (isset($_GET['id'])) ? (int)$_GET['id'] : $loguserid;
+	if($userid != $loguserid)
+		$lastUrlMinPower = 3;
+}
 else
 	$userid = $loguserid;
 
@@ -1142,14 +1145,13 @@ function Karma()
 		else
 			$("#passwordhide").html("");
 	};
-	
+
 	$(function() {
 		$("#currpassword").keyup(passwordChanged);
 		passwordChanged();
 	});
-	
+
 </script>
 <style type="text/css" id="passwordhide">
-	
-</style>
 
+</style>

@@ -8,6 +8,7 @@ AssertForbidden("editSettings");
 
 if($loguser['powerlevel'] < 3)
 	Kill(__("You must be an administrator to edit the board settings."));
+$lastUrlMinPower = 3;
 
 $plugin = "main";
 if(isset($_GET["id"]))

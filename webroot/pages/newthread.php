@@ -35,6 +35,7 @@ if($forum['minpowerthread'] > $loguser['powerlevel'])
 if(!isset($_POST['poll']) || isset($_GET['poll']))
 	$_POST['poll'] = $_GET['poll'];
 
+$lastUrlMinPower = $forum['minpower'];
 
 $OnlineUsersFid = $fid;
 
@@ -228,7 +229,7 @@ else if(isset($_POST['actionpost']))
 			$pod = 0;
 
 		$now = time();
-		
+
 		$rThreads = Query("insert into {threads} (forum, user, title, icon, lastpostdate, lastposter, closed, sticky, poll)
 										  values ({0},   {1},  {2},   {3},  {4},          {1},        {5},   {6},     {7})",
 										    $fid, $loguserid, $_POST['title'], $iconurl, time(), $closed, $sticky, $pod);
