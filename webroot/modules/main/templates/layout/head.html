@@ -1,0 +1,9 @@
+	<base href="{{layout.base}}">
+	<title>{{layout.title}}</title>
+	<meta http-equiv="Content-Type" content="text/html; CHARSET=utf-8" />
+	<meta name="description" content="{{layout.description}}" />
+	<meta name="keywords" content="{{layout.keyworkds}}" />
+	<link rel="shortcut icon" type="image/x-icon" href="{{layout.favicon}}" />
+{% for file in layout.css %}
+	<link rel="stylesheet" type="text/css" href="{{file}}" />
+{% endfor %}

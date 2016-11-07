@@ -1,0 +1,63 @@
+{% import 'layout/macros.html' as macros %}
+
+<div id="drawer">
+
+	{% include 'layout/logo.html' %}
+
+	{{ macros.list(layout.userpanel, 'userpanel', 'stackedmenu') }}
+	&nbsp;
+	{{ macros.list(layout.navigation, 'navigation', 'stackedmenu') }}
+</div>
+
+<div id="drawer-overlay">
+</div>
+
+<div id="mobile-headerBar">
+	<table style="width:100%;">
+		<tr class="cell0">
+			<td>
+				<a id="drawer-toggle" href="#" class="button"><i class="fa fa-reorder"></i></a>
+			</td>
+			<td style='width: 99%'>
+				<div style='width: 100%; height: 40px; position:relative;'>
+					<div style=\"position:absolute;\">
+						<div id="breadcrumbs-long">
+							{{ macros.list(breadcrumbs, 'breadcrumbs', 'breadcrumbs') }}
+						</div>
+						<div id="breadcrumbs-short">
+							{% set lastcrumb = breadcrumbs | last %}
+							{% set targetcrumb = breadcrumbs | slice(-2) | first %}
+							{% if targetcrumb.user %}
+								{% set targeturl = urlformat('/members/#-#', targetcrumb.user.id, targetcrumb.user.name) %}
+							{% else %}
+								{% set targeturl = targetcrumb.url %}
+							{% endif %}
+							{% set newcrumbs = [lastcrumb | merge({'url': targeturl})] %}
+							{% if lastcrumb.weak %}
+								{% set newcrumbs = [targetcrumb] | merge(newcrumbs) %}
+							{% endif %}
+							{{ macros.list(newcrumbs, 'breadcrumbs', 'breadcrumbs') }}
+						</div>
+					</div>
+				</div>
+			</td>
+			<td>
+				{{ macros.list(actionlinks, 'actionlinks', 'pipemenu') }}
+			</td>
+		</tr>
+	</table>
+</div>
+
+<div id="body">
+	<div id="body-wrapper">
+		<div id="main" style="padding:8px;">
+			{% include 'layout/pagelinks.html' %}
+			{% include layout.template %}
+			{% include 'layout/pagelinks.html' %}
+		</div>
+
+		<footer>
+			{% include 'layout/footer.html' %}
+		</footer>
+	</div>
+</div>

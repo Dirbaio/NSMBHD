@@ -1,0 +1,11 @@
+{% macro list(values, id, class) %}
+    {% spaceless %}
+
+	<ul id="{{ id }}" class="{{ class }}">
+	{% for i in values %}
+		{% include 'components/listItem.html' %}
+	{% endfor %}
+	</ul>
+
+	{% endspaceless %}
+{% endmacro %}

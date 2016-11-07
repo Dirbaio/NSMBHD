@@ -1,0 +1,107 @@
+/* 
+	CSS file for the NSMBHD Layout file 
+	By Dirbaio
+*/
+
+
+/* Main */
+
+#main {
+	margin-right:140px;
+	padding:6px;
+}
+
+
+/* Header */
+
+#boardheader {
+	width:100%;
+	border-bottom: 1px solid black;
+}
+
+#boardheader2 {
+	width:100%;
+	margin-bottom:6px;
+	border-bottom: 1px solid black;
+	font-size:0.85em;
+	text-align:center;
+	padding-top:3px;
+	padding-bottom:3px;
+}
+
+
+/* Sticky bar */
+#stickybar {
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	right: 0px;
+	z-index: 50;
+	display: none;
+}
+#stickybar-maxwidth {
+	max-width: 1366px;
+	margin-left: auto;
+	margin-right: auto;
+}
+#stickybar-maxwidth .breadcrumbs_bar {
+	padding-left: 8px;
+	padding-right: 148px;
+	margin: 0;
+}
+
+#stickybar li a {
+	padding: 8px 0;
+	display: inline-block;
+}
+#stickybar.stickybar-fixed {
+	display: block;
+}
+
+/* Sidebar */
+
+#sidebar {
+	float:right;
+	width:130px;
+	padding:6px;
+}
+
+#navigation {
+	position: relative;
+	z-index: 1000;
+}
+
+#navigation.navigation-fixed {
+	position:fixed;
+	top:6px;
+/*	right:6px;*/
+}
+
+
+/* Sidebar menu*/
+
+ul.stackedmenu {
+	text-align:left;
+	font-size: .85em; /* 8pt; */
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
+ul.stackedmenu li a {
+	display: block;
+	padding: 4px;
+	margin: 0;
+}
+
+ul.stackedmenu li {
+	display: block;
+	border: 0 none;
+	padding: 0;
+}
+
+ul.stackedmenu li.sidemenuseparator {
+	margin:5px;
+}
+
+

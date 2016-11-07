@@ -1,0 +1,7 @@
+{% import 'util/pagelinks.html' as pl %}
+
+{% if paging %}
+	<div class="pagelinks">
+		{{ pl.pagelinks(paging) }}
+	</div>
+{% endif %}

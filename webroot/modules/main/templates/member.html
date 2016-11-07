@@ -1,0 +1,137 @@
+{% import 'util/pagelinks.html' as pl %}
+
+<table><tr><td style="width: 60%; border: 0px none; vertical-align: top; padding-right: 1em; padding-bottom: 1em;">
+<table class="outline margin">
+	<tr class="header0">
+		<th colspan="2">General information</th>
+	</tr>
+	<tr>
+		<td class="cell2">Name</td>
+		<td class="cell1">{{ usertext(user) }}</td>
+	</tr>
+
+	<tr>
+		<td class="cell2">Power</td>
+		<td class="cell0">{{ user.powerlevelname }}</td>
+	</tr>
+
+	<tr>
+		<td class="cell2">Sex</td>
+		<td class="cell1">{{ user.sexname }}</td>
+	</tr>
+	<tr>
+		<td class="cell2">Karma</td>
+		<td class="cell0">{{ user.karma }}</td>
+	</tr>
+	<tr>
+		<td class="cell2">Total posts</td>
+		<td class="cell1">{{ user.posts }}</td>
+	</tr>
+	<tr>
+		<td class="cell2">Total threads</td>
+		<td class="cell0">{{ user.threads }}</td>
+	<tr>
+    </tr>
+		<td class="cell2">Registered</td>
+		<td class="cell1">{{ user.regdate | date }}</td>
+	</tr>
+	<tr>
+		<td class="cell2">Last seen</td>
+		<td class="cell0">{{ user.lastactivity | date }}</td>
+	</tr>
+	<tr>
+		<td class="cell2">Last post</td>
+		<td class="cell1">
+	        {%- if user.lastpostid -%}
+                {{ user.lastpostdate | date }}<br>
+                in 
+	            {%- if user.lastpostrestricted -%}
+                    a restricted forum.
+                {%- else %}
+                    <a href="{{ urlformat('/#-:/#-:', user.lastpostforum, user.lastpostforumtitle, user.lastpostthread, user.lastpostthreadtitle) }}">{{user.lastpostthreadtitle}}</a>
+                    (<a href="{{ urlformat('/#-:', user.lastpostforum, user.lastpostforumtitle) }}">{{user.lastpostforumtitle}}</a>)
+                    <a href="{{ urlformat('/post/#', user.lastpostid) }}">&raquo; {{user.lastpostid}}</a>
+	            {%- endif -%}
+            {%- else -%}
+                Never
+	        {%- endif -%}
+            </td>
+	</tr>
+	<tr>
+		<td class="cell2">Theme</td>
+		<td class="cell0">{{ user.theme }}</td>
+	</tr>
+	<tr class="header0">
+		<th colspan="2">Personal information</th>
+	</tr>
+	<tr>
+		<td class="cell2">Email</td>
+		<td class="cell1">{{ user.email }}</td>
+	</tr>
+	<tr>
+		<td class="cell2">Real name</td>
+		<td class="cell0">{{ user.realname }}</td>
+	</tr>
+	<tr>
+		<td class="cell2">Location</td>
+		<td class="cell1">{{ user.location }}</td>
+	</tr>
+	<tr>
+		<td class="cell2">Time zone</td>
+		<td class="cell0">{{ user.timezone }}</td>
+	</tr>
+	<tr>
+		<td class="cell2">Homepage</td>
+		<td class="cell1"><a href="{{user.homepageurl}}">{{user.homepagename}}</a> - {{ user.homepageurl }}</td>
+	</tr>
+	<tr class="header0">
+		<th colspan="2">Bio</th>
+	</tr>
+	<tr>
+		<td class="cell0" colspan="2">
+			{{ user.bio | cleanUpPost | raw }}
+		</td>
+	</tr>
+</table>
+
+</td><td style="vertical-align: top; border: 0px none;">
+<table class="outline margin">
+	<tr class="header0">
+		<th colspan="2">TrollBox&trade;</th>
+	</tr>
+	
+	<tr ng-controller="UserCommentsCtrl" ng-init="uid={{user.id}}">
+		<td class="cell0" colspan="2">
+			<input type="text" ng-model="text" style="width: 80%;" maxlength="255" />
+			<button ng-click="post()">Post</button>
+		</td>
+	</tr>
+	{% if commentspaging %}
+	<tr>
+		<td class="cell2 pagelinks" colspan="2">
+			{{ pl.pagelinks(commentspaging) }}
+		</td>
+	</tr>
+	{% endif %}
+
+	{% for comment in comments %}
+	<tr>
+		<td class="cell2 fulllink">
+			<a class="nolink" href="{{ urlformat('u#-:', comment.u.id, comment.u.name)}}">
+			{{ usertext(comment.u) }}<br>
+			{{ comment.date | date }}</a>
+		</td>
+		<td class="cell{{ loop.index%2 }}">{{ comment.text | cleanUpPost | raw }}</td>
+	</tr>
+	{% endfor %}
+
+	{% if commentspaging %}
+	<tr>
+		<td class="cell2 pagelinks" colspan="2">
+			{{ pl.pagelinks(commentspaging) }}
+		</td>
+	</tr>
+	{% endif %}
+</table>
+</td></tr></table>
+{% include 'components/postItem.html' %}

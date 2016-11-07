@@ -1,0 +1,79 @@
+	<tr class="cell0">
+		<td colspan="2">
+			{% spaceless %}
+			<div class="postToolbar">
+				<button title="Bold" ng-click="add('[b]', '[/b]');">
+					<i class="fa fa-bold"></i>
+				</button>
+				<button title="Italic" ng-click="add('[i]', '[/i]');">
+					<i class="fa fa-italic"></i>
+				</button>
+				<button title="Underlined" ng-click="add('[u]', '[/u]');">
+					<i class="fa fa-underline"></i>
+				</button>
+				<button title="Strikethrough" ng-click="add('[s]', '[/s]');">
+					<i class="fa fa-strikethrough"></i>
+				</button>
+				<button title="Superscript" ng-click="add('<sup>', '</sup>');">
+					<i class="fa fa-superscript"></i>
+				</button>
+				<button title="Subscript" ng-click="add('<sub>', '</sub>');">
+					<i class="fa fa-subscript"></i>
+				</button>
+				<button title="Link" ng-click="add('[url=http://whatever/]', '[/url]');">
+					<i class="fa fa-link"></i>
+				</button>
+				<button title="Image" ng-click="add('[img]', '[/img]');">
+					<i class="fa fa-picture-o"></i>
+				</button>
+				<button title="Quote" ng-click="add('[quote=Someone]', '[/quote]');">
+					<i class="fa fa-quote-left"></i>
+				</button>
+				<button title="Spoiler" ng-click="add('[spoiler]', '[/spoiler]');">
+					<i class="fa fa-ellipsis-h"></i>
+				</button>
+				<button title="Spoiler" ng-click="add(':)');">
+					:)
+				</button>
+				<span title="Attach file" ng-file-select="onFileSelect($files)" ng-show="!uploading">
+					<button>
+						<i class="fa fa-paperclip"></i>
+					</button>
+				</span>
+				<div class="pollbarContainer" style="display: inline-block; width:200px;" ng-show="uploading">
+					<div class="pollbar" style="width: {[ uploadProgress ]}%;">
+						{[ uploadProgress ]}%
+					</div>
+				</div>
+			</div>
+			{% endspaceless %}
+
+			<textarea 
+					id="text" 
+					rows="5" 
+					style="width: 100%; box-sizing: border-box; resize: none;"
+
+					msd-elastic 
+					ng-focus="editorFocused = true;" 
+					ng-model="data.text" 
+					ng-trim="false" 
+			></textarea>
+		</td>
+	</tr>
+	<tr class="cell2">
+		<td colspan="2">
+			<button ng-click="submit()">{[ postButtonText ]}</button>
+
+			<button ng-click="preview()">Preview</button>
+
+			<button ng-show="dirty" ng-click="save()">Save</button>
+			<span ng-show="saving">Saving...</span>
+			<span ng-show="!dirty && saved">Saved!</span>
+		</td>
+	</tr>
+
+{# End the table that starts in the file that included this one #}
+</table>
+
+<div ng-bind-html="previewhtml">
+</div>

@@ -1,256 +1,225 @@
 <?php
-// Protect from <iframe> password steal hack
-header('X-Frame-Options: DENY');
 
-$ajaxPage = false;
-if(isset($_GET["ajax"]))
-	$ajaxPage = true;
+// Error handling
+//==============================
 
-require('lib/common.php');
+error_reporting(E_ALL ^ E_NOTICE | E_STRICT);
 
-//TODO: Put this in a proper place.
-function getBirthdaysText()
-{
-	$rBirthdays = Query("select u.birthday, u.(_userfields) from {users} u where birthday > 0 and powerlevel >= 0 order by name");
-	$birthdays = array();
-	while($user = Fetch($rBirthdays))
-	{
-		$b = $user['birthday'];
-		if(gmdate("m-d", $b) == gmdate("m-d"))
-		{
-			$y = gmdate("Y") - gmdate("Y", $b);
-			$birthdays[] = UserLink(getDataPrefix($user, "u_"))." (".$y.")";
-		}
-	}
-	if(count($birthdays))
-		$birthdaysToday = implode(", ", $birthdays);
-	if($birthdaysToday)
-		return "<br>".__("Birthdays today:")." ".$birthdaysToday;
-	else
-		return "";
+function fail($why) {
+	throw new Exception($why);
 }
 
-//Use buffering to draw the page. 
-//Useful to have it disabled when running from the terminal.
-$useBuffering = true;
-
-//Support for running pages from the terminal.
-if(isset($argv))
+function my_error_handler()
 {
-	$_GET = array();
-	$_GET["page"] = $argv[1];
-	
-	$_SERVER = array();
-	$_SERVER["REMOTE_ADDR"] = "0.0.0.0";
-	
-	$ajaxPage = true;
-	$useBuffering = false;
+	$last_error = error_get_last();
+	if ($last_error && ($last_error['type']==E_ERROR || $last_error['type']==E_USER_ERROR))
+		header('HTTP/1.1 500 Internal Server Error');
 }
+register_shutdown_function('my_error_handler');
 
 
-//=======================
-// Do the page
-if (isset($_GET['page']))
-	$page = $_GET["page"];
+// Load main module
+//============================
+
+require(__DIR__.'/ModuleHandler.php');
+require(__DIR__.'/vendor/autoload.php');
+ModuleHandler::init();
+ModuleHandler::loadModule('/modules/main');
+ModuleHandler::loadModule('/url_styles/rewrite');
+ModuleHandler::loadModule('/themes/cheese');
+
+if(isset($_COOKIE['mobileversion']) && $_COOKIE['mobileversion'] && $_COOKIE['mobileversion'] != 'false')
+	ModuleHandler::loadModule('/layouts/mobile');
 else
-	$page = $mainPage;
-if(!ctype_alnum($page))
-	$page = $mainPage;
+	ModuleHandler::loadModule('/layouts/nsmbhd');
 
-if($page == $mainPage)
+// Run the page
+//============================
+
+
+function getPages()
 {
-	if(isset($_GET['fid']) && (int)$_GET['fid'] > 0 && !isset($_GET['action']))
-		die(header("Location: ".actionLink("forum", (int)$_GET['fid'])));
-	if(isset($_GET['tid']) && (int)$_GET['tid'] > 0)
-		die(header("Location: ".actionLink("thread", (int)$_GET['tid'])));
-	if(isset($_GET['uid']) && (int)$_GET['uid'] > 0)
-		die(header("Location: ".actionLink("profile", (int)$_GET['uid'])));
-	if(isset($_GET['pid']) && (int)$_GET['pid'] > 0)
-		die(header("Location: ".actionLink("post", (int)$_GET['pid'])));
-}
-
-define('CURRENT_PAGE', $page);
-
-if($useBuffering)
-	ob_start();
-
-$layout_crumbs = new PipeMenu();
-$layout_links = new PipeMenu();
-
-try {
-	try {
-		if(array_key_exists($page, $pluginpages))
-		{
-			$plugin = $pluginpages[$page];
-			$self = $plugins[$plugin];
-
-			$page = "./plugins/".$self['dir']."/page_".$page.".php";
-			if(!file_exists($page))
-				throw new Exception(404);
-			include($page);
-			unset($self);
-		}
-		else {
-			$page = 'pages/'.$page.'.php';
-			if(!file_exists($page))
-				throw new Exception(404);
-			include($page);
-		}
-	}
-	catch(Exception $e)
-	{
-		if ($e->getMessage() != 404)
-		{
-			throw $e;
-		}
-		require('pages/404.php');
-	}
-}
-catch(KillException $e)
-{
-	// Nothing. Just ignore this exception.
-}
-
-if($ajaxPage)
-{
+	$prefix = '//page ';
 	
-	if($useBuffering)
+	$pages = array();
+	foreach(ModuleHandler::getFilesMatching('/pages/**.php') as $file) 
 	{
-		header("Content-Type: text/plain");
-		ob_end_flush();
-	}
+		$handle = @fopen($file, 'r');
+		if (!$handle)  continue;
+
+		while (($line = fgets($handle, 4096)) !== false)
+			if(startsWith($line, $prefix))
+			{
+				$page = substr($line, strlen($prefix));
+				$page = trim($page);
+				$pages[$page] = $file;
+			}
 		
-	die();
+		fclose($handle);
+	}
+
+	return $pages;
 }
 
-$layout_contents = ob_get_contents();
-ob_end_clean();
+function getBase() {
+	$base = $_SERVER["SCRIPT_NAME"];
+	$idx = strrpos($base, '/');
+	if($idx !== false)
+		$base = substr($base, 0, $idx+1);
+	return $base;
+}
 
-//Do these things only if it's not an ajax page.
-include("lib/views.php");
-setLastActivity();
-
-//=======================
-// Panels and footer
-
-require('navigation.php');
-require('userpanel.php');
-
-ob_start();
-require('footer.php');
-$layout_footer = ob_get_contents();
-ob_end_clean();
-
-
-//=======================
-// Notification bars
-
-ob_start();
-
-$bucket = "userBar"; include("./lib/pluginloader.php");
-/*
-if($rssBar)
+function renderPage($template, $vars)
 {
-	write("
-	<div style=\"float: left; width: {1}px;\">&nbsp;</div>
-	<div id=\"rss\">
-		{0}
-	</div>
-", $rssBar, $rssWidth + 4);
-}*/
-DoPrivateMessageBar();
-$bucket = "topBar"; include("./lib/pluginloader.php");
-$layout_bars = ob_get_contents();
-ob_end_clean();
+	$navigation = array(
+		array('url' => Url::format('/'), 'title' => __('Main')),
+		array('url' => Url::format('/members'), 'title' => __('Members')),
+		array('url' => Url::format('/online'), 'title' => __('Online users')),
+		array('url' => Url::format('/search'), 'title' => __('Search')),
+		array('url' => Url::format('/lastposts'), 'title' => __('Last posts')),
+		array('url' => Url::format('/faq'), 'title' => __('FAQ/Rules')),
+	);
 
+	$user = Session::get();
 
-//=======================
-// Misc stuff
+	if($user)
+		$userpanel = array(
+			array('user' => $user),
+			array('url' => Url::format('/u/#-:/edit', $user['id'], $user['name']), 'title' => __('Edit profile')),
+			array('url' => Url::format('/u/#-:/pm', $user['id'], $user['name']), 'title' => __('Messages')),
+			array('url' => Url::format('/logout'), 'title' => __('Log out')),
+		);
+	else
+		$userpanel = array(
+			array('url' => Url::format('/register'), 'title' => __('Register')),
+			array('url' => Url::format('/login'), 'title' => __('Log in')),
+		);
+ 
+ 	$onlineFid = 0;
+ 	if(isset($vars['forum']))
+ 		$onlineFid = $vars['forum']['id'];
 
-$layout_time = formatdatenow();
-$layout_onlineusers = getOnlineUsersText();
-$layout_birthdays = getBirthdaysText();
-$layout_views = __("Views:")." ".'<span id="viewCount">'.number_format($misc['views']).'</span>';
+ 	global $is404;
+ 	if($is404) {
+	    header('HTTP/1.0 404 Not Found');
+	    header('Status: 404 Not Found');
+ 		$onlineFid = -1;
+ 	}
 
-$layout_title = htmlspecialchars(Settings::get("boardname"));
-if($title != "")
-	$layout_title .= " &raquo; ".$title;
+	$layout = array(
+		'template' => $template,
+		'css' => ModuleHandler::toWebPath(ModuleHandler::getFilesMatching('/css/**.css')),
+		'js' => ModuleHandler::toWebPath(ModuleHandler::getFilesMatching('/js/**.js')),
+		'title' => 'RandomTests',
+		'pora' => true,
+		'poratext' => 'Hello World',
+		'poratitle' => 'ASDF',
+		'views' => Records::getViewCounter(),
+		'user' => $user,
+		'navigation' => $navigation,
+		'userpanel' => $userpanel,
+		'onlineUsers' => OnlineUsers::update($onlineFid),
+		'base' => getBase(),
+	);
+	$vars['layout'] = $layout;
+	$vars['loguser'] = Session::get();
 
-$layout_logotitle = Settings::get("boardname");
+	if(!isset($vars['breadcrumbs']) || !is_array($vars['breadcrumbs']))
+		throw new Exception('breadcrumbs not found in vars, must be there and be an array');
+	if(!isset($vars['actionlinks']) || !is_array($vars['actionlinks']))
+		throw new Exception('actionlinks not found in vars, must be there and be an array');
 
-//=======================
-// Board logo and theme
+	array_unshift($vars['breadcrumbs'], 
+		array('url' => Url::format('/'), 'title' => __('Main')));
 
-function checkForImage(&$image, $external, $file)
+	Template::render('layout/main.html', $vars);
+
+}
+
+function runPage($path)
 {
-	global $dataDir, $dataUrl;
+	$pages = getPages();
 
-	if($image) return;
+	//Kill trailing and extra slashes.
+	$origpath = $path;
+	$path = preg_replace('#/+$#', '', $path);
+	$path = preg_replace('#//+#', '/', $path);
+	if($path == '') $path = '/';
+	if($path != $origpath)
+		Url::redirect($path);
 
-	if($external)
+
+	if ($_SERVER['REQUEST_METHOD'] === 'POST') 
 	{
-		if(file_exists($dataDir.$file))
-			$image = $dataUrl.$file;
+		$input = json_decode(file_get_contents('php://input'), true);
+		if(!is_array($input) || json_last_error() !== JSON_ERROR_NONE)
+			$input = $_POST;
+
+		foreach($_GET as $key => $value)
+			$input[$key] = $value;
 	}
 	else
+		$input = $_GET;
+
+	$foundPagefile = null;
+	foreach($pages as $page=>$pagefile)
 	{
-		if(file_exists($file))
-			$image = resourceLink($file);
+		//match $path against $page
+		$names = array();
+		$pattern = preg_replace_callback('/(:|#|\$)([a-zA-Z][a-zA-Z0-9]*|)/', 
+			function($matches) use (&$names) 
+			{
+				if($matches[1] == '#')
+					$regex = '-?[0-9]+';
+				else if($matches[1] == '$')
+					$regex = '[^/]+';
+				else
+					$regex = '[a-zA-Z0-9-_]+';
+				if($matches[2])
+				{
+					$names[] = $matches[2];
+					return '('.$regex.')';
+				}
+				else
+					return $regex;
+			}, $page);
+
+		if (preg_match('#^' . $pattern . '$#', $path, $matches)) 
+		{
+			foreach($names as $idx => $name)
+				$input[$name] = $matches[$idx+1];
+
+			$foundPagefile = $pagefile;
+			break;
+		}
 	}
+
+	if(!$foundPagefile) {
+		$foundPagefile = __DIR__.'/modules/main/pages/404.php';
+		global $is404;
+		$is404 = true;
+	}
+
+	$input['input'] = $input;
+
+	require($foundPagefile);
+
+	//Calculate parameters
+	$params = array();
+	$refFunc = new ReflectionFunction('request');
+	foreach($refFunc->getParameters() as $param) 
+	{
+		if(isset($input[$param->name]))
+			$params[] = $input[$param->name];
+		else if($param->isDefaultValueAvailable())
+			$params[] = $param->getDefaultValue();
+		else
+			fail('Missing parameter: '.$param->name);
+	}
+
+	//Call the thing
+	call_user_func_array('request', $params);
 }
 
-checkForImage($layout_logopic, true, "logos/logo_$theme.png");
-checkForImage($layout_logopic, true, "logos/logo_$theme.jpg");
-checkForImage($layout_logopic, true, "logos/logo_$theme.gif");
-checkForImage($layout_logopic, true, "logos/logo.png");
-checkForImage($layout_logopic, true, "logos/logo.jpg");
-checkForImage($layout_logopic, true, "logos/logo.gif");
-checkForImage($layout_logopic, false, "themes/$theme/logo.png");
-checkForImage($layout_logopic, false, "themes/$theme/logo.jpg");
-checkForImage($layout_logopic, false, "themes/$theme/logo.gif");
-checkForImage($layout_logopic, false, "img/logo.png");
 
-checkForImage($layout_favicon, true, "logos/favicon.gif");
-checkForImage($layout_favicon, true, "logos/favicon.ico");
-checkForImage($layout_favicon, false, "img/favicon.ico");
-
-$layout_themefile = "themes/$theme/style.css";
-if(!file_exists($layout_themefile))
-	$layout_themefile = "themes/$theme/style.php";
-
-$layout_contents = "<div id=\"page_contents\">$layout_contents</div>";
-//=======================
-// PoRA box
-
-if(Settings::get("showPoRA"))
-{
-	$layout_pora = '
-		<div class="PoRT nom">
-			<table class="message outline">
-				<tr class="header0"><th>'.Settings::get("PoRATitle").'</th></tr>
-				<tr class="cell0"><td>'.Settings::get("PoRAText").'</td></tr>
-			</table>
-		</div>';
-}
-else
-	$layout_pora = "";
-
-//=======================
-// Print everything!
-
-$layout = Settings::get("defaultLayout");
-
-if($debugQueries)
-	$layout_contents.="<table class=\"outline margin width100\"><tr class=header0><th colspan=4>List of queries
-	                   <tr class=header1><th>Query<th>Backtrace$querytext</table>";
-
-if($mobileLayout)
-	$layout = "mobile";
-if(!file_exists("layouts/$layout/layout.php"))
-	$layout = "abxd";
-require("layouts/$layout/layout.php"); echo (isset($times) ? $times : "");
-
-$bucket = "finish"; include('lib/pluginloader.php');
-
-?>
-
+runPage(UrlStyle::getPath());

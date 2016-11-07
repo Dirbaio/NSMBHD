@@ -1,0 +1,7 @@
+<table class="outline margin width100">
+	{% include 'components/lastpostsHeader.html' %}
+
+	{% for post in posts %}
+		{% include 'components/lastpostsItem.html' %}
+	{% endfor %}
+</table>

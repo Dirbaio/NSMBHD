@@ -1,0 +1,25 @@
+{% spaceless %}
+<li>
+	{% if i.user and i.url %}
+		<a href="{{i.url | e}}">
+			{{- usertext(i.user) -}}
+		</a>
+	{% elseif i.user %}
+		{{ userlink(i.user) }}
+	{% elseif i.url %}
+		<a href="{{i.url | e}}">
+			{{- i.title -}}
+		</a>
+	{% elseif i.ng %}
+		<a href ng-click="{{ i.ng }}" onclick="return false;">
+			{{- i.title -}}
+		</a>
+	{% elseif i.js %}
+		<a href onclick="{{ i.js }}; return false;">
+			{{- i.title -}}
+		</a>
+	{% else %}
+		{{- i.title -}}
+	{% endif %}
+</li>
+{% endspaceless %}

@@ -1,0 +1,11 @@
+<span class="nc{{user.sex}}{{user.powerlevel < 0 ? 'x' : user.powerlevel}}" 
+		title="#{{user.id}}: {{user.name|e}} ({{user.karma}}, {{user.powerlevel}})">
+	{%- if user.minipic -%}
+		<img src="{{ urlformat('/file/$', user.minipic) }}" alt="" class="minipic" />&nbsp;
+	{%- endif -%}
+	{%- if user.displayname -%}
+		{{- user.displayname|e -}}
+	{%- else -%}
+		{{- user.name|e -}}
+	{%- endif -%}
+</span>

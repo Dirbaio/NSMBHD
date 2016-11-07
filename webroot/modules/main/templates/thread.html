@@ -1,0 +1,19 @@
+{% if poll %}
+	{% include 'components/poll.html' %}
+{% endif %}
+
+<div ng-controller="NewReplyCtrl" ng-init="data={{ draft | json_encode() }}; validate()">
+	{% include 'components/postList.html' %}
+
+	{% if canreply %}
+		{% include 'layout/pagelinks.html' %}
+		<table class="outline margin width100">
+			<tr class="header1">
+				<th>
+					New reply
+				</th>
+			</tr>
+			{% include 'components/postbox.html' %}
+		{# </table> is in postbox.html #}
+	{% endif %}
+</div>

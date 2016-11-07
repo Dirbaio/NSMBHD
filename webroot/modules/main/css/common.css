@@ -1,0 +1,75 @@
+/* AcmlmBoard XD - RANDOM STUFF I HAVE TO CLASSIFY */
+
+/* Default border color */
+table, td, tr, th, div
+{
+	border-color:black;
+}
+
+a[name] {
+	display: block;
+	visibility: hidden;
+
+	position:relative;
+	top:-50px;
+}
+
+.minipic {
+	vertical-align: top;
+}
+
+/* Other stuff */
+
+
+.threadTag {
+	color:white;
+	text-shadow: 1px 1px 0px hsla(0, 0%, 0%, .5);
+	padding: 0px 2px;
+	border: 1px dotted hsla(0, 0%, 100%, .75);
+	box-shadow: 1px 1px 2px hsla(0, 0%, 0%, .5);
+	margin-right: 2px;
+	white-space: nowrap;
+}
+
+.pollbarContainer
+{
+	border: 1px solid #669;
+	width: 100%;
+	box-sizing: border-box;
+}
+
+.pollbar
+{
+	box-sizing: border-box;
+	border-width:1px; border-style:solid;
+	padding: 0 4px;
+	background: #391;
+	color: #FFF;
+}
+
+td.threadIcon
+{
+	width: 20px;
+	text-align: center;
+	font-weight: bold;
+	text-shadow: 1px 1px 0px #000;
+}
+
+td.threadIcons label > input
+{
+	display: none;
+}
+
+td.threadIcons label > input ~ *
+{
+	background: rgba(255, 255, 255, 0);
+	border: 1px solid rgba(255, 255, 255, 0);
+	border-radius: 4px;
+	padding: 0px 2px;
+}
+
+td.threadIcons label > input:checked ~ *
+{
+	background: rgba(255, 255, 255, .25);
+	border: 1px solid rgba(255, 255, 255, .5);
+}

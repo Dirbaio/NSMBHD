@@ -1,0 +1,67 @@
+
+/* POST TABLES */
+table.post {
+	border-radius: 8px;
+}
+
+table.post>tbody>tr>td.side {
+	border-bottom-left-radius: 8px;
+}
+
+table.post>tbody>tr>td.post {
+	border-bottom-right-radius: 8px;
+}
+
+table.post>tbody>tr>td.meta {
+	border-top-right-radius: 8px;
+}
+
+table.post>tbody>tr>td.userlink {
+	border-top-left-radius: 8px;
+	border-bottom-left-radius: 0px;
+}
+
+/* DELETED POST TABLES */
+
+table.deletedpost>tbody>tr>td.meta {
+	border-top-right-radius: 8px;
+	border-bottom-right-radius: 8px;
+}
+table.deletedpost>tbody>tr>td.side {
+	border-top-left-radius: 8px;
+	border-bottom-left-radius: 8px;
+}
+
+
+
+/* OUTLINE TABLES */
+
+table.outline
+{
+	border-top-left-radius: 8px;
+	border-top-right-radius: 8px;
+}
+table.outline > tbody:first-child > tr:first-child > th:first-child, 
+table.outline > tbody:first-child > tr:first-child > td:first-child
+{
+	border-top-left-radius: 8px;
+}
+
+table.outline > tbody:first-child > tr:first-child > th:last-child, 
+table.outline > tbody:first-child > tr:first-child > td:last-child
+{
+	border-top-right-radius: 8px;
+}
+
+
+/* Misc stuff */
+
+button.expander
+{
+	border-radius: 8px;
+}
+
+div#tabs button {
+	border-top-left-radius: 8px;
+	border-top-right-radius: 32px;
+}

@@ -1,0 +1,14 @@
+td.fulllink {
+	overflow: hidden;
+}
+td.fulllink a {
+    display: block;
+    margin: -10em;
+    padding: 10em;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+.nolink {
+	font-weight: normal;
+	color: white!important;
+}

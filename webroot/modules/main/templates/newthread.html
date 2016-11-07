@@ -1,0 +1,76 @@
+<div ng-controller="NewThreadCtrl" 
+	ng-init="data={{ draft | json_encode() }}; validate()">
+	
+	<table class="outline margin width100">
+		<tr class="header1">
+			<th colspan="2">
+				New thread
+			</th>
+		</tr>
+		<tr class="cell1">
+			<td>
+				Title
+			</td>
+			<td>
+				<input type="text" ng-model="data.title">
+			</td>
+		</tr>
+
+		<tr class="header1" style="height: 5px">
+			<th colspan="2">
+			</th>
+		</tr>
+
+		<tr class="cell0">
+			<td>
+			</td>
+			<td>
+				<label>
+					<input type="checkbox" ng-model="data.poll">
+					Poll
+				</label>
+			</td>
+		</tr>
+		<tr class="cell1" ng-if="data.poll" >
+			<td>
+				Poll question
+			</td>
+			<td>
+				<input type="text" ng-model="data.pollquestion">
+			</td>
+		</tr>
+		<tr class="cell1" ng-if="data.poll">
+			<td>
+				Poll choices
+			</td>
+			<td>
+				<div ng-repeat="choice in data.pollchoices">
+					{[ $index+1 ]}.
+					<input type="text" ng-model="choice.text">
+					Color:
+					<input type="color" ng-model="choice.color">
+					{[ choice.color ]}
+					<button ng-show="data.pollchoices.length > 2" ng-click="data.pollchoices.splice($index, 1)">Delete</button>
+				</div>
+				<button ng-click="data.pollchoices.push({text:''})">Add choice</button>
+			</td>
+		</tr>
+		<tr class="cell0" ng-if="data.poll">
+			<td>
+			</td>
+			<td>
+				<label>
+					<input type="checkbox" ng-model="data.polldoublevote">
+					Multivote
+				</label>
+			</td>
+		</tr>
+
+		<tr class="header1" style="height: 5px">
+			<th colspan="2">
+			</th>
+		</tr>
+
+		{% include 'components/postbox.html' %}
+	{# </table> is in postbox.html #}
+</div>

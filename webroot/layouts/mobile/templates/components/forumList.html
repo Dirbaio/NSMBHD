@@ -1,0 +1,33 @@
+{% for category in categories if category.forums %}
+	<table class="outline margin">
+		<tr class="header1">
+			<th style="width:32px;"></th>
+			<th>{{ category.name | e}}</th>
+			<th style="min-width:150px; width:15%;">Last post</th>
+		</tr>
+		{% for forum in category.forums %}
+			<tr class="cell1">
+				<td class="cell2 threadIcon newMarker">
+					{% if(forum.numnew) %}
+						<img src="{{ modulefile('/img/status/new.png') }}" alt="New"><br>
+						{{ forum.numnew }}
+					{% endif %}
+				</td>
+				<td class="fulllink">
+					<a href="{{urlformat('/#-#', forum.id, forum.title) }}">
+						{{forum.title | e}}
+						<div class='description nolink'>
+							{{ forum.description | e }}
+						</div>
+					</a>
+				</td>
+				<td class="smallFonts center fulllink">
+					<a class="nolink" href='/post/{{forum.lastpostid}}'>
+						{{forum.lastpostdate | date}}<br />
+						by {{usertext(forum.lu)}}
+					</a>
+				</td>
+			</tr>
+		{% endfor %}
+	</table>
+{% endfor %}

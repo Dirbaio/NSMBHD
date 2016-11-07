@@ -1,0 +1,160 @@
+html {
+	width: 100%;
+	height: 100%;
+}
+
+body {
+	background-color: #000;
+	color: #FFF;
+	font-family: "Verdana", "Lucida Grande", sans-serif;
+	font-size: 10pt;
+	margin: 0;
+	height:100%;
+	width:100%;
+}
+
+#body-wrapper {
+	max-width: 1366px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+
+footer {
+	text-align: center;
+	clear: both;
+	font-size: 8pt;
+	padding-top: 12px;
+	padding-bottom:12px;
+}
+
+/* MISC
+   =================== */
+
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+	display: none !important;
+}
+
+/* Fix white-on-white on Chrome */
+select option, select optgroup
+{
+	background-color:inherit;
+}
+
+
+/* Name color table */
+.nc0x { color: #888888; font-weight: bold; } .nc1x { color: #888888; font-weight: bold; } .nc2x { color: #888888; font-weight: bold; }
+.nc00 { color: #97ACEF; font-weight: bold; } .nc10 { color: #F185C9; font-weight: bold; } .nc20 { color: #7C60B0; font-weight: bold; }
+.nc01 { color: #D8E8FE; font-weight: bold; } .nc11 { color: #FFB3F3; font-weight: bold; } .nc21 { color: #EEB9BA; font-weight: bold; }
+.nc02 { color: #AFFABE; font-weight: bold; } .nc12 { color: #C762F2; font-weight: bold; } .nc22 { color: #47B53C; font-weight: bold; }
+.nc03 { color: #FFEA95; font-weight: bold; } .nc13 { color: #C53A9E; font-weight: bold; } .nc23 { color: #F0C413; font-weight: bold; }
+.nc04 { color: #5555FF; font-weight: bold; } .nc14 { color: #FF5588; font-weight: bold; } .nc24 { color: #FF55FF; font-weight: bold; }
+.nc05 { color: #FF0000; font-weight: bold; } .nc15 { color: #FF0000; font-weight: bold; } .nc25 { color: #FF0000; font-weight: bold; }
+
+/* Widths */
+.width100 {
+	width: 100%;
+}
+.width75 {
+	width: 75%;
+}
+.width50 {
+	width: 50%;
+}
+.width25 {
+	width: 25%;
+}
+
+.margin {
+	margin-bottom: .5em;
+}
+
+
+/* Positioning */
+
+.left {
+	text-align: left;
+}
+.right {
+	text-align: right;
+}
+
+/* Some styles */
+
+.block {
+	display: block;
+}
+
+.center {
+	text-align: center;
+}
+
+.underline {
+	text-decoration: underline;
+}
+
+
+/* TITLES 
+   =================== */
+
+h3 {
+	font-family: "Verdana", "Lucida Grande", sans-serif;
+	font-size: 1.2em; /* 12pt; */
+	font-weight: bold;
+	margin: 0;
+}
+
+h4 {
+	font-family: "Verdana", "Lucida Grande", sans-serif;
+	font-size: 1em; /* 10pt; */
+	margin: 0;
+}
+
+
+/* LINKS
+   =================== */
+
+a {
+	text-decoration: none;
+	font-weight: bold;
+}
+
+/* Default link colors */
+a:link {
+	color: #FFC040;
+}
+a:visited {
+	color: #FFC040;
+}
+a:active {
+	color: #FFEA60;
+}
+a:hover {
+	color:#FFF;
+}
+a:hover span {
+	color: #FFF;
+}
+
+
+/* TABLES
+   ============== */
+
+table {
+	color: #FFF;
+
+	border-collapse: separate;
+	border-spacing:0;
+	width: 100%;
+	font-weight: normal;
+}
+
+tr.header0>th, tr.header1>th {
+	text-align: center;
+	font-size: .85em; /* 8pt; */
+}
+
+td {
+	padding:2px 4px 2px 4px;
+}
+

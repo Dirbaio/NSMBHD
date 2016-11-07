@@ -1,0 +1,47 @@
+{% if error != '' %}
+	<table class="message outline margin">
+		<tr class="header0"><th>Alert</th></tr>
+		<tr class="cell0"><td>{{ error }}</td></tr>
+	</table>
+{% endif %}
+
+<form name="loginform" action="/login" method="POST">
+	<table class="outline margin width50">
+		<tr class="header0">
+			<th colspan="2">
+				Log in
+			</th>
+		</tr>
+		<tr>
+			<td class="cell2">
+				<label for="username">User name</label>
+			</td>
+			<td class="cell0">
+				<input type="text" id="username" name="username" style="width: 98%;" maxlength="25" value="{{ username }}"/>
+			</td>
+		</tr>
+		<tr>
+			<td class="cell2">
+				<label for="password">Password</label>
+			</td>
+			<td class="cell1">
+				<input type="password" id="password" name="password" size="13" maxlength="32" />
+			</td>
+		</tr>
+		<tr class="cell2">
+			<td></td>
+			<td>
+				<input type="submit" name="actionlogin" value="Log in" />
+				<a href="/lostpass">Forgot password?</a>
+			</td>
+		</tr>
+	</table>
+</form>
+
+<script type="text/javascript">
+	{% if username != '' %}
+		document.loginform.password.focus();
+	{% else %}
+		document.loginform.username.focus();
+	{% endif %}
+</script>

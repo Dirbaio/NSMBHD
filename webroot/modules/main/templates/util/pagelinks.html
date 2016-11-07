@@ -1,0 +1,42 @@
+
+{% macro pagelink(base, from, text) %}
+	{% if from != 0 %}
+		<a href='{{base}}/p{{from}}'>{{text | raw}}</a>
+	{% else %}
+		<a href='{{base}}'>{{text | raw}}</a>
+	{% endif %}
+{% endmacro %}
+
+{% macro pagelinks(paging) %}
+    {% import _self as pl %}
+    
+    {% spaceless %}
+		Pages: 
+		{% set pages = max(1, (paging.total + paging.perpage-1) // paging.perpage) %}
+		{% set currpage = 1 + paging.from // paging.perpage %}
+
+		{% if paging.from != 0 %}
+			{{ pl.pagelink(paging.base, 0, '&laquo;') }}
+			{{ pl.pagelink(paging.base, paging.from-paging.perpage, '&lsaquo;') }}
+		{% endif %}
+
+		{% set len = 9 %}
+		{% set start = currpage-(len//2) %}
+		{% set start = min(start, pages-len+1) %}
+		{% set start = max(start, 1) %}
+
+		{% for i in start..min(start+len-1, pages) %}
+			{% set from = (i-1)*paging.perpage %}
+			{% if from == paging.from %}
+				<span>{{i}}</span>
+			{% else %}
+				{{ pl.pagelink(paging.base, from, i) }}
+			{% endif %}
+		{% endfor %}
+
+		{% if paging.from != (pages-1)*paging.perpage %}
+			{{ pl.pagelink(paging.base, paging.from+paging.perpage, '&rsaquo;') }}
+			{{ pl.pagelink(paging.base, (pages-1)*paging.perpage, '&raquo;') }}
+		{% endif %}
+    {% endspaceless %}        
+{% endmacro %}

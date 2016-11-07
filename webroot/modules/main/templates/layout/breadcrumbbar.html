@@ -1,0 +1,11 @@
+{% spaceless %}
+
+{% import 'layout/macros.html' as macros %}
+
+<div class="margin breadcrumbs_bar">
+	<div style="float: right;">
+		{{ macros.list(actionlinks, 'actionlinks', 'pipemenu') }}
+	</div>
+	{{ macros.list(breadcrumbs, 'breadcrumbs', 'breadcrumbs') }}
+</div>
+{% endspaceless %}

@@ -1,0 +1,29 @@
+<table class="outline margin"
+		ng-controller="PollCtrl"
+		ng-init="poll={{ poll | json_encode(constant('JSON_FORCE_OBJECT')) }}; tid={{ thread.id }}">
+	<tr class="cell0">
+		<td colspan="2">
+			{[ poll.question ]}
+		</td>
+	</tr>
+	<tr class="cell0" ng-repeat="choice in poll.choices">
+		<td class="fulllink">
+			<a href="#" ng-click="vote(choice.id)" onclick="return false;">
+				<span ng-show="choice.myvote != 0">&#x2714;</span>
+				{[ choice.choice ]}
+			</a>
+		</td>
+		<td class="width75">
+			<div class="pollbarContainer">
+				<div class="pollbar" style="background-color: {[ choice.color ]}; width: {[ poll.votes != 0 ? (choice.votes * 100 / poll.votes) : 0 ]}%;">
+					{[ choice.votes ]}
+				</div>
+			</div>
+		</td>
+	</tr>
+	<tr class="cell2">
+		<td colspan="2" class="smallFonts">
+			{[ poll.users ]} users have voted so far.
+		</td>
+	</tr>
+</table>

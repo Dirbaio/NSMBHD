@@ -1,0 +1,60 @@
+{% if thread.restricted %}
+<tr class="cell{{ loop.index%2 }}">
+	<td colspan="7">
+		(In a restricted forum)
+	</td>
+</tr>
+{% else %}
+<tr class="cell{{ loop.index%2 }}">
+	<td class="cell2 threadIcon fulllink">
+		{% set newicon='' %}
+		{% set newicon=newicon ~ (thread.closed ? 'off' : '') %}
+		{% set newicon=newicon ~ (thread.replies > hotcount ? 'hot' : '') %}
+		{% set newicon=newicon ~ (thread.numnew ? 'new' : '') %}
+
+		{% if thread.numnew %}
+			<a href="{{ urlformat('/post/#', thread.idnew) }}">
+				<img src="{{ modulefile('/img/status/'~newicon~'.png')|e }}"/>
+				{{ thread.numnew }}&raquo;
+			</a>
+		{% elseif newicon %}
+			<img src="{{ modulefile('/img/status/'~newicon~'.png')|e }}"/>
+		{% endif %}
+	</td>
+	<td class="threadIcon" style="border-right: 0px none;">
+		{% if thread.icon %}
+			{% if thread.icon starts with 'img/' %}
+				<img class="smiley" src="{{ modulefile('/' ~ thread.icon)|e }}"/>
+			{% else %}
+				<img class="smiley" src="{{ thread.icon|e }}"/>
+			{% endif %}
+		{% endif %}
+	</td>
+	<td style="border-left: 0px none;" class="fulllink">
+		 <a href="{{ urlformat('/#-:/#-:', forum.id, forum.title, thread.id, thread.title) }}">
+			{% if thread.poll %}
+				<img src="{{ modulefile('/img/poll.png') }}"/>
+			{% endif %}
+		 	{{ thread.title | e }}
+			{% if showForum %}
+				<br><span class="nolink">in {{thread.f.title}}</span>
+			{% endif %}
+		 </a>
+	</td>
+	<td class="center fulllink">
+		{{ userlink(thread.su) }}
+	</td>
+	<td class="center">
+		{{ thread.replies }}
+	</td>
+	<td class="center">
+		{{ thread.views }}
+	</td>
+	<td class="smallFonts center fulllink">
+		<a class="nolink" href="{{ urlformat('/post/#', thread.lastpostid) }}">
+			{{ thread.lastpostdate | date }}<br />
+			by {{ usertext(thread.lu) }}
+		</a>
+	</td>
+</tr>
+{% endif %}

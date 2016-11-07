@@ -1,0 +1,24 @@
+.geshi
+{
+	color: #FFF;
+}
+
+.geshi .kw0, .geshi .kw1, .geshi .kw2, .geshi .kw3, .geshi .kw4
+{
+	font-weight: bold;
+	color: #AAF;
+}
+
+.geshi .st0
+{
+	font-style: italic;
+}
+.geshi .br0, .geshi .sy0
+{
+	color: #488;
+}
+.geshi .co1, .geshi .coMULTI
+{
+	font-style: italic;
+	color: #884;
+}

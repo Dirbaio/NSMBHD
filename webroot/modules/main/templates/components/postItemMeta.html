@@ -1,0 +1,31 @@
+{% if post.restricted %}
+	(in a restricted forum)
+{% elseif post.sample %}
+	Sample post
+{% else %}
+	{%- if post.date -%}
+		{{post.date | date}}
+	{% endif %}
+
+	{%- if post.deleted -%}
+		deleted
+		{%- if post.userdeleted.name %}
+			by {{userlink(post.userdeleted) -}}
+		{% endif %}
+		{%- if post.reason -%}
+			: {{ post.reason }}
+		{% endif %}
+	{%- elseif post.currentrevision -%}
+		(rev. {{post.currentrevision -}}
+		{% if post.useredited.id %}
+			by {{userlink(post.useredited) -}}
+		{%- endif -%}
+		{%- if post.revdate %}
+			on {{post.revdate | date -}}
+		{%- endif -%}
+		)
+	{% endif %}
+	{%- if showThread -%}
+		in <a href="{{urlformat('/post/#', post.id)}}">{{post.t.title}}</a> ({{post.f.title}})
+	{% endif %}
+{% endif %}

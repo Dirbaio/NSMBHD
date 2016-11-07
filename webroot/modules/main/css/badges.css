@@ -1,0 +1,32 @@
+
+
+.badge
+{
+	border: 2px solid #666;
+	background: #444;
+	font-size: 10px;
+	color: #FFF;
+	margin: 0;
+	padding: 0px 3px;
+	white-space: nowrap;
+}
+.bronze
+{
+	border-color: chocolate;
+	background: #946231;
+}
+.silver
+{
+	border-color: silver;
+	background: #949494;
+}
+.gold
+{
+	border-color: gold;
+	background: #E8B400;
+}
+.platinum
+{
+	border-color: darkgray;
+	background: #948e82;
+}

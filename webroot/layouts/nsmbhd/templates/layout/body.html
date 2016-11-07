@@ -1,0 +1,81 @@
+{% import 'layout/macros.html' as macros %}
+
+<div id="body-wrapper">
+
+	<div id="header">
+		<div id="boardheader">
+			<table>
+				<tr>
+					<td style="text-align: left;">
+						{% include 'layout/logo.html' %}
+					</td>
+
+					{% if layout.pora %}
+					<td style="padding-right: 30px">
+						{% include 'layout/pora.html' %}
+					</td>
+					{% endif %}
+				</tr>
+			</table>
+		</div>
+		
+		<div id="boardheader2" class="cell1">
+			<table>
+				<tr>
+					<td style="text-align:left; padding-left:6px;">
+						{% include 'layout/views.html' %}
+					</td>
+					<td>
+						{% include 'layout/onlineusers.html' %}
+					</td>
+					<td style="text-align:right; padding-right:6px;">
+						{{ 'now' | date }}
+					</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+
+	<div id="sidebar">
+		<table id="navigation" class="outline margin" style="width:130px; ">
+			<tr class="header1">
+				<th>
+					User
+				</th>
+			</tr>
+			<tr class="cell0">
+				<td>
+					{{ macros.list(layout.userpanel, 'userpanel', 'stackedmenu') }}
+				</td>
+			</tr>
+			<tr class="header1">
+				<th>
+					Navigation
+				</th>
+			</tr>
+			<tr class="cell0">
+				<td>
+					{{ macros.list(layout.navigation, 'navigation', 'stackedmenu') }}
+				</td>
+			</tr>
+		</table>
+	</div>
+
+	<div id="stickybar" class="cell1">
+		<div id="stickybar-maxwidth">
+			{% include 'layout/breadcrumbbar.html' %}
+		</div>
+	</div>
+
+	<div id="main" style="padding:8px;">
+		{% include 'layout/breadcrumbbar.html' %}
+		{% include 'layout/pagelinks.html' %}
+		{% include layout.template %}
+		{% include 'layout/pagelinks.html' %}
+		{% include 'layout/breadcrumbbar.html' %}
+	</div>
+
+	<footer>
+		{% include 'layout/footer.html' %}
+	</footer>
+</div>

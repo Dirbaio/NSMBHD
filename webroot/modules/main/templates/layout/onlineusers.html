@@ -1,0 +1,29 @@
+{% import 'layout/macros.html' as macros %}
+
+{% if layout.onlineUsers.forum %}
+	{% set browsingForum = 'browsing ' ~ layout.onlineUsers.forum.title %}
+{% else %}
+	{% set browsingForum = 'online' %}
+{% endif %}
+
+{% if layout.onlineUsers.users | length == 0 %}
+	No users {{ browsingForum }}.
+{% elseif layout.onlineUsers.users | length == 1 %}
+	1 user {{ browsingForum }}:
+	{{ macros.list(layout.onlineUsers.users, 'onlineUsers', 'pipemenu') }}
+{% else %}
+	{{ layout.onlineUsers.users | length }} users {{ browsingForum }}:
+	{{ macros.list(layout.onlineUsers.users, 'onlineUsers', 'pipemenu') }}
+{% endif %}
+
+{% if layout.onlineUsers.guestCount == 1 %}
+	| 1 guest
+{% elseif layout.onlineUsers.guestCount > 1 %}
+	| {{ layout.onlineUsers.guestCount }} guests
+{% endif %}
+
+{% if layout.onlineUsers.botCount == 1 %}
+	| 1 bot
+{% elseif layout.onlineUsers.botCount > 1 %}
+	| {{ layout.onlineUsers.botCount }} bots
+{% endif %}

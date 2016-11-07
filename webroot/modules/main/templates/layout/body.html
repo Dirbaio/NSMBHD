@@ -1,0 +1,60 @@
+{% import 'layout/macros.html' as macros %}
+
+<div id="body-wrapper">
+	<div id="main" style="padding:8px;">
+		<div class="outline margin" id="header">
+			<table class="outline margin">
+				<tr>
+					<td colspan="3" class="cell0">
+						<!-- Board header goes here -->
+						<table>
+							<tr>
+								<td style="border: 0px none; text-align: left;">
+									{% include 'layout/logo.html' %}
+								</td>
+								{% if layout.pora %}
+								<td style="border: 0px none;">
+									{% include 'layout/pora.html' %}
+								</td>
+								{% endif %}
+							</tr>
+						</table>
+					</td>
+				</tr>
+				<tr class="cell1">
+					<td class="smallFonts" style="text-align: center; width: 10%;">
+						{% include 'layout/views.html' %}
+					</td>
+					<td class="smallFonts" style="text-align: center; width: 80%;">
+						{{ macros.list(layout.navigation, 'navigation', 'pipemenu') }}
+					</td>
+					<td class="smallFonts" style="text-align: center; width: 10%;">
+						{{ 'now' | date }}
+					</td>
+				</tr>
+				<tr class="cell2">
+					<td colspan="3" class="smallFonts" style="text-align: center">
+						{{ macros.list(layout.userpanel, 'navigation', 'pipemenu') }}
+					</td>
+				</tr>
+				<tr class="cell2">
+					<td colspan="3" class="smallFonts" style="text-align: center">
+						{% include 'layout/onlineusers.html' %}
+					</td>
+				</tr>
+			</table>
+		</div>
+
+
+		{% include 'layout/breadcrumbbar.html' %}
+		{% include 'layout/pagelinks.html' %}
+		{% include layout.template %}
+		{% include 'layout/pagelinks.html' %}
+		{% include 'layout/breadcrumbbar.html' %}
+
+
+	</div>
+	<footer>
+		{% include 'layout/footer.html' %}
+	</footer>
+</div>

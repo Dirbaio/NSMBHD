@@ -1,0 +1,12 @@
+<div ng-controller="EditPostCtrl" 
+	ng-init="data={{ draft | json_encode() }}; validate()">
+	
+	<table class="outline margin width100">
+		<tr class="header1">
+			<th colspan="2">
+				Edit post
+			</th>
+		</tr>
+		{% include 'components/postbox.html' %}
+	{# </table> is in postbox.html #}
+</div>

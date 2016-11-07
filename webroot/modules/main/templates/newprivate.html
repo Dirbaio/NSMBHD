@@ -1,0 +1,40 @@
+<div class="ng-cloak" 
+	ng-controller="NewPrivateCtrl" 
+	ng-init="data={{ draft | json_encode() }}; validate()">
+	
+	<table class="outline margin width100">
+		<tr class="header1">
+			<th colspan="2">
+				New private message
+			</th>
+		</tr>
+		<tr class="cell1">
+			<td>
+				Title
+			</td>
+			<td>
+				<input type="text" ng-model="data.title">
+			</td>
+		</tr>
+		<tr class="cell0">
+			<td>
+				Recipients
+			</td>
+			<td>
+				<div ng-repeat="r in data.recipients track by $index">
+					{[ $index+1 ]}.
+					<input type="text" ng-model="data.recipients[$index]"/>
+					<button ng-show="data.recipients.length > 1" ng-click="data.recipients.splice($index, 1)">Delete</button>
+				</div>
+				<button ng-click="data.recipients.push(0)">Add recipient</button>
+			</td>
+		</tr>
+
+		<tr class="header1" style="height: 5px">
+			<th colspan="2">
+			</th>
+		</tr>
+
+		{% include 'components/postbox.html' %}
+	{# </table> is in postbox.html #}
+</div>

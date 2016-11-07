@@ -1,0 +1,95 @@
+/* Pipe menu */
+
+ul.pipemenu {
+	display: inline;
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
+ul.pipemenu li {
+	display: inline-block;
+	border-left: 1px solid white;
+	padding-left: 4px;
+	padding-right: 4px;
+}
+
+ul.pipemenu li:first-child {
+	border-left-width: 0;
+	padding-left: 0;
+}
+
+ul.pipemenu li:last-child {
+	padding-right: 0;
+}
+
+
+/* Breadcrumbs */
+
+ul.breadcrumbs {
+	display: inline;
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
+ul.breadcrumbs li {
+	display: inline-block;
+	padding-left: 4px;
+	padding-right: 1px;
+
+}
+
+ul.breadcrumbs li:before {
+	content:"» ";
+}
+
+ul.breadcrumbs li:first-child {
+	padding-left: 0;
+}
+
+ul.breadcrumbs li:last-child {
+	padding-right: 0;
+}
+
+ul.breadcrumbs li:first-child:before
+{
+	content:"";
+}
+
+
+/* Tabs */
+
+div#tabs {
+	position: relative;
+	top: 1px;
+	margin: 0px 0px;
+	margin-bottom: -1px;
+	padding: 0px 0px;
+	padding-left: 4px;
+	cursor: default;
+}
+
+div#tabs button {
+	margin: 0px;
+	padding-right: 16px;
+}
+
+div#tabs button.selected {
+	position: static;
+	z-index: -100;
+	border-bottom-width: 0px;
+}
+
+
+/* Pagelinks */
+
+.pagelinks
+{
+	font-size: 10pt;
+}
+
+.pagelinks a, .pagelinks span {
+	padding:5px;
+	display:inline-block;
+}

@@ -1,0 +1,23 @@
+<tr class="cell{{ loop.index % 2 }}">
+	<td class="fulllink">
+		<a href="{{ urlformat('/#-:', post.f.id, post.f.title) }}">
+			{{ post.f.title | e }}
+		</a>
+	</td>
+	<td class="fulllink">
+		<a href="{{ urlformat('/#-:/#-:', post.f.id, post.f.title, post.t.id, post.t.title) }}">
+			{{ post.t.title | e }}
+		</a>
+	</td>
+	<td class="fulllink">
+		{{ userlink(post.u) }}
+	</td>
+	<td>
+		{{ post.date | date }}
+	</td>
+	<td class="fulllink">
+		<a href="{{ urlformat('/post/#', post.id) }}">
+			&raquo;&nbsp;{{ post.id }}
+		</a>
+	</td>
+</tr>

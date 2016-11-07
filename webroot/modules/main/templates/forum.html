@@ -1,0 +1,21 @@
+{% include 'components/forumList.html' %}
+
+<table class="outline margin width100">
+{% include 'components/threadHeader.html' %}
+
+{% set sticky=0 %}
+{% for thread in threads %}
+	{% if thread.sticky %}
+		{% set sticky=1 %}
+	{% endif %}
+	{% if not thread.sticky and sticky==1 %}
+		<tr class="header1">
+			<th colspan="7" style="height: 8px;"></th>
+		</tr>
+		{% set sticky=2 %}
+	{% endif %}
+
+	{% include 'components/threadItem.html' %}
+
+{% endfor %}
+</table>

@@ -1,0 +1,99 @@
+
+/* Post tables */
+
+table.post {
+	width: 100%;
+	margin-bottom: 8px;
+}
+
+table.post td.side {
+	width: 15%;
+	vertical-align: top;
+	padding: 4px 10px 4px 10px;
+}
+
+table.post td.post {
+	padding:10px;
+	vertical-align: top;
+	height: 100px;
+	word-wrap: break-word;
+}
+
+.mobile_post {
+	word-wrap: break-word;
+}
+
+table.post td.meta {
+	font-size: .85em; /* 8pt; */
+	height: 14px;
+	margin: 0;
+	padding-right: 4px;
+}
+
+
+/* Quotes */
+
+div.quote
+{
+	padding: 4px;
+	margin-top: 4px;
+	margin-bottom:4px;
+	margin-left:50px;
+	margin-right:10px;
+}
+
+div.quote div.quotecontent
+{
+	padding:4px;
+	margin-top:4px;
+	border-top: 1px solid white;
+	border-bottom: 1px solid white;
+}
+
+div.quote div.quoteheader
+{
+	font-size:10px;
+	font-style:italic;
+}
+
+
+/* Spoilers */
+
+div.spoiler
+{
+	margin-left:10px;
+	margin-right:10px;
+	margin-top:5px;
+	margin-bottom:5px;
+
+}
+div.spoiler button
+{
+	font-size: .8em; /* 10px; */
+}
+
+div.spoiler div.spoiled
+{
+	background: #000;
+	color: #FFF;
+	padding:10px;
+}
+
+div.spoiler div.hidden
+{
+	display: none;
+}
+
+
+/* Code block */
+
+.codeblock
+{
+	white-space:pre-wrap;
+	font-family: "Consolas", "Lucida Console", "Courier New", monospace;
+	padding:4px;
+	margin-left:10px;
+	margin-right:10px;
+	margin-top:5px;
+	margin-bottom:5px;
+}

@@ -1,0 +1,12 @@
+<?php
+
+$config = array(
+	'mysql' => array(
+		'db' => 'mysql:host=localhost;dbname=abxd4;charset=utf8',
+		'user' => 'root',
+		'pass' => 'blahblah',
+		'name' => 'abxd4',
+		'prefix' => '',
+	),
+	'salt' => 'blablablub',
+);

@@ -1,0 +1,36 @@
+<tr class="cell{{ loop.index%2 }}">
+	<td class="cell2 threadIcon fulllink">
+		{% set newicon='' %}
+		{% set newicon=newicon ~ (thread.closed ? 'off' : '') %}
+		{% set newicon=newicon ~ (thread.replies > hotcount ? 'hot' : '') %}
+		{% set newicon=newicon ~ (thread.numnew ? 'new' : '') %}
+
+		{% if thread.numnew %}
+			<a href='/post/{{ thread.idnew }}'>
+				<img src="{{ modulefile('/img/status/'~newicon~'.png')|e }}"/>
+				{{ thread.numnew }}&raquo;
+			</a>
+		{% elseif newicon %}
+			<img src="{{ modulefile('/img/status/'~newicon~'.png')|e }}"/>
+		{% endif %}
+	</td>
+	<td style="border-left: 0px none;" class="fulllink">
+		 <a href="{{ urlformat('/#-#/#-#', forum.id, forum.title, thread.id, thread.title) }}">
+			{% if thread.poll %}
+				<img src="{{ modulefile('/img/poll.png') }}"/>
+			{% endif %}
+			{{ thread.title | e }}<br>
+			{% if showForum %}
+				<span class="nolink">in {{thread.f.title}}</span>
+			{% else %}
+				<span class="nolink">by</span> {{ usertext(thread.su) }}
+			{% endif %}
+		 </a>
+	</td>
+	<td class="smallFonts center fulllink">
+		<a class="nolink" href='/post/{{ thread.lastpostid }}'>
+			{{ thread.lastpostdate | date }}<br />
+			by {{ usertext(thread.lu) }}
+		</a>
+	</td>
+</tr>

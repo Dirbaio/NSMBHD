@@ -1,0 +1,37 @@
+{% import 'layout/macros.html' as macros %}
+
+<a name="{{post.id}}"></a>
+
+<table class="post margin table{{post.userposted.id}} {% if post.restricted or post.deleted %}deletedpost{%endif%}" id="post{{post.id}}">
+	<tr class="row{{post.userposted.id}}_1">
+		<td class="side userlink topbar{{post.userposted.id}}_1 fulllink">
+			{{userlink(post.userposted)}}
+		</td>
+		<td class="meta right topbar9_2">
+			<div style="float: left;" id="meta_36788">
+				{% include 'components/postItemMeta.html' %}
+			</div>
+			<div style="float: left; text-align:left; display: none;" id="dyna_{{post.id}}">
+				Hi.
+			</div>
+			{{ macros.list(post.links, '', 'pipemenu') }}
+		</td>
+	</tr>
+
+	{% if not post.deleted and not post.restricted %}
+	<tr class="row{{post.userposted.id}}_2">
+		<td class="side sidebar{{post.userposted.id}}">
+			{{post.userposted.title | e}}<br />
+			{% if post.userposted.picture %}
+				<img src="{{ urlformat('/file/$', post.userposted.picture) }}" alt="" /><br />
+			{% endif %}
+			Karma: {{post.userposted.karma}}<br />
+			Posts: {% if post.num %}{{post.num}}/{% endif %}{{post.userposted.posts}}<br />
+			Since: {{post.userposted.regdate | date}}<br />
+		</td>
+		<td class="post mainbar{{post.userposted.id}}" id="post_{{post.id}}">
+			{{post.text | cleanUpPost | raw}}
+		</td>
+	</tr>
+	{% endif %}
+</table>

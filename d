@@ -50,6 +50,9 @@ case $task in
     dumpdb)
         docker exec -i abxd_db mysqldump --password=root abxd > $arg
         ;;
+    upgrade)
+        docker exec -i abxd sh -c 'echo UPGRADING DB... && php webroot/upgrade.php && echo RECALCULATING STATISTICS... && php webroot/index.php /recalc'
+        ;;
     '')
         echo 'Usage: ./d action [params].'
         ;;

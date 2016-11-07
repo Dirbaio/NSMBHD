@@ -1,0 +1,62 @@
+
+/* All cells have border by default */
+
+table#header
+{
+	border-right-width:0;
+}
+
+table.outline>tbody>tr>td {
+	border-width:0px 1px 1px 0px;
+	border-style:solid;
+}
+
+table.outline>tbody:first-child>tr:first-child>td {
+	border-top-width:1px;
+}
+table.outline>tbody>tr>td:first-child {
+	border-left-width:1px;
+}
+
+table.outline>tbody>tr>th
+{
+	border-width: 0px 0px 1px 0px;
+	border-style:solid;
+}
+
+table.outline>tbody>tr>th:last-child {
+	border-right-width: 1px;
+}
+table.outline>tbody>tr>th:first-child {
+	border-left-width: 1px;
+}
+table.outline>tbody:first-child>tr:first-child>th {
+	border-top-width: 1px;
+}
+
+
+table.post>tbody>tr>td {
+	border-style:solid;
+}
+table.post>tbody>tr>td.side {
+	border-width: 0px 0px 1px 1px;
+}
+table.post>tbody>tr>td.post {
+	border-width: 1px 1px 1px 1px;
+}
+table.post>tbody>tr>td.meta {
+	border-width: 1px 1px 0px 0px;
+}
+table.post>tbody>tr>td.userlink {
+	border-width: 1px 0px 0px 1px;
+}
+
+
+table.deletedpost>tbody>tr>td.meta {
+	border-width: 1px 1px 1px 0px;
+}
+table.deletedpost>tbody>tr>td.side {
+	border-width: 1px 0px 1px 1px;
+}
+
+
