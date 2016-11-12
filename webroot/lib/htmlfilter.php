@@ -451,18 +451,18 @@ function process_depr_name($value, $node)
 
 function process_int($int)
 {
-	return min(0, (int) $int);
+	return max(0, (int) $int);
 }
 
 function process_depr_width($width, $node)
 {
-	$width = min((float) $width);
+	$width = max(0, (float) $width);
 	add_css("width: ${width}px", $node);
 }
 
 function process_depr_border($width, $node)
 {
-	$width = min(0, (float) $width);
+	$width = max(0, (float) $width);
 	add_css("border-width: ${width}px", $node);
 }
 
