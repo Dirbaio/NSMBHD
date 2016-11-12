@@ -37,54 +37,60 @@ function actionLink($action, $id="", $args="", $urlname="")
 //	return "$boardroot/$action/$id?$args";
 }
 
-//Find out if the current URL is valid.
-$valid = true;
 
-if($_GET["rewritten"] == 0 && isset($_GET["page"]))
+function canonicalize() {
+	global $loguser;
+	
+	//Find out if the current URL is valid.
+	$valid = true;
+	
+	if($_GET["rewritten"] == 0 && isset($_GET["page"]))
 	$valid = false;
-
-//Find out the correct name.
-$name = "";
-$page = $_GET["page"];
-$name = "";
-
-if($_GET["id"])
-{
-	if($page === "") $page == $mainPage;
-	if($page == "profile" || $page == "listthreads" || $page === "listposts")
-		$name = FetchResult("SELECT name FROM {users} WHERE id={0} LIMIT 1", (int)$_GET["id"]);
-	if($page == "thread" || $page == "editthread" || $page === "newreply")
-		$name = FetchResult("SELECT title FROM {threads} WHERE id={0} LIMIT 1", (int)$_GET["id"]);
-	if($page == "forum" || $page == "newthread")
-		$name = FetchResult("SELECT title FROM {forums} WHERE id={0} LIMIT 1", (int)$_GET["id"]);
-
-	$name = urlNamify($name);
-	if($name != $_GET["rewriteurlname"])
-		$valid = false;
-}
-
-// If URL is not valid, we have to redirect to the correct one!
-// Only if NOT POST request, though!
-if(strtoupper($_SERVER['REQUEST_METHOD']) != 'POST' && !$valid)
-{
-	$params = "";
-	foreach($_GET as $key => $val)
+	
+	//Find out the correct name.
+	$name = "";
+	$page = $_GET["page"];
+	$name = "";
+	
+	if($_GET["id"])
 	{
-		if($key == "rewriteurlname" ||
-		   $key == "rewritten" || 
-		   $key == "page" || 
-		   $key == "id") continue;
-		if($params != "") $params .= "&";
-		$params .= urlencode($key)."=".urlencode($val);
+		if($page === "") $page == $mainPage;
+		if($page == "profile" || $page == "listthreads" || $page === "listposts")
+		$name = FetchResult("SELECT name FROM {users} WHERE id={0} LIMIT 1", (int)$_GET["id"]);
+		if($page == "thread" || $page == "editthread" || $page === "newreply")
+		$name = FetchResult("SELECT t.title FROM {threads} t join {forums} f on f.id=t.forum WHERE t.id={0} and f.minpower <= {1} LIMIT 1", (int)$_GET["id"], $loguser['powerlevel']);
+		if($page == "forum" || $page == "newthread")
+		$name = FetchResult("SELECT title FROM {forums} WHERE id={0} and minpower <= {1} LIMIT 1", (int)$_GET["id"], $loguser['powerlevel']);
+		if($name == -1) die();
+		$name = urlNamify($name);
+		if($name != $_GET["rewriteurlname"])
+		$valid = false;
 	}
-	$newUrl = actionLink($page, $_GET["id"], $params, $name);
-	header("HTTP/1.1 301 Moved Permanently");
-	header("Status: 301 Moved Permanently");
-	die(header("Location: ".$newUrl));
+	
+	// If URL is not valid, we have to redirect to the correct one!
+	// Only if NOT POST request, though!
+	if(strtoupper($_SERVER['REQUEST_METHOD']) != 'POST' && !$valid)
+	{
+		$params = "";
+		foreach($_GET as $key => $val)
+		{
+			if($key == "rewriteurlname" ||
+			$key == "rewritten" || 
+			$key == "page" || 
+			$key == "id") continue;
+			if($params != "") $params .= "&";
+			$params .= urlencode($key)."=".urlencode($val);
+		}
+		$newUrl = actionLink($page, $_GET["id"], $params, $name);
+		header("HTTP/1.1 301 Moved Permanently");
+		header("Status: 301 Moved Permanently");
+		die(header("Location: ".$newUrl));
+	}
+	
+	if(isset($_GET["rewriteurlname"]) && $_GET["rewriteurlname"] != "")
+	setUrlName($_GET["page"], $_GET["id"], $_GET["rewriteurlname"]);
 }
 
-if(isset($_GET["rewriteurlname"]) && $_GET["rewriteurlname"] != "")
-	setUrlName($_GET["page"], $_GET["id"], $_GET["rewriteurlname"]);
 
 
 

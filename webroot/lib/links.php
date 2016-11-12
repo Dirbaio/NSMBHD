@@ -43,7 +43,10 @@ if($urlRewriting)
 	include("urlrewriting.php");
 else
 {
-
+	function canonicalize() {
+		//Nothing!
+	}
+	
 	function actionLink($action, $id="", $args="", $urlname="")
 	{
 		global $boardroot, $mainPage;

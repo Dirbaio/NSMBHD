@@ -77,6 +77,7 @@ include("pluginsystem.php");
 loadFieldLists();
 include("loguser.php");
 include("permissions.php");
+canonicalize();
 include("ranksets.php");
 include("post.php");
 include("log.php");
