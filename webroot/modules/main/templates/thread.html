@@ -2,7 +2,7 @@
 	{% include 'components/poll.html' %}
 {% endif %}
 
-<div ng-controller="NewReplyCtrl" ng-init="data={{ draft | json_encode() }}; validate()">
+<div class="ng-cloak" ng-controller="NewReplyCtrl" ng-init="data={{ draft | json_encode() }}; validate()">
 	{% include 'components/postList.html' %}
 
 	{% if canreply %}

@@ -1,6 +1,6 @@
 Participants:
 {% for p in participants %} {{ userlink(p) }} {% endfor %}
-<div ng-controller="PrivateReplyCtrl" ng-init="data={{ draft | json_encode() }}; validate()">
+<div class="ng-cloak" ng-controller="PrivateReplyCtrl" ng-init="data={{ draft | json_encode() }}; validate()">
 	{% include 'components/postList.html' %}
 
 	{% if canreply %}
