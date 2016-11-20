@@ -9,7 +9,7 @@
 	
 	$edits = array();
 	while ($edit = Fetch($lastedits))
-		$edits[] = actionLinkTag(htmlspecialchars($edit['name'].' ('.$edit['id'].')'), 'spritedb', '', 'go='.$edit['id']).' on '.formatdate($edit['date']);
+		$edits[] = actionLinkTag($edit['name'].' ('.$edit['id'].')', 'spritedb', '', 'go='.$edit['id']).' on '.formatdate($edit['date']);
 	
 	if (count($edits))
 		$profileParts['Sprite database']['Last edits'] = implode('<br />', $edits);

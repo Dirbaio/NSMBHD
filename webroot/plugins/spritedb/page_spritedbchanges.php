@@ -187,7 +187,7 @@ while ($change = Fetch($changes))
 	
 	echo '
 		<tr class="cell',$c,'">
-			<td>',actionLinkTag(htmlspecialchars($change['name']), 'spritedb', '', 'go='.$change['id']),' (Sprite ',htmlspecialchars($change['id']),')</td>
+			<td>',actionLinkTag($change['name'], 'spritedb', '', 'go='.$change['id']),' (Sprite ',htmlspecialchars($change['id']),')</td>
 			<td class="center">',$userlink,'</td>
 			<td class="center">',formatdate($change['date']),'</td>
 			<td class="center">',$change['revision'],$complink,'</td>

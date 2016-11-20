@@ -114,7 +114,7 @@ function listCategory($cat)
 			if($loguserid == $entry['user'] || $loguser['powerlevel'] > 2)
 			{
 				$delete = "&nbsp;<sup>"
-					.actionLinkTag("&#x2718;", "uploader", "", "action=delete&fid=".$entry['id']."&cat=".$_GET["cat"])
+					.actionLinkTagUnescaped("&#x2718;", "uploader", "", "action=delete&fid=".$entry['id']."&cat=".$_GET["cat"])
 					."</sup>";
 				$multidel = "<td><input type=\"checkbox\" name=\"del[".$entry['id']."]\" /></td>";
 			}

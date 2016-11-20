@@ -92,12 +92,12 @@ function headingHandler($h)
 
 function makeLink($m)
 {
-	return actionLinkTag(htmlspecialchars(url2title($m[1])), 'wiki', title2url($m[1]));
+	return actionLinkTag(url2title($m[1]), 'wiki', title2url($m[1]));
 }
 
 function makeNiceLink($m)
 {
-	return actionLinkTag(htmlspecialchars($m[2]), 'wiki', title2url($m[1]));
+	return actionLinkTag($m[2], 'wiki', title2url($m[1]));
 }
 
 function makeList($m)

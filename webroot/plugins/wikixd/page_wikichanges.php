@@ -86,7 +86,7 @@ else while ($change = Fetch($changes))
 	$date = formatdate($date);
 	
 	$links = actionLinkTagItem('View page', 'wiki', $change['id'], 'rev='.$change['revision']);
-	$changetext = 'Page '.actionLinkTag(htmlspecialchars(url2title($change['id'])), 'wiki', $change['id']);
+	$changetext = 'Page '.actionLinkTag(url2title($change['id']), 'wiki', $change['id']);
 	if ($change['revision'] > 1) 
 	{
 		$changetext .= ' edited by '.$userlink.' on '.$date.' (revision '.$change['revision'].')';

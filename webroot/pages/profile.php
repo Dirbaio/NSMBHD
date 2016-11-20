@@ -66,8 +66,8 @@ if($canVote)
 	$k = FetchResult("select up from {uservotes} where uid={0} and voter={1}", $id, $loguserid);
 
 	$karmalinks = "";
-	if($k != 1) $karmaLinks .= actionLinkTag(" &#x2191; ", "profile", $id, "vote=1&token={$loguser['token']}");
-	if($k != 0) $karmaLinks .= actionLinkTag(" &#x2193; ", "profile", $id, "vote=0&token={$loguser['token']}");
+	if($k != 1) $karmaLinks .= actionLinkTagUnescaped(" &#x2191; ", "profile", $id, "vote=1&token={$loguser['token']}");
+	if($k != 0) $karmaLinks .= actionLinkTagUnescaped(" &#x2193; ", "profile", $id, "vote=0&token={$loguser['token']}");
 
 	$karmaLinks = "<small>[$karmaLinks]</small>";
 }

@@ -17,7 +17,7 @@ if ($loguser['powerlevel'] > 3)
 			</td>
 		</tr>
 	</table>
-", actionLinkTag(format("<span style=\"color: #f00; font-weight: normal;\"><strong>{0}</strong> suspicious request(s) logged{1}</a>", count($shitbugs), $extra), 'shitbugs'));
+", actionLinkTagUnescaped(format("<span style=\"color: #f00; font-weight: normal;\"><strong>{0}</strong> suspicious request(s) logged{1}</a>", count($shitbugs), $extra), 'shitbugs'));
 
 }
 

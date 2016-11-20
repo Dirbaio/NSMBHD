@@ -80,20 +80,24 @@ else
 
 function actionLinkTag($text, $action, $id=0, $args="", $urlname="")
 {
+	return '<a href="'.htmlentities(actionLink($action, $id, $args, $urlname)).'">'.htmlspecialchars($text).'</a>';
+}
+function actionLinkTagUnescaped($text, $action, $id=0, $args="", $urlname="")
+{
 	return '<a href="'.htmlentities(actionLink($action, $id, $args, $urlname)).'">'.$text.'</a>';
 }
 function actionLinkTagItem($text, $action, $id=0, $args="", $urlname="")
 {
-	return '<li><a href="'.htmlentities(actionLink($action, $id, $args, $urlname)).'">'.$text.'</a></li>';
+	return '<li><a href="'.htmlentities(actionLink($action, $id, $args, $urlname)).'">'.htmlspecialchars($text).'</a></li>';
 }
 
 function actionLinkTagConfirm($text, $prompt, $action, $id=0, $args="")
 {
-	return '<a onclick="return confirm(\''.$prompt.'\'); " href="'.htmlentities(actionLink($action, $id, $args)).'">'.$text.'</a>';
+	return '<a onclick="return confirm(\''.$prompt.'\'); " href="'.htmlentities(actionLink($action, $id, $args)).'">'.htmlspecialchars($text).'</a>';
 }
 function actionLinkTagItemConfirm($text, $prompt, $action, $id=0, $args="")
 {
-	return '<li><a onclick="return confirm(\''.$prompt.'\'); " href="'.htmlentities(actionLink($action, $id, $args)).'">'.$text.'</a></li>';
+	return '<li><a onclick="return confirm(\''.$prompt.'\'); " href="'.htmlentities(actionLink($action, $id, $args)).'">'.htmlspecialchars($text).'</a></li>';
 }
 
 function redirectAction($action, $id=0, $args="", $urlname="")
@@ -205,7 +209,7 @@ function userLink($user, $showMinipic = false, $customID = false)
 	else
 		$plstring = "";
 	$title = "#".$user["id"].": ".htmlspecialchars($user['name']) . " (".$user["karma"].$plstring.")";
-	$userlink = actionLinkTag("<span$classing title=\"$title\">$fname</span>", "profile", $user["id"], "", $user["name"]);
+	$userlink = actionLinkTagUnescaped("<span$classing title=\"$title\">$fname</span>", "profile", $user["id"], "", $user["name"]);
 	return $userlink;
 }
 

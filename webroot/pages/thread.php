@@ -182,7 +182,7 @@ if($thread['poll'])
 
 		$cellClass = ($cellClass+1) % 2;
 		if($loguserid && !$thread['closed'] && IsAllowed("vote"))
-			$label = $chosen." ".actionLinkTag(htmlspecialchars($option['choice']), "thread", $thread['id'], "vote=".$option["id"]."&token=".$loguser["token"]."&".$fromstring);
+			$label = $chosen." ".actionLinkTag($option['choice'], "thread", $thread['id'], "vote=".$option["id"]."&token=".$loguser["token"]."&".$fromstring);
 		else
 			$label = $chosen." ".htmlspecialchars($option['choice']);
 		$votes = $option["votes"];

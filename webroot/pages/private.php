@@ -138,7 +138,7 @@ if(NumRows($rPM))
 
 		$check = $snoop ? "" : "<input type=\"checkbox\" name=\"delete[{2}]\" />";
 
-		$delLink = $snoop == "" ? "<sup>&nbsp;".actionLinkTag("&#x2718;", "private", "", "del=".$pm['id'].$show.'&token='.$loguser['token'])."</sup>" : "";
+		$delLink = $snoop == "" ? "<sup>&nbsp;".actionLinkTagUnescaped("&#x2718;", "private", "", "del=".$pm['id'].$show.'&token='.$loguser['token'])."</sup>" : "";
 
 		$pms .= format(
 "
@@ -150,7 +150,7 @@ if(NumRows($rPM))
 				{1}
 			</td>
 			<td>
-				".actionLinkTag(htmlspecialchars($pm['title']), "showprivate", $pm['id'], $snoop)."{7}
+				".actionLinkTag($pm['title'], "showprivate", $pm['id'], $snoop)."{7}
 			</td>
 			<td>
 				{5}

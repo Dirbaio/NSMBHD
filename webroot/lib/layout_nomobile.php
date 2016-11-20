@@ -118,7 +118,7 @@ function makeForumListing($parent, $page=0)
 
 			$lastLink = "";
 			if($forum['lastpostid'])
-				$lastLink = actionLinkTag("&raquo;", "post", $forum['lastpostid']);
+				$lastLink = actionLinkTagUnescaped("&raquo;", "post", $forum['lastpostid']);
 			$lastLink = format("<span class=\"nom\">{0}<br />".__("by")." </span>{1} {2}", formatdate($forum['lastpostdate']), UserLink($user), $lastLink);
 		}
 		else
@@ -246,13 +246,13 @@ function listThread($thread, $cellClass, $dostickies = true, $showforum = false)
 
 	$lastLink = "";
 	if($thread['lastpostid'])
-		$lastLink = " ".actionLinkTag("&raquo;", "post", $thread['lastpostid']);
+		$lastLink = " ".actionLinkTagUnescaped("&raquo;", "post", $thread['lastpostid']);
 
 
 	$forumcell = "";
 	if($showforum)
 	{
-		$forumcell = "<td class=\"center\">".actionLinkTag(htmlspecialchars($thread["f_title"]), "forum", $thread["f_id"], "", $thread["f_title"])."</td>";
+		$forumcell = "<td class=\"center\">".actionLinkTag($thread["f_title"], "forum", $thread["f_id"], "", $thread["f_title"])."</td>";
 	}
 	$forumList .= "
 	<tr class=\"cell$cellClass\">

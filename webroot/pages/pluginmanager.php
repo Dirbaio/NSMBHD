@@ -111,7 +111,7 @@ function listPlugin($plugin, $plugindata)
 	if(in_array("settingsfile", $plugindata["buckets"]))
 	{
 		if(isset($plugins[$plugin]))
-			print actionLinkTagItem(__("Settings&hellip;"), "editsettings", $plugin);
+			print actionLinkTagItem(__("Settings..."), "editsettings", $plugin);
 	}
 	print '</ul>';
 	print '</td></tr>';
