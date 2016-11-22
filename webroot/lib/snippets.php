@@ -391,10 +391,10 @@ function formatIP($ip)
 {
 	global $loguser;
 
-	$res = $ip;
+	$res = htmlspecialchars($ip);
 	$res .=  " " . IP2C($ip);
 	if($loguser["powerlevel"] >= 3)
-		return actionLinkTag($res, "ipquery", $ip);
+		return actionLinkTagUnescaped($res, "ipquery", $ip);
 	else
 		return $res;
 }
