@@ -83,7 +83,7 @@
 		if($_GET['cat'] == $id)
 			print "${text}<br>";
 		else
-			print actionLinkTag($text, "spritedb", "", ($id?"&cat=".$id:''))."<br>";
+			print actionLinkTagUnescaped($text, "spritedb", "", ($id?"&cat=".$id:''))."<br>";
 	}	
 	
 
