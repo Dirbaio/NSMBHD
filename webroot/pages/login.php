@@ -69,8 +69,7 @@ elseif(isset($_POST['actionlogin']))
 
 		$sessionID = Shake();
 
-		$https = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off';
-		setcookie("logsession", $sessionID, 2147483647, $boardroot, "", $https, true);
+		setcookie("logsession", $sessionID, 2147483647, $boardroot, "", isHttps(), true);
 
 		Query("INSERT INTO {sessions} (id, user, autoexpire) VALUES ({0}, {1}, {2})", doHash($sessionID.$salt), $user["id"], $_POST["session"]?1:0);
 
