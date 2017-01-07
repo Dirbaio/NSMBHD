@@ -17,6 +17,7 @@ makeBreadcrumbs($crumbs);
 if($_POST['action'] == "logout")
 {
 	setcookie("logsession", "", 2147483647, $boardroot, "", false, true);
+	setcookie("logsession", "", 2147483647, $boardroot, "", true, true);
 	Query("UPDATE {users} SET loggedin = 0 WHERE id={0}", $loguserid);
 	Query("DELETE FROM {sessions} WHERE id={0}", doHash($_COOKIE['logsession'].$salt));
 
@@ -67,7 +68,10 @@ elseif(isset($_POST['actionlogin']))
 		//TODO: Tie sessions to IPs if user has enabled it (or probably not)
 
 		$sessionID = Shake();
-		setcookie("logsession", $sessionID, 2147483647, $boardroot, "", false, true);
+
+		$https = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off';
+		setcookie("logsession", $sessionID, 2147483647, $boardroot, "", $https, true);
+
 		Query("INSERT INTO {sessions} (id, user, autoexpire) VALUES ({0}, {1}, {2})", doHash($sessionID.$salt), $user["id"], $_POST["session"]?1:0);
 
 		logAction('login', array('user' => $user["id"]));
