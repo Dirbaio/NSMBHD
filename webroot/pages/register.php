@@ -266,8 +266,6 @@ if(isset($_POST["sex"]))
 	$sex = validateSex($_POST["sex"]);
 
 echo "
-<script src=\"".resourceLink('js/register.js')."\"></script>
-<script src=\"".resourceLink('js/zxcvbn.js')."\"></script>
 <form action=\"".actionLink("register")."\" method=\"post\">
 	<table class=\"outline margin width50\">
 		<tr class=\"header0\">

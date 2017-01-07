@@ -38,9 +38,6 @@ $crumbs->add(new PipeMenuHtmlEntry(userLink($user)));
 $crumbs->add(new PipeMenuTextEntry(__("Edit profile")));
 makeBreadcrumbs($crumbs);
 
-echo "<script src=\"".resourceLink('js/zxcvbn.js')."\"></script>";
-echo "<script src=\"".resourceLink('js/register.js')."\"></script>";
-
 loadRanksets();
 $ranksets = $ranksetNames;
 $ranksets = array_reverse($ranksets);
