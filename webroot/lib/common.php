@@ -7,12 +7,6 @@ error_reporting(E_ALL ^ E_NOTICE | E_STRICT);
 if(!is_file("config/database.php"))
 	die(header("Location: install.php"));
 
-if($_SERVER["HTTP_HOST"] != "nsmbhd.net" && $_SERVER["HTTP_HOST"] != "abxd.test" && $_SERVER["HTTP_HOST"] != "localhost")
-{
-	header("HTTP/1.1 301 Moved Permanently");
-	header("Status: 301 Moved Permanently");
-	die(header("Location: http://nsmbhd.net/"));
-}
 $boardroot = preg_replace('{/[^/]*$}', '/', $_SERVER['SCRIPT_NAME']);
 
 // Deslash GPC variables if we have magic quotes on
