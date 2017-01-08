@@ -143,18 +143,20 @@ function setLastActivity()
 
 	if($ipban) return;
 
+	$url = getRequestedURL();
+	$url = substr($url, 0, 127);
 	if($loguserid == 0)
 	{
 		$ua = "";
 		if(isset($_SERVER['HTTP_USER_AGENT']))
 			$ua = $_SERVER['HTTP_USER_AGENT'];
 		Query("insert into {guests} (date, ip, lasturl, useragent, bot) values ({0}, {1}, {2}, {3}, {4})",
-			time(), $_SERVER['REMOTE_ADDR'], getRequestedURL(), $ua, $isBot);
+			time(), $_SERVER['REMOTE_ADDR'], $url, $ua, $isBot);
 	}
 	else
 	{
 		Query("update {users} set lastactivity={0}, lastip={1}, lasturl={2}, lasturlminpower={3}, lastknownbrowser={4}, loggedin=1 where id={5}",
-			time(), $_SERVER['REMOTE_ADDR'], getRequestedURL(), $lastUrlMinPower, $lastKnownBrowser, $loguserid);
+			time(), $_SERVER['REMOTE_ADDR'], $url, $lastUrlMinPower, $lastKnownBrowser, $loguserid);
 	}
 }
 
