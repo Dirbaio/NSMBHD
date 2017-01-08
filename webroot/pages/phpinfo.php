@@ -9,6 +9,10 @@ $lastUrlMinPower = 3;
 
 $title = __("PHP Info");
 
+$crumbs = new PipeMenu();
+$crumbs->add(new PipeMenuLinkEntry(__("Admin"), "admin"));
+$crumbs->add(new PipeMenuLinkEntry(__("PHP info"), "phpinfo"));
+makeBreadcrumbs($crumbs);
 
 
 ob_start();
