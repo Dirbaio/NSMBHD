@@ -91,9 +91,8 @@ $(document).ready(function() {
 	document.addEventListener('touchstart', function(event) {
 		if(drawerAlwaysVisible()) return;
 		// On Safari edge-swipe is used for back navigation. 
-		// So, in case of Safari I don't require edge-swiping, any swiping will do. 
-		// If you have a better alternative, please let me know!
-		if(event.touches[0].pageX < 30 || isSafari || drawerShown)
+		// So, in case of Safari you can't open the sidebar with edge swiping.
+		if((event.touches[0].pageX < 30 && !isSafari) || drawerShown)
 		{
 			touchDown = true;
 			touchDownX = event.touches[0].pageX;
