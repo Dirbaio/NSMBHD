@@ -187,6 +187,8 @@ if(isset($_POST['name']))
 		$err = __("The user name cannot contain semicolons.");
 	elseif($ipKnown >= 3)
 		$err = __("Another user is already using this IP address.");
+	else if (strlen($_POST['pass'] < 4))
+		$err = __("Your password should atleast be 4 characters.");
 	else if ($_POST['pass'] !== $_POST['pass2'])
 		$err = __("The passwords you entered don't match.");
 	else if($haveSecurimage)
