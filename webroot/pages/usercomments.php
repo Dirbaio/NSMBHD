@@ -38,7 +38,7 @@ makeBreadcrumbs($crumbs);
 
 
 $canDeleteComments = ($id == $loguserid || $loguser['powerlevel'] > 2) && IsAllowed("deleteComments") && $loguser['powerlevel'] >= 0;
-$canComment = $loguser['powerlevel'] >= 0;
+$canComment = ($loguser['powerlevel'] >= 0) && ($user['powerlevel'] >= 0);
 
 if($loguserid && ($_GET['token'] == $loguser['token'] || $_POST['token'] == $loguser['token']))
 {
