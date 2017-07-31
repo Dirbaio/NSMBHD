@@ -212,7 +212,7 @@ if($user['realname'])
 if($user['location'])
 	$foo[__("Location")] = htmlspecialchars($user['location']);
 if($user['birthday'])
-	$floo[__("Birthday")] = formatBirthday($user['birthday']);
+	$foo[__("Birthday")] = formatBirthday($user['birthday']);
 
 if(count($foo))
 	$profileParts[__("Personal information")] = $foo;
