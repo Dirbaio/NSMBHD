@@ -22,6 +22,9 @@
 	background: rgba(160, 160, 255, 0.025);
 }
 
+#mobile-headerBar .cell0 {
+	background: rgba(0, 0, 0, 0.85);
+}
 .cell1
 {
 	background: rgba(160, 160, 255, 0.050);
@@ -234,4 +237,3 @@ div#tabs button.selected
 	padding-bottom: 1px;
 	margin-bottom: -1px;
 }
-
