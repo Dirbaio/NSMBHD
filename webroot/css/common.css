@@ -336,6 +336,7 @@ div.spoiler > button
 	width: 100%;
 	background-color: black;
 	color: white;
+	overflow: hidden;
 }
 div.spoiler > button > .spoilerbuttontitle
 {
