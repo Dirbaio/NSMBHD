@@ -338,7 +338,8 @@ div.spoiler div.spoiled
 
 div.spoiler div.hidden
 {
-	display: none;
+	/*display: none;*/
+	visibility: hidden;
 }
 
 ul.pipemenu
