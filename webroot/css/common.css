@@ -352,6 +352,7 @@ div.spoiler > div.spoilercontents
 	background: #000;
 	color: #FFF;
 	padding:10px;
+	min-height: 50px;
 }
 
 ul.pipemenu
