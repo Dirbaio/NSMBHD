@@ -341,6 +341,11 @@ function bbcodeSpoiler($dom, $nodes, $arg)
 	$spoiler = $dom->createElement('div');
 	$spoiler->setAttribute('class', 'spoiler hidden');
 
+	$contents = $dom->createElement('div');
+	$contents->setAttribute('class', 'spoilercontents');
+	bbcodeAppend($contents, $nodes);
+	$spoiler->appendChild($contents);
+
 	$button = $dom->createElement('button');
 	$button->setAttribute('class', 'spoilerbutton');
 
@@ -355,11 +360,6 @@ function bbcodeSpoiler($dom, $nodes, $arg)
 	$button->appendChild($buttonText);
 
 	$spoiler->appendChild($button);
-
-	$contents = $dom->createElement('div');
-	$contents->setAttribute('class', 'spoilercontents');
-	bbcodeAppend($contents, $nodes);
-	$spoiler->appendChild($contents);
 
 	return $spoiler;
 }

@@ -325,7 +325,7 @@ div.spoiler
 	position: relative;
 }
 
-div.spoiler button
+div.spoiler > button
 {
 	display: block;
 	position: absolute;
@@ -337,17 +337,17 @@ div.spoiler button
 	background-color: black;
 	color: white;
 }
-div.spoiler button .spoilerbuttontitle
+div.spoiler > button > .spoilerbuttontitle
 {
 	font-size: 30px;
 }
 
-div.spoiler.spoileropen button
+div.spoiler.spoileropen > button
 {
 	display: none;
 }
 
-div.spoiler div.spoilercontents
+div.spoiler > div.spoilercontents
 {
 	background: #000;
 	color: #FFF;
