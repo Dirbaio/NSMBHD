@@ -339,23 +339,28 @@ function bbcodeQuoteGeneric($dom, $nodes, $arg, $attrs, $text)
 function bbcodeSpoiler($dom, $nodes, $arg)
 {
 	$spoiler = $dom->createElement('div');
-	$spoiler->setAttribute('class', 'spoiler');
+	$spoiler->setAttribute('class', 'spoiler hidden');
+
 	$button = $dom->createElement('button');
-	if ($arg === NULL)
-	{
-		$button->setAttribute('class', 'spoilerbutton');
-		$button->appendChild($dom->createTextNode('Show spoiler'));
-	}
-	else
-	{
-		$button->setAttribute('class', 'spoilerbutton named');
-		$button->appendChild($dom->createTextNode($arg));
-	}
+	$button->setAttribute('class', 'spoilerbutton');
+
+	$buttonTitle = $dom->createElement('div');
+	$buttonTitle->setAttribute('class', 'spoilerbuttontitle');
+	$buttonTitle->appendChild($dom->createTextNode($arg === NULL ? 'Spoiler' : $arg));
+	$button->appendChild($buttonTitle);
+
+	$buttonText = $dom->createElement('div');
+	$buttonText->setAttribute('class', 'spoilerbuttontext');
+	$buttonText->appendChild($dom->createTextNode('Click to show'));
+	$button->appendChild($buttonText);
+
 	$spoiler->appendChild($button);
+
 	$contents = $dom->createElement('div');
-	$contents->setAttribute('class', 'spoiled hidden');
+	$contents->setAttribute('class', 'spoilercontents');
 	bbcodeAppend($contents, $nodes);
 	$spoiler->appendChild($contents);
+
 	return $spoiler;
 }
 

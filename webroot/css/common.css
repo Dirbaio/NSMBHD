@@ -322,24 +322,36 @@ div.spoiler
 	margin-right:10px;
 	margin-top:5px;
 	margin-bottom:5px;
-
+	position: relative;
 }
+
 div.spoiler button
 {
-	font-size: .8em; /* 10px; */
+	display: block;
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	width: 100%;
+	background-color: black;
+	color: white;
+}
+div.spoiler button .spoilerbuttontitle
+{
+	font-size: 30px;
 }
 
-div.spoiler div.spoiled
+div.spoiler.spoileropen button
+{
+	display: none;
+}
+
+div.spoiler div.spoilercontents
 {
 	background: #000;
 	color: #FFF;
 	padding:10px;
-}
-
-div.spoiler div.hidden
-{
-	/*display: none;*/
-	visibility: hidden;
 }
 
 ul.pipemenu

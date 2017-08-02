@@ -60,11 +60,11 @@ function ajaxRefresh()
 	ajax("getviewcount", {}, function(data) {
 	    $("#viewCount").html(data);
 	});
-	
+
 	ajax("getonlineusers", {id: onlineFID}, function(data) {
 	    $("#onlineUsers").html(data);
 	});
-	
+
 	//FIXME: This sucks
 	if(refreshUrl != "")
 		$.get(refreshUrl, "", function(data) {
@@ -77,21 +77,7 @@ function ajaxRefresh()
 
 function toggleSpoiler()
 {
-	var button = this.parentNode.children[0];
-	var div = this.parentNode.children[1];
-
-	if(div.className == "spoiled")
-	{
-		if(button.className != "spoilerbutton named")
-			button.textContent = "Show spoiler";
-		div.className = "spoiled hidden";
-	}
-	else
-	{
-		if(button.className != "spoilerbutton named")
-			button.textContent = "Hide spoiler";
-		div.className = "spoiled";
-	}
+	this.parentNode.className = 'spoiler spoileropen';
 }
 
 //Expandables
@@ -152,7 +138,7 @@ function showEditProfilePart(newId)
 	document.getElementById(newId+"Button").className = "tab selected";
 }
 
-//POST CONTROLS 
+//POST CONTROLS
 
 var textEditor;
 function hookUpControls() {
@@ -382,7 +368,7 @@ function deletePost(id, key, del)
 		var reason = prompt('Enter a reason for deleting the post, or leave blank for no reason.');
 		if (reason == null) return;
 	}
-	
+
 	ajaxPost("deletepost", {id: id, key: key, reason: reason, delete: del}, function() {
 		replacePost(id, false);
 	});
@@ -520,16 +506,16 @@ function enableMobileLayout(val)
 	location.reload();
 }
 
-function setCookie(sKey, sValue, vEnd, sPath, sDomain, bSecure) {  
-	if (!sKey || /^(?:expires|max\-age|path|domain|secure)$/.test(sKey)) { return; }  
-	var sExpires = "";  
+function setCookie(sKey, sValue, vEnd, sPath, sDomain, bSecure) {
+	if (!sKey || /^(?:expires|max\-age|path|domain|secure)$/.test(sKey)) { return; }
+	var sExpires = "";
 	if (vEnd) {
-		switch (typeof vEnd) {  
-			case "number": sExpires = "; max-age=" + vEnd; break;  
-			case "string": sExpires = "; expires=" + vEnd; break;  
-			case "object": if (vEnd.hasOwnProperty("toGMTString")) { sExpires = "; expires=" + vEnd.toGMTString(); } break;  
-		}  
-	}  
+		switch (typeof vEnd) {
+			case "number": sExpires = "; max-age=" + vEnd; break;
+			case "string": sExpires = "; expires=" + vEnd; break;
+			case "object": if (vEnd.hasOwnProperty("toGMTString")) { sExpires = "; expires=" + vEnd.toGMTString(); } break;
+		}
+	}
 	var lol = escape(sKey) + "=" + escape(sValue) + sExpires + (sDomain ? "; domain=" + sDomain : "") + (sPath ? "; path=" + sPath : "") + (bSecure ? "; secure" : "");
 	document.cookie = lol;
 }
