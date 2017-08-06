@@ -111,8 +111,8 @@ else
 		if($lastPost < 15)
 		{
 			//Check for last post the user posted.
-			$lastPost = Fetch(Query("SELECT p.id,p.thread,pt.text FROM {pmsgs} p LEFT JOIN {pmsgs_text} pt ON pt.pid=p.id AND pt.revision=p.currentrevision 
-				WHERE p.user={0} ORDER BY p.date DESC LIMIT 1", $loguserid));
+			$lastPost = Fetch(Query("SELECT id,userfrom,ip FROM {pmsgs} p LEFT JOIN {pmsgs_text} pt ON pid=p.id AND text,title
+				WHERE userfrom={0} ORDER BY date DESC LIMIT 1", $loguserid));
 			Alert(__("You're going too damn fast! Slow down a little."), __("Hold your horses."));
 		}
 	}
