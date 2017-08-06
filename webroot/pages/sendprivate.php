@@ -105,6 +105,18 @@ else
 		Alert("Enter a recipient and try again.", "Your PM has no recipient.");
 	$_POST['action'] = "";
 }
+else
+	{
+		$lastPost = time() - $loguser['lastposttime'];
+		if($lastPost < 15)
+		{
+			//Check for last post the user posted.
+			$lastPost = Fetch(Query("SELECT id,userfrom,ip FROM {pmsgs} p LEFT JOIN {pmsgs_text} pt ON pid=p.id AND text,title
+				WHERE userfrom={0} ORDER BY date DESC LIMIT 1", $loguserid));
+			Alert(__("You're going too damn fast! Slow down a little."), __("Hold your horses."));
+		}
+	}
+
 
 if($_POST['action'] == __("Send") || $_POST['action'] == __("Save as Draft"))
 {
