@@ -155,6 +155,18 @@ if($loguserid )
 	if(!IsAllowed("makeComments") || !$canComment)
 		$commentField = __("You are not allowed to post usercomments.");
 }
+	else
+	{
+		$lastPost = time() - $loguser['lastposttime'];
+		if($lastPost < 30)
+		{
+			//Check for last post the user posted.
+			$lastPost = Fetch(Query("SELECT id,uid,text FROM {usercomments} 
+				WHERE uid={0} ORDER BY date DESC LIMIT 1", $loguserid));
+			$commentField = __("Please wait 30 seconds before posting another comment.");
+		}
+	}
+
 
 print "
 				<table class=\"outline margin\">
