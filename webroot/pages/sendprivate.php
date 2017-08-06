@@ -108,7 +108,7 @@ else
 else
 	{
 		$lastPost = time() - $loguser['lastposttime'];
-		if($lastPost < Settings::get("floodProtectionInterval"))
+		if($lastPost < 15)
 		{
 			//Check for last post the user posted.
 			$lastPost = Fetch(Query("SELECT p.id,p.thread,pt.text FROM {pmsgs} p LEFT JOIN {pmsgs_text} pt ON pt.pid=p.id AND pt.revision=p.currentrevision 
