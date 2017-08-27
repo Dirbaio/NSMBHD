@@ -80,11 +80,11 @@ a:hover, a:hover span, #header  a:hover, #header a:hover span
 .header0 th
 {
 	background: #444;
-	background-image: url("../img/themes/umbreon/h.png"), -ms-linear-gradient(#808080 0%, #000 100%);
-	background-image: url("../img/themes/umbreon/h.png"), -moz-linear-gradient(#808080 0%, #000 100%);
-	background-image: url("../img/themes/umbreon/h.png"), -o-linear-gradient(#808080 0%, #000 100%);
-	background-image: url("../img/themes/umbreon/h.png"), -webkit-linear-gradient(#808080 0%, #000 100%);
-	background-image: url("../img/themes/umbreon/h.png"), linear-gradient(#808080 0%, #000 100%);
+	background-image: url("h.png"), -ms-linear-gradient(#808080 0%, #000 100%);
+	background-image: url("h.png"), -moz-linear-gradient(#808080 0%, #000 100%);
+	background-image: url("h.png"), -o-linear-gradient(#808080 0%, #000 100%);
+	background-image: url("h.png"), -webkit-linear-gradient(#808080 0%, #000 100%);
+	background-image: url("h.png"), linear-gradient(#808080 0%, #000 100%);
 }
 
 .header1 th, .errort, button, input[type="submit"], #tabs button
