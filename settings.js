@@ -23,7 +23,7 @@ exports.settings = {
 
 	servers: {
 		nolimitnet: {
-			address: 'irc.nolimitzone.com',
+			address: 'irc.badnik.net',
 			port: 6667,
 			modules: {},
 			channels: {
