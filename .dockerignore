@@ -2,3 +2,4 @@ data
 Dockerfile
 d
 .dockerignore
+.git/

@@ -4,9 +4,6 @@
 // I can't believe there are PRODUCTION servers that have E_NOTICE turned on. What are they THINKING? -- Kawa
 error_reporting(E_ALL ^ E_NOTICE | E_STRICT);
 
-if(!is_file("config/database.php"))
-	die(header("Location: install.php"));
-
 $boardroot = preg_replace('{/[^/]*$}', '/', $_SERVER['SCRIPT_NAME']);
 
 // Deslash GPC variables if we have magic quotes on
@@ -35,14 +32,14 @@ function usectime()
 }
 $timeStart = usectime();
 
+include("config.php");
+
 include("version.php");
-include("config/salt.php");
 include("dirs.php");
 include("settingsfile.php");
 include("debug.php");
 
 include("mysql.php");
-include("config/database.php");
 if(!sqlConnect())
 	die("Can't connect to the board database. Check the installation settings");
 if(!fetch(query("SHOW TABLES LIKE '{misc}'")))

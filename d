@@ -6,49 +6,56 @@ task=$1 # More descriptive name
 arg=$2
 args=${*:2}
 
+appname=abxd
+
 case $task in
     build)
-        docker build -t abxd .
+        docker build -t ${appname} .
         ;;
     start)
-        if ! docker inspect abxd_db > /dev/null 2> /dev/null; then
+        if ! docker inspect ${appname}_db > /dev/null 2> /dev/null; then
             mkdir -p data/mysql
             docker run -d \
-                --name abxd_db \
+                --name ${appname}_db \
                 -e MYSQL_ROOT_PASSWORD=root \
-                -e MYSQL_DATABASE=abxd \
-                -e MYSQL_USER=abxd \
-                -e MYSQL_PASSWORD=abxd \
+                -e MYSQL_USER=${appname} \
+                -e MYSQL_PASSWORD=${appname} \
+                -e MYSQL_DATABASE=${appname} \
                 -v $PWD/data/mysql:/var/lib/mysql \
                 mysql:5.7
         fi
-        docker start abxd_db
+        docker start ${appname}_db
         sleep 2
 
         docker run \
             -it --rm \
-            --name abxd \
+            --name ${appname} \
             -p 0.0.0.0:80:80 \
-            --link abxd_db:db \
+            --link ${appname}_db:db \
+            -e MYSQL_HOST=${appname}_db \
+            -e MYSQL_USER=${appname} \
+            -e MYSQL_PASSWORD=${appname} \
+            -e MYSQL_DATABASE=${appname} \
+            -e ABXD_SALT=VMQeVLNlKXJPZxAf \
             -v $PWD:/app \
             -v $PWD/data:/data \
-            abxd
+            ${appname}
         ;;
     stop)
-        docker stop abxd_db
-        docker stop abxd
+        docker stop ${appname}_db
+        docker stop ${appname}
         ;;
     shell)
-        docker exec -i -t abxd bash
+        docker exec -i -t ${appname} bash
         ;;
     dbshell)
-        docker exec -ti abxd_db mysql -u abxd --password=abxd abxd
+        docker exec -ti ${appname}_db mysql -u ${appname} --password=${appname} ${appname}
         ;;
     loaddb)
-        docker exec -i abxd_db mysql -u abxd --password=abxd abxd < $arg
+        docker exec -i ${appname}_db mysql -u ${appname} --password=${appname} ${appname} < $arg
         ;;
     dumpdb)
-        docker exec -i abxd_db mysqldump --password=root abxd > $arg
+        docker exec -i ${appname}_db mysqldump --password=root ${appname} > $arg
         ;;
     '')
         echo 'Usage: ./d action [params].'

@@ -206,11 +206,13 @@ if(isset($_POST['name']))
 			$reasons[] = 'tor';
 		}
 
-		$s = new StopForumSpam($stopForumSpamKey);
+        if($stopForumSpamKey) {
+    		$s = new StopForumSpam($stopForumSpamKey);
 
-		if($s->is_spammer(array('email' => $_POST['email'], 'ip' => $_SERVER['REMOTE_ADDR'] ))) {
-			$reasons[] = 'sfs';
-		}
+    		if($s->is_spammer(array('email' => $_POST['email'], 'ip' => $_SERVER['REMOTE_ADDR'] ))) {
+    			$reasons[] = 'sfs';
+    		}
+        }
 
 		if(count($reasons)) {
 			$reason = implode(',', $reasons);
