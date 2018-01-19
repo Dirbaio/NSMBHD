@@ -14,12 +14,15 @@ $crumbs->add(new PipeMenuLinkEntry(__("Admin"), "admin"));
 $crumbs->add(new PipeMenuLinkEntry(__("PHP info"), "phpinfo"));
 makeBreadcrumbs($crumbs);
 
+unset($_SERVER['ABXD_SALT']);
+unset($_SERVER['ABXD_SFS_KEY']);
+unset($_SERVER['MYSQL_PASSWORD']);
 
 ob_start();
-phpinfo();
+phpinfo(INFO_ALL ^ INFO_ENVIRONMENT);
 $pinfo = ob_get_contents();
 ob_end_clean();
- 
+
 $pinfo = preg_replace( '%^.*<body>(.*)</body>.*$%ms','$1',$pinfo);
 echo '<div id="phpinfo">'.$pinfo.'</div>';
 
