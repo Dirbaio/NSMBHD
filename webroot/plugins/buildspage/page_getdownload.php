@@ -1,5 +1,5 @@
 <?php
-	$ajaxPage = true;
+	$ajaxPage = 'no-content-type';
 
 	$rev = (int) $_GET["id"];
 	$c = $_GET["c"];
