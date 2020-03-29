@@ -1,0 +1,12 @@
+{
+    "name": "dirbaio/abxd",
+    "authors": [
+        {
+            "name": "Dario Nieuwenhuis",
+            "email": "dirbaio@dirbaio.net"
+        }
+    ],
+    "require": {
+        "geshi/geshi": "v1.0.9.1"
+    }
+}

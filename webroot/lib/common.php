@@ -4,6 +4,8 @@
 // I can't believe there are PRODUCTION servers that have E_NOTICE turned on. What are they THINKING? -- Kawa
 error_reporting(E_ALL ^ E_NOTICE | E_STRICT);
 
+require("../vendor/autoload.php");
+
 $boardroot = preg_replace('{/[^/]*$}', '/', $_SERVER['SCRIPT_NAME']);
 
 // Deslash GPC variables if we have magic quotes on

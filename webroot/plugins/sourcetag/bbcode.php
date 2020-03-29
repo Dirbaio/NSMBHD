@@ -15,8 +15,6 @@ function bbcodeCodeHighlight($dom, $contents, $arg)
 	// in <pre> style
 	$contents = preg_replace('/^\n|\n$/', "", $contents);
 
-	include_once("geshi.php");
-
 	if(!$arg)
 	{
 		$div = $dom->createElement('div');
