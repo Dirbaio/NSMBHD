@@ -78,7 +78,7 @@ reportFix(__("Counting forum threads&hellip;"));
 
 startFix();
 query("UPDATE {forums} f SET numposts =
-			(SELECT SUM(replies+1) FROM {threads} t WHERE t.forum = f.id)
+			(SELECT COALESCE(SUM(replies+1), 0) FROM {threads} t WHERE t.forum = f.id)
 		");
 reportFix(__("Counting forum posts&hellip;"));
 
