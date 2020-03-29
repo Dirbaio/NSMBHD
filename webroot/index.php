@@ -116,7 +116,9 @@ if($ajaxPage)
 	
 	if($useBuffering)
 	{
-		header("Content-Type: text/plain");
+		if($ajaxPage != 'no-content-type') {
+			header("Content-Type: text/plain");
+		}
 		ob_end_flush();
 	}
 		
