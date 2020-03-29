@@ -99,6 +99,8 @@ function domToString($dom)
 
 function markupToMarkup($dom, $markup)
 {
+	$markup = preg_replace('/[\x00-\x08\x0B\x0C\x0E-\x1F]/', '', $markup);
+
 	$markup_dom = new DOMDocument;
 	$markup_dom->encoding = 'UTF-8';
 	$markup_dom->preserveWhiteSpace = true;
