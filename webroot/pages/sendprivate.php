@@ -69,7 +69,7 @@ if($_POST['to'])
 	$recipients = explode(";", $_POST['to']);
 	foreach($recipients as $to)
 	{
-		$to = trim(htmlentities($to));
+		$to = trim($to);
 		if($to == "")
 			continue;
 
@@ -86,7 +86,7 @@ if($_POST['to'])
 				$recipIDs[] = $id;
 		}
 		else
-			$errors .= format(__("Unknown user \"{0}\""), $to)."<br />";
+			$errors .= format(__("Unknown user \"{0}\""), htmlentities($to))."<br />";
 	}
 	$maxRecips = array(-1 => 1, 3, 3, 3, 10, 100, 1);
 	$maxRecips = $maxRecips[$loguser['powerlevel']];
