@@ -1,4 +1,4 @@
-FROM ubuntu:18.04
+FROM ubuntu:20.04
 
 ENV DEBIAN_FRONTEND=noninteractive 
 
@@ -7,8 +7,8 @@ RUN apt-get update && apt-get install -y nano nginx php-mysql php-fpm php-curl p
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 RUN ln -sf /app/conf/nginx.conf /etc/nginx/nginx.conf && \
-    ln -sf /app/conf/php-fpm.conf /etc/php/7.2/fpm/php-fpm.conf && \
-    ln -sf /app/conf/php.ini /etc/php/7.2/fpm/php.ini
+    ln -sf /app/conf/php-fpm.conf /etc/php/7.4/fpm/php-fpm.conf && \
+    ln -sf /app/conf/php.ini /etc/php/7.4/fpm/php.ini
 
 WORKDIR /app
 
