@@ -2,7 +2,7 @@ FROM ubuntu:20.04
 
 ENV DEBIAN_FRONTEND=noninteractive 
 
-RUN apt-get update && apt-get install -y nano nginx php-mysql php-fpm php-curl php-xml php-mbstring supervisor git curl php-gd ssmtp
+RUN apt-get update && apt-get install -y nano nginx php-mysql php-fpm php-curl php-xml php-mbstring supervisor git curl php-gd msmtp msmtp-mta
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
