@@ -8,25 +8,6 @@ require("../vendor/autoload.php");
 
 $boardroot = preg_replace('{/[^/]*$}', '/', $_SERVER['SCRIPT_NAME']);
 
-// Deslash GPC variables if we have magic quotes on
-if (get_magic_quotes_gpc())
-{
-	function AutoDeslash($val)
-	{
-		if (is_array($val))
-			return array_map('AutoDeslash', $val);
-		else if (is_string($val))
-			return stripslashes($val);
-		else
-			return $val;
-	}
-
-	$_REQUEST = array_map('AutoDeslash', $_REQUEST);
-	$_GET = array_map('AutoDeslash', $_GET);
-	$_POST = array_map('AutoDeslash', $_POST);
-	$_COOKIE = array_map('AutoDeslash', $_COOKIE);
-}
-
 function usectime()
 {
 	$t = gettimeofday();
