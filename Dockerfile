@@ -21,7 +21,8 @@ COPY . /app
 
 RUN groupadd -r app -g 1000 && \
     useradd -u 1000 -r -g app -d /app -s /bin/bash -c "Docker image user" app && \
-    chown -R app:app /app /var/lib/nginx
+    chown -R app:app /app /var/lib/nginx && \ 
+    ln -sf /tmp/msmtprc /etc/msmtprc
 
 USER 1000
 
