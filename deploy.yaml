@@ -1,0 +1,200 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: nsmbhd
+
+############################
+###         MYSQL
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql
+  namespace: nsmbhd
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 128Mi
+  storageClassName: local-path
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql
+  namespace: nsmbhd
+spec:
+  ports:
+    - protocol: TCP
+      name: mysql
+      port: 3306
+  selector:
+    app: mysql
+
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  namespace: nsmbhd
+  name: mysql
+  labels:
+    app: mysql
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: mysql
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+      - name: mysql
+        image:  mysql:8.0.28
+        ports:
+        - name: mysql
+          containerPort: 8806
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: root
+        - name: MYSQL_USER
+          value: nsmbhd
+        - name: MYSQL_PASSWORD
+          value: nsmbhd
+        - name: MYSQL_DATABASE
+          value: nsmbhd
+        volumeMounts:
+        - name: data
+          mountPath: /var/lib/mysql
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: mysql
+
+
+
+############################
+###        NSMBHD
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nsmbhd
+  namespace: nsmbhd
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 128Mi
+  storageClassName: local-path
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nsmbhd
+  namespace: nsmbhd
+spec:
+  ports:
+    - protocol: TCP
+      name: web
+      port: 8000
+  selector:
+    app: nsmbhd
+
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: nsmbhd
+  namespace: nsmbhd
+  labels:
+    app: nsmbhd
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nsmbhd
+  template:
+    metadata:
+      labels:
+        app: nsmbhd
+    spec:
+      containers:
+      - name: nsmbhd
+        image: $IMAGE
+        imagePullPolicy: Never
+        securityContext:
+          readOnlyRootFilesystem: true
+        ports:
+        - name: web
+          containerPort: 8000
+        env:
+        - name: MYSQL_HOST
+          value: mysql
+        - name: MYSQL_USER
+          value: nsmbhd
+        - name: MYSQL_PASSWORD
+          value: nsmbhd
+        - name: MYSQL_DATABASE
+          value: nsmbhd
+        - name: ABXD_SALT
+          valueFrom:
+            secretKeyRef:
+              name: nsmbhd
+              key: salt
+        - name: ABXD_SFS_KEY
+          valueFrom:
+            secretKeyRef:
+              name: nsmbhd
+              key: sfs-key
+        - name: SMTP_HOST
+          value: smtp.gmail.com
+        - name: SMTP_PORT
+          value: "587"
+        - name: SMTP_FROM
+          value: noreply2@dirbaio.net
+        - name: SMTP_USER
+          value: noreply2@dirbaio.net
+        - name: SMTP_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: nsmbhd
+              key: smtp-password
+        volumeMounts:
+        - name: data
+          mountPath: /data
+        - name: tmp
+          mountPath: /tmp
+        - name: var-lib-php-sessions
+          mountPath: /var/lib/php/sessions
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: nsmbhd
+      - name: tmp
+        emptyDir: {}
+      - name: var-lib-php-sessions
+        emptyDir: {}
+
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: nsmbhd
+  namespace: nsmbhd
+spec:
+  entryPoints:
+    - websecure
+  routes:
+  - match: Host("nsmbhd.net")
+    kind: Rule
+    services:
+    - name: nsmbhd
+      port: 8000
