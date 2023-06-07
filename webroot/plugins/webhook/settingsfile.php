@@ -1,9 +1,10 @@
 <?php
 	$settings = array(
+		// The needed parameters 
 		"url" => array(
 			"type" => "text",
 			"default" => "localhost",
-			"name" => "Discord Webhook URL",
+			"name" => "The Discord Webhook URL you want to send posts to.",
 		),
 		"username" => array(
 			"type" => "text",
@@ -15,6 +16,25 @@
 			"default" => "",
 			"name" => "The avatar that will show for the webhook message in chat.",
 		),
+
+		// Admin versions of the first parameters
+		"adminUrl" => array(
+			"type" => "text",
+			"default" => "",
+			"name" => "An optional second Discord Webhook URL for posts that require permissions higher than being a regular member.",
+		),
+		"adminUsername" => array(
+			"type" => "text",
+			"default" => "",
+			"name" => "The username that will show for the admin webhook message in chat.",
+		),
+		"adminAvatarUrl" => array(
+			"type" => "text",
+			"default" => "",
+			"name" => "The avatar that will show for the admin webhook message in chat.",
+		),
+
+		// Embed colors
         "newReplyColor" => array(
 			"type" => "integer",
 			"default" => "14483220",
