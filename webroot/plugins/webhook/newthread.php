@@ -9,11 +9,6 @@ if($urlRewriting)
 else
 	$link = getServerURL()."?tid=".$tid;
 
-if ($forum['minpower'] <= 0)
-	$ch = 0;
-else
-	$ch = -1;
-
 postWebhook("The {$thread["title"]}** thread was created in {$forum["title"]}",
 			"$post",
 			$link,
