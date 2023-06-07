@@ -9,11 +9,6 @@ if($urlRewriting)
 else
 	$link = getServerURL()."?pid=".$pid;
 
-if ($forum['minpower'] <= 0)
-    $ch = 0;
-else
-    $ch = -1;
-
 postWebhook("New reply in the {$thread["title"]} thread. ({$forum["title"]})",
 			"{$post}",
 			$link,
