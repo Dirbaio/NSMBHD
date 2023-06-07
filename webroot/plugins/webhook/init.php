@@ -29,7 +29,7 @@ function postWebhook($title, $description, $url, $color, $authorName, $webhookUr
 				"description" => $description,
 	
 				// URL of title link
-				"url" => "https://nsmbhd.net",
+				"url" => $url,
 	
 				// Timestamp of embed must be formatted as ISO8601
 				"timestamp" => $timestamp,
