@@ -9,9 +9,28 @@ if($urlRewriting)
 else
 	$link = getServerURL()."?pid=".$pid;
 
-postWebhook("New reply in the {$thread["title"]} thread. ({$forum["title"]})",
-			"{$post}",
+// If this post requires modderator or higher permissions to view, only send
+//	the post to the staff url
+if ($forum['minpower'] <= 0) {
+	$webhookUrl = Settings::pluginGet("url");
+	$webhookUsername = Settings::pluginGet("username");
+	$webhookAvatar = Settings::pluginGet("avatarUrl");
+	
+} else {
+	$webhookUrl = Settings::pluginGet("adminUrl");
+	$webhookUsername = Settings::pluginGet("adminUsername");
+	$webhookAvatar = Settings::pluginGet("adminAvatarUrl");
+}
+
+// If there is no webhook defined, just stop what we're doing
+if ($webhookUrl == ""){return;};
+
+postWebhook("New reply in the __{$thread["title"]}__ thread. ({$forum["title"]})",
+			$post,
 			$link,
 			Settings::pluginGet("newReplyColor"),
-			$thename
-);
+			$thename,
+			$webhookUrl,
+			$webhookUsername,
+			$webhookAvatar
+		);

@@ -1,8 +1,5 @@
 <?php
-function postWebhook($title, $description, $url, $color, $authorName){
-	$webhookUrl = Settings::pluginGet("url");
-	$webhookUsername = Settings::pluginGet("username");
-	$webhookAvatar = Settings::pluginGet("avatarUrl");
+function postWebhook($title, $description, $url, $color, $authorName, $webhookUrl, $webhookUsername, $webhookAvatar){
 	$timestamp = date("c", strtotime("now"));
 	$json_data = json_encode([
 		
