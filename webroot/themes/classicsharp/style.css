@@ -19,7 +19,7 @@ table.outline
 
 table.post
 {
-	background: url(../img/themes/defaultold/back2t1.png) #303678;
+	background: url(back2t1.png) #303678;
 	border-collapse: separate;
 	border-spacing: 0;
 	border-radius: 8px;
@@ -29,7 +29,7 @@ table.post
 
 table.post td.post
 {
-	background: #222 url(../img/themes/defaultold/back2g.png);
+	background: #222 url(back2g.png);
 }
 
 button, input[type="submit"]
@@ -78,12 +78,12 @@ button, input[type="submit"]
 
 td.post code.Code .geshi .post_about
 {
-	background: #24285C url(../img/themes/defaultold/back2t2.png);
+	background: #24285C url(back2t2.png);
 }
 
 .errort
 {
-	background: #4E5174 url(../img/themes/defaultold/backh.png) repeat-x;
+	background: #4E5174 url(backh.png) repeat-x;
 }
 
 .errorc
@@ -99,12 +99,12 @@ td.post code.Code .geshi .post_about
 .post_topbar
 {
 	border: 1px solid #669;
-	background: url(../img/themes/defaultold/back2t2.png);
+	background: url(back2t2.png);
 }
 
 .post_content
 {
-	background: url(../img/themes/defaultold/back2t1.png);
+	background: url(back2t1.png);
 	border: 1px solid #669;
 }
 

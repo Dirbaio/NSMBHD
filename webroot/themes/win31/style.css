@@ -344,7 +344,7 @@ button.expander:hover
 
 #header tr:first-child td:first-child
 {
-	background: navy url("../img/themes/win31/header.png") repeat-x;
+	background: navy url("header.png") repeat-x;
 }
 
 .pollbarContainer

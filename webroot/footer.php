@@ -5,7 +5,7 @@ else echo '<a href="#" onclick="enableMobileLayout(-1); return false;" rel="nofo
 <br>
 <br>
 <?php $bucket = "footer"; include("./lib/pluginloader.php");?>
-Powered by <a href="http://abxd.dirbaio.net/">AcmlmBoard XD</a><br />
+Powered by AcmlmBoard XD<br />
 By Dirbaio, xfix, Kawa, StapleButter, Nina, et al<br />
 AcmlmBoard &copy; Jean-Fran&ccedil;ois Lapointe<br />
 <?php print __("<!-- English translation by The ABXD Team -->")?>
