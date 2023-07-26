@@ -10,64 +10,77 @@ $lastKnownBrowser = "Something";
 
 $knownBrowsers = array
 (
-	"IE" => "Internet Explorer",
-	"rekonq" => "rekonq",
+	"IE" => "Internet Explorer", // doesn't work for IE11, tho
+	"Edge" => "Microsoft Edge", // old Win10 EDGE
+	"Edg" => "Microsoft Edge", // chromium edge
 	"OPR" => "Opera",
-	"Otter" => "Otter",
-	"Opera Tablet" => "Opera Mobile (tablet)",
-	"Opera Mobile" => "Opera Mobile",
-	"Opera Mini" => "Opera Mini", //Opera/9.80 (J2ME/MIDP; Opera Mini/4.2.18887/764; U; nl) Presto/2.4.15
-	"Nintendo Wii" => "Wii Internet Channel", //Opera/9.30 (Nintendo Wii; U; ; 3642; nl)
-	"Nintendo DSi" => "Nintendo DSi Browser", //Opera/9.50 (Nintendo DSi; Opera/507; U; en-US)
-	"Nitro" => "Nintendo DS Browser",
-	"Opera" => "Opera",
-	"Iceweasel" => "Iceweasel",
-	"MozillaDeveloperPreview" => "Firefox (Development build)",
-	"Firefox" => "Firefox",
-	"dwb" => "DWB",
+	"Opera" => "Opera" // old Opera (12.x and below)
+	"Brave" => "Brave", // ew
 	"Chrome" => "Chrome",
-	"Android" => "Android",
+	"SeaMonkey" => "SeaMonkey",
+	"K-Meleon" => "K-Meleon",
+	"Mypal" => "Mypal", // feodor2's XP compatible fork of ff68
+	"PaleMoon" => "Pale Moon",
+	"Firefox" => "Firefox",
+	"TenFourFox" => "TenFourFox",
+	"Waterfox" => "Waterfox",
+	"Otter" => "Otter",
+	"QtWeb" => "QtWeb",
 	"Midori" => "Midori",
+	"Falkon" => "Falkon",
 	"Safari" => "Safari",
-	"Konqueror" => "Konqueror",
-	"Mozilla" => "Mozilla",
 	"Lynx" => "Lynx",
 	"ELinks" => "ELinks",
-	"Links" => "Links",
-	"Nokia" => "Nokia mobile",
+	"NetSurf" => "NetSurf",
+	"Googlebot" => "I'm pretending to be a Googlebot for some reason", // LOL
+	"AppleWebKit" => "WebKit",
+	"Mozilla" => "Mozilla",
 );
 
 $knownOSes = array
 (
 	"Nintendo 3DS" => "Nintendo 3DS",
+	"PLAYSTATION 3" => "PlayStation 3",
+	"PlayStation 4" => "PlayStation 4",
+	"PlayStation 5" => "PlayStation 5",
+	"Nintendo WiiU" => "Wii U",
+	"Nintendo Switch" => "Nintendo Switch",
 	'iPod' => 'iPod',
 	'iPad' => 'iPad',
-	'iPhone' => 'iPhone',
-	"HTC_" => "HTC mobile",
-	"Series 60" => "S60",
-	"Nexus" => "Android (Nexus %)",
-	"Android" => "Android",
-	"Windows 4.0" => "Windows 95",
-	"Windows 4.1" => "Windows 98",
-	"Windows 4.9" => "Windows ME",
-	"Windows NT 5.0" => "Windows NT",
-	"Windows NT 5.1" => "Windows XP",
-	"Windows NT 5.2" => "Windows XP 64",
+	'iPhone' => 'iPhone %',
+	"Android" => "Android %",
+	"Win 9x 4.90" => "Windows ME",
+	"Windows 98" => "Windows 98",
+	"Win95" => "Windows 95",
+	"Windows 95" => "Windows 95",
+	"Windows NT 4.0" => "Windows NT 4.0",
+	"Windows NT 5.0" => "Windows 2000",
+	"Windows NT 5.1" => "Windows XP", // version 2001/2002, x86
+	"Windows NT 5.2" => "Windows XP", // version 2003, usually x64
 	"Windows NT 6.0" => "Windows Vista",
 	"Windows NT 6.1" => "Windows 7",
 	"Windows NT 6.2" => "Windows 8",
+	"Windows NT 6.3" => "Windows 8.1",
+	"Windows NT 6.4" => "Windows 10 Preview",
+	"Windows NT 10.0" => "Windows 10/11",
 	"Windows Mobile" => "Windows Mobile",
 	"FreeBSD" => "FreeBSD",
+	"OpenBSD" => "OpenBSD",
+	"NetBSD" => "NetBSD",
+	"AmigaOS" => "AmigaOS",
+	"openSUSE" => "openSUSE",
+	"Debian" => "Debian",
+	"Fedora" => "Fedora",
+	"Arch Linux" => "Arch Linux %",
 	"Ubuntu" => "Ubuntu",
 	"Linux" => "GNU/Linux %",
-	"Mac OS X" => "Mac OS X %",
+	"Mac OS X" => "macOS %",
 	"BlackBerry" => "BlackBerry",
 	"Nintendo Wii" => "Nintendo Wii",
 	"Nitro" => "Nintendo DS",
-	"Firefox" => "Firefox OS",
 );
 
-$mobileBrowsers = array('Opera Tablet', 'Opera Mobile', 'Opera Mini', 'Nintendo DSi', 'Nitro', 'Nintendo 3DS', 'Android', 'Nokia', 'iPod', 'iPad', 'iPhone', 'Firefox OS');
+$mobileBrowsers = array('Opera Tablet', 'Opera Mobile', 'Nitro', 'Nintendo 3DS', 'Android', 'Nokia', 'iPod', 'iPad', 'iPhone', 'Firefox OS');
 $mobileLayout = false;
 
 $ua = $_SERVER['HTTP_USER_AGENT'];
@@ -153,7 +166,9 @@ function GetVersion($ua, $versionStart)
 	return $version;
 }
 
+if (isset($_COOKIE['forcelayout']))
+{
 if ($_COOKIE['forcelayout'] == 1) $mobileLayout = true;
 else if ($_COOKIE['forcelayout'] == -1) $mobileLayout = false;
-
+}
 ?>
