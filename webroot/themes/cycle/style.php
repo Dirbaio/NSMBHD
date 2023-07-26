@@ -12,6 +12,7 @@ $hue2 = ($hue + 120) % 360;
 $hs2 = $hue2.", 100%";
 
 $css = "/* AcmlmBoard XD - Daily Cycle */
+@import url('../../css/borders.css');
 @import url('../../css/roundcorners.css');
 
 #body
