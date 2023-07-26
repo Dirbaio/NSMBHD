@@ -37,7 +37,7 @@ echo "
 	</script>
 ";
 
-if($loguser['powerlevel'] >= 1)
+if($loguserid)
 {
 	echo "
 		<form action=\"".actionLink("search")."\" method=\"post\">
@@ -79,7 +79,7 @@ if($loguser['powerlevel'] >= 1)
 echo "</td></tr></table>";
 
 
-if($loguser['powerlevel'] < 1)
+if(!$loguserid)
 	throw new KillException();
 
 if(isset($_POST['q']))
@@ -104,11 +104,13 @@ if(isset($_POST['q']))
 
 	$search = Query("
 		SELECT
-			t.id, t.title, t.user,
+			t.id, t.title, t.user, t.forum,
+   			f.id, f.minpower,
 			u.(_userfields)
 		FROM {threads} t
 			LEFT JOIN {users} u ON u.id=t.user
-		WHERE MATCH(t.title) AGAINST({0} IN BOOLEAN MODE)
+   			LEFT JOIN {forums} f ON f.id=t.forum
+		WHERE ".forumAccessControlSql()." AND MATCH(t.title) AGAINST({0} IN BOOLEAN MODE)
 		ORDER BY t.lastpostdate DESC
 		LIMIT 0,100", $bool);
 
@@ -153,13 +155,15 @@ if(isset($_POST['q']))
 	$search = Query("
 		SELECT
 			pt.text, pt.pid,
-			t.title, t.id,
+			t.title, t.id, t.forum,
+   			f.id, f.minpower,
 			u.(_userfields)
 		FROM {posts_text} pt
 			LEFT JOIN {posts} p ON pt.pid = p.id
 			LEFT JOIN {threads} t ON t.id = p.thread
+   			LEFT JOIN {forums} f ON f.id = t.forum
 			LEFT JOIN {users} u ON u.id = p.user
-		WHERE pt.revision = p.currentrevision AND MATCH(pt.text) AGAINST({0} IN BOOLEAN MODE)
+		WHERE ".forumAccessControlSql()." AND pt.revision = p.currentrevision AND MATCH(pt.text) AGAINST({0} IN BOOLEAN MODE)
 		ORDER BY p.date DESC
 		LIMIT 0,100", $bool);
 
