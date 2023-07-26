@@ -112,7 +112,7 @@ while($mood = Fetch($rMoods))
 "
 		<tr class=\"cell{0}\">
 			<td style=\"width: 100px;\">
-				<img src=\"img/avatars/{1}_{2}\" alt=\"\">
+				<img src=\"{$dataDir}avatars/{1}_{2}\" alt=\"\">
 			</td>
 			<td>
 				<form method=\"post\" action=\"".actionLink("editavatars")."\">
