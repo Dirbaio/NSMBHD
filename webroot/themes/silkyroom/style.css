@@ -44,7 +44,7 @@ table.post td.post
 	background: #200;
 }
 
-button, input, select
+button, input, select, textarea
 {
 	background: #704;
 	color: #FFF;
