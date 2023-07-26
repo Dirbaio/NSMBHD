@@ -1,4 +1,34 @@
 User-agent: *
 Disallow: /online/
 Disallow: /listposts/
+Disallow: /calendar/
+Disallow: /memberlist/
+Disallow: /uploader/
+Disallow: /register/
+Disallow: /login/
+Disallow: /lostpass/
+Disallow: /search/
 
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: BLEXBot
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: MegaIndex.ru
+Disallow: /
+
+User-agent: SemrushBot
+Disallow: /
+
+User-Agent: DotBot
+Disallow: /
+
+User-Agent: DataForSeoBot
+Disallow: /
+
+User-Agent: The Knowledge AI
+Disallow: /
