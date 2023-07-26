@@ -14,7 +14,7 @@ $hs2 = $hue2.", ".$sat."%";
 $cp = $comp.", 20%";
 
 $css = "/* AcmlmBoard XD - Daily Kaypea */
-
+@import url('../../css/borders.css');
 #body
 {
 	background: hsl([huesat], 15%) url('background.png');
