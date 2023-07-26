@@ -18,7 +18,7 @@
 			<tr>
 				<td style="border: 0px none; text-align: left;">
 					<a href="<?php print $boardroot; ?>">
-						<img id="theme_banner" src="<?php print htmlspecialchars($layout_logopic); ?>" alt="" title="<?php print htmlspecialchars($layout_title); ?>"  /> 
+						<img id="theme_banner" src="<?php print htmlspecialchars($layout_logopic; ?>" alt="" title="<?php print $layout_title; ?>"  /> 
 					</a>
 				</td>
 				<td style="border: 0px none; text-align: left;">
