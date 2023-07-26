@@ -1,6 +1,7 @@
 /* ABXD Pony theme by Kawa
 ...it needs to be about 20% brighter. */
 @import url('../../css/borders.css');
+@import url('../../css/lightcolors.css');
 
 .outline, .PoRT
 {
