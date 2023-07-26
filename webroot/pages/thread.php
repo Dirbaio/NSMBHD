@@ -64,6 +64,8 @@ if(isset($_GET['vote']))
 	AssertForbidden("vote");
 	if(!$loguserid)
 		Kill(__("You can't vote without logging in."));
+	if(!$loguser['powerlevel'] < 0)
+		Kill(__("You are banned and may not vote in polls.")); //needs translation
 	if($thread['closed'])
 		Kill(__("Poll's closed!"));
 	if(!$thread['poll'])
