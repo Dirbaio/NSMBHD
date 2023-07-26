@@ -1,6 +1,8 @@
 /* ABXD Umbreon theme by Kiyoshi Kasuga
 Inverting all the colours would probably make a nice phpBB Espeon skin */
 
+@import url('../../css/borders.css');
+
 #body
 {
 	background: #202000 url("b.png");
@@ -15,10 +17,6 @@ table, td, tr, th, div
 #header, #header tr, #header tr td
 {
 	background: rgba(64, 64, 64, .5);
-	background-image: -ms-linear-gradient(rgba(128, 128, 128, .25) 0%, rgba(0, 0, 0, .25) 100%);
-	background-image: -moz-linear-gradient(rgba(128, 128, 128, .25) 0%, rgba(0, 0, 0, .25) 100%);
-	background-image: -o-linear-gradient(rgba(128, 128, 128, .25) 0%, rgba(0, 0, 0, .25) 100%);
-	background-image: -webkit-linear-gradient(rgba(128, 128, 128, .25) 0%, rgba(0, 0, 0, .25) 100%);
 	background-image: linear-gradient(rgba(128, 128, 128, .25) 0%, rgba(0, 0, 0, .25) 100%);
 	font-family: "Consolas", "Lucida Console", monospace;
 }
@@ -80,20 +78,12 @@ a:hover, a:hover span, #header  a:hover, #header a:hover span
 .header0 th
 {
 	background: #444;
-	background-image: url("../img/themes/umbreon/h.png"), -ms-linear-gradient(#808080 0%, #000 100%);
-	background-image: url("../img/themes/umbreon/h.png"), -moz-linear-gradient(#808080 0%, #000 100%);
-	background-image: url("../img/themes/umbreon/h.png"), -o-linear-gradient(#808080 0%, #000 100%);
-	background-image: url("../img/themes/umbreon/h.png"), -webkit-linear-gradient(#808080 0%, #000 100%);
-	background-image: url("../img/themes/umbreon/h.png"), linear-gradient(#808080 0%, #000 100%);
+	background-image: url("h.png"), linear-gradient(#808080 0%, #000 100%);
 }
 
 .header1 th, .errort, button, input[type="submit"], #tabs button
 {
 	background: #000;
-	background-image: -ms-linear-gradient(#fff 0%, #000 50%);
-	background-image: -moz-linear-gradient(#fff 0%, #000 50%);
-	background-image: -o-linear-gradient(#fff 0%, #000 50%);
-	background-image: -webkit-linear-gradient(#fff 0%, #000 50%);
 	background-image: linear-gradient(#fff 0%, #000 50%);
 }
 .header0 th, .header1 th, .errort
@@ -107,10 +97,6 @@ a:hover, a:hover span, #header  a:hover, #header a:hover span
 .header0, .header1
 {
 	background: rgba(64, 64, 64, .5);
-	background-image: -ms-linear-gradient(rgba(128, 128, 128, .5) 0%, rgba(0, 0, 0, .5) 100%);
-	background-image: -moz-linear-gradient(rgba(128, 128, 128, .5) 0%, rgba(0, 0, 0, .5) 100%);
-	background-image: -o-linear-gradient(rgba(128, 128, 128, .5) 0%, rgba(0, 0, 0, .5) 100%);
-	background-image: -webkit-linear-gradient(rgba(128, 128, 128, .5) 0%, rgba(0, 0, 0, .5) 100%);
 	background-image: linear-gradient(rgba(128, 128, 128, .5) 0%, rgba(0, 0, 0, .5) 100%);
 	font-family: "Consolas", "Lucida Console", monospace;
 }
@@ -214,10 +200,6 @@ button.expander:hover
 #tabs .selected
 {
 	background: #ccc;
-	background-image: -ms-linear-gradient(#fff 0%, #808080 50%);
-	background-image: -moz-linear-gradient(#fff 0%, #808080 50%);
-	background-image: -o-linear-gradient(#fff 0%, #808080 50%);
-	background-image: -webkit-linear-gradient(#fff 0%, #808080 50%);
 	background-image: linear-gradient(#fff 0%, #808080 50%);
 	color: red;
 	border: 0 !important;
