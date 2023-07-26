@@ -781,3 +781,7 @@ div.overlayShade div.buttonContainer button {
 	clear: both;
 	height: 0;
 }
+
+.imgtag {
+	max-width:100%;
+}
