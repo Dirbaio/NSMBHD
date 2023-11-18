@@ -10,7 +10,7 @@ function replaceQuotes($string) {
         // Append '>' in front of the text
         $nestedContent = '> ' . str_replace("\n", "\n> ", $nestedContent);
         
-        $replacementString = "[Quoting {$matches[1]}](http://localhost/post/{$matches[2]}/)\n\n{$nestedContent}";
+        $replacementString = "[Quoting {$matches[1]}](https://nsmbhd.net/post/{$matches[2]}/)\n\n{$nestedContent}";
         $string = str_replace($matches[0], $replacementString, $string);
     }
 
@@ -87,7 +87,7 @@ function postWebhook($title, $description, $url, $color, $authorName, $authorID,
                 "description" => formatPost($description),
     
                 // URL of title link
-                "url" => "https://nsmbcentral.net",
+                "url" => $url,
     
                 // Timestamp of embed must be formatted as ISO8601
                 "timestamp" => $timestamp,
@@ -98,7 +98,7 @@ function postWebhook($title, $description, $url, $color, $authorName, $authorID,
                 // Author
                 "author" => [
                     "name" => $authorName,
-                    "avatar_url" => "http://localhost:8000/data/avatars/$authorID/"
+                    "avatar_url" => "https://nsmbhd.net/data/avatars/$authorID/"
                 ]
             ]
         ]
