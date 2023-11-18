@@ -1,0 +1,49 @@
+version: '3'
+
+services:
+  nsmbhd:
+    build: ./
+    ports:
+      - 8000:8000
+    networks:
+      - nsmbhd_net
+    environment:
+      - MYSQL_HOST=db
+      - MYSQL_USER=nsmbhd
+      - MYSQL_PASSWORD=nsmbhd
+      - MYSQL_DATABASE=nsmbhd
+      - MYSQL_ROOT_PASSWORD=root
+      - ABXD_SALT=VMQeVLNlKXJPZxAf
+    # volumes:
+    #   - nsmbhd:/app
+    #   - nsmbhd:/data
+  db:
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: nsmbhd
+      MYSQL_PASSWORD: nsmbhd
+      MYSQL_DATABASE: nsmbhd
+    networks:
+      - nsmbhd_net
+    volumes:
+      - db:/var/lib/mysql
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+    networks:
+      - nsmbhd_net
+
+networks:
+  nsmbhd_net:
+    driver: bridge
+
+volumes:
+  nsmbhd:
+    driver: local
+  db:
+    driver: local
