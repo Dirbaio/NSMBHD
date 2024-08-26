@@ -350,7 +350,11 @@ function getServerURLNoSlash()
 	$stdport = $https?443:80;
 	$port = "";
 	if($stdport != $_SERVER["SERVER_PORT"] && $_SERVER["SERVER_PORT"])
-		$port = ":".$_SERVER["SERVER_PORT"];
+	{
+		if (!strpos($_SERVER['HTTP_HOST'], ":")) {
+			$port = ":".$_SERVER["SERVER_PORT"];
+		}
+	}
 	return ($https?"https":"http") . "://" . $_SERVER['HTTP_HOST'] . $port . substr($boardroot, 0, strlen($boardroot)-1);
 }
 

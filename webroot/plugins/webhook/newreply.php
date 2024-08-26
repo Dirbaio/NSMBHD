@@ -25,11 +25,13 @@ if ($forum['minpower'] <= 0) {
 // If there is no webhook defined, just stop what we're doing
 if ($webhookUrl == ""){return;};
 
+
 postWebhook("New reply in the __{$thread["title"]}__ thread. ({$forum["title"]})",
 			$post,
 			$link,
 			Settings::pluginGet("newReplyColor"),
 			$thename,
+			$loguserid,
 			$webhookUrl,
 			$webhookUsername,
 			$webhookAvatar
