@@ -6,7 +6,34 @@ $title = __("Avatar library");
 
 AssertForbidden("viewAvatars");
 
-if(isset($_GET['rebuild'])) //Now no longers requires an actual value.
+// Setting an avatar and rebuilding the index both write, so they only happen
+// on a POST carrying the token. The forms below hold it; no URL grows a key.
+if(isset($_POST['fid']))
+	$_GET['fid'] = $_POST['fid'];
+if(isset($_POST['action']) && ($_POST['action'] == "set" || $_POST['action'] == "rebuild"))
+{
+	if(!isset($_POST['key']) || !hash_equals($loguser['token'], $_POST['key']))
+		Kill(__("No."));
+	$_GET['action'] = $_POST['action'];
+}
+
+if(isset($_GET['rebuild']) && $_GET['action'] != "rebuild") //Now no longers requires an actual value.
+{
+	write("
+	<form action=\"".actionLink("avatarlibrary")."\" method=\"post\">
+		<input type=\"hidden\" name=\"key\" value=\"".htmlspecialchars($loguser['token'])."\" />
+		<table class=\"outline margin width50\">
+			<tr class=\"header1\"><th>".__("Avatar library")."</th></tr>
+			<tr class=\"cell1\"><td>".__("Rebuild the avatar library index?")."</td></tr>
+			<tr class=\"cell2\"><td>
+				<input type=\"submit\" name=\"action\" value=\"rebuild\" />
+			</td></tr>
+		</table>
+	</form>");
+	return;
+}
+
+if($_GET['action'] == "rebuild")
 {
 	$avalib = array();
 	//Prepare file tree...
@@ -64,17 +91,17 @@ if($_GET['action'] == "set")
 	elseif($_SERVER['REMOTE_ADDR'] != $loguser['lastip'])
 		Kill(__("Haaaah, no."));
 	else
-		if(!isset($_GET['fid']) || !isset($_GET['img']))
+		if(!isset($_POST['fid']) || !isset($_POST['img']))
 			Alert(__("Both category and image must be chosen to set your avatar."), __("Error"));
-		elseif(!is_numeric($_GET['fid']) || !is_numeric($_GET['img']))
+		elseif(!is_numeric($_POST['fid']) || !is_numeric($_POST['img']))
 			Alert(__("Category and image are supposed to be numerical!"), "WTFHAX?");
 		else
-			if($avalib[$fid]['content'][$_GET['img']] == "")
+			if($avalib[$fid]['content'][$_POST['img']] == "")
 				Alert(__("Unknown image."), __("Error"));
 			else
 			{
 				//Here's where the fun starts.
-				$image = "img/avatars/library/".$avalib[$fid]['name']."/".$avalib[$fid]['content'][$_GET['img']].".png";
+				$image = "img/avatars/library/".$avalib[$fid]['name']."/".$avalib[$fid]['content'][$_POST['img']].".png";
 
 				//Copy the selected image to /avatars/$loguserid.png (assume library is 100x100)
 				copy($image, "img/avatars/".$loguserid);
@@ -82,7 +109,7 @@ if($_GET['action'] == "set")
 				//Set your profile
 				Query("update users set picture={0} where id={1} limit 1", 'img/avatars/'.$loguserid, $loguserid);
 
-				Report("[b]".$loguser['name']."[/] switched avatars to [b]\"".$avalib[$fid]['content'][$_GET['img']]."\"[/] -> [g]#HERE#?uid=".$loguserid, 1);
+				Report("[b]".$loguser['name']."[/] switched avatars to [b]\"".$avalib[$fid]['content'][$_POST['img']]."\"[/] -> [g]#HERE#?uid=".$loguserid, 1);
 
 				die(header("Location: profile.php?id".$loguserid));
 			}
@@ -118,11 +145,19 @@ if(isset($fid))
 	$i = 0;
 	$set = "";
 	if($loguserid)
+	{
+		$set .= "<form action=\"".actionLink("avatarlibrary")."\" method=\"post\" style=\"display: inline;\">"
+			."<input type=\"hidden\" name=\"key\" value=\"".htmlspecialchars($loguser['token'])."\" />"
+			."<input type=\"hidden\" name=\"fid\" value=\"$fid\" />"
+			."<input type=\"hidden\" name=\"action\" value=\"set\" />";
 		foreach($avalib[$fid]['content'] as $image)
 		{
 			$img = "<img src=\"img/avatars/library/{$avalib[$fid]['name']}/$image.png\" alt=\"$image\" title=\"$image\" />";
-			$set .= actionLinkTag($img, "avatarlibrary", 0, "action=set&fid=$fid&img=".$i++);
+			$set .= "<button type=\"submit\" name=\"img\" value=\"".$i++."\""
+				." style=\"border: none; background: none; padding: 0; cursor: pointer;\">$img</button>";
 		}
+		$set .= "</form>";
+	}
 	else
 		foreach($avalib[$fid]['content'] as $image)
 		{
