@@ -1,5 +1,8 @@
-data
-Dockerfile
-d
-.dockerignore
-.git/
+# Deny by default: the image gets the application and its config, nothing else.
+# deploy.yaml and the helper scripts used to land in /app, which handed anyone
+# with a file-read bug the cluster layout and the database credentials.
+*
+!composer.json
+!composer.lock
+!conf
+!webroot
