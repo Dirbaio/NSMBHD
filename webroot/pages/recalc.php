@@ -30,6 +30,27 @@ function reportFix($what, $aff = -1)
 	echo $what, " ", format(__("{0} rows affected."), $aff), " time: ", sprintf('%1.3f', usectime()-$fixtime), "<br />";
 }
 
+// This rewrites counters across the whole board off a plain page load, so
+// don't do it until an admin has confirmed it with a token-checked POST.
+if(!isset($_POST['action']))
+{
+	echo '
+	<form method="post" action="'.actionLink("recalc").'">
+		<input type="hidden" name="key" value="'.htmlspecialchars($loguser['token']).'" />
+		<table class="outline margin width50">
+			<tr class="header0"><th>'.__("Recalculate statistics").'</th></tr>
+			<tr class="cell1"><td>'.__("This recounts posts, karma, thread and forum data for the whole board. It can take a while.").'</td></tr>
+			<tr class="cell2"><td>
+				<input type="submit" name="action" value="'.__("Recalculate").'" />
+			</td></tr>
+		</table>
+	</form>';
+	return;
+}
+
+if(!isset($_POST['key']) || !hash_equals($loguser['token'], $_POST['key']))
+	Kill(__("No."));
+
 $debugQueries = false;
 
 startFix();
