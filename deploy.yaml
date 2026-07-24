@@ -88,6 +88,12 @@ spec:
         ports:
         - name: mysql
           containerPort: 3306
+        readinessProbe:
+          tcpSocket:
+            port: mysql
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          failureThreshold: 3
         env:
         - name: MYSQL_ROOT_PASSWORD
           value: root
@@ -216,6 +222,22 @@ spec:
         ports:
         - name: web
           containerPort: 8000
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: web
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          timeoutSeconds: 3
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /healthz/php
+            port: web
+          initialDelaySeconds: 3
+          periodSeconds: 10
+          timeoutSeconds: 3
+          failureThreshold: 3
         env:
         - name: MYSQL_HOST
           value: mysql
