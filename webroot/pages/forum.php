@@ -9,6 +9,9 @@ $fid = (int)$_GET['id'];
 
 if($loguserid && $_GET['action'] == "markasread")
 {
+	if($loguser['token'] != $_GET['key'])
+		Kill(__("No."));
+
 	Query("REPLACE INTO {threadsread} (id,thread,date) SELECT {0}, {threads}.id, {1} FROM {threads} WHERE {threads}.forum={2}",
 		$loguserid, time(), $fid);
 
@@ -37,6 +40,10 @@ setUrlName("newthread", $fid, $forum["title"]);
 if ($loguserid)
 {
 	$isIgnored = FetchResult("select count(*) from {ignoredforums} where uid={0} and fid={1}", $loguserid, $fid) == 1;
+	if(isset($_GET['ignore']) || isset($_GET['unignore']))
+		if($loguser['token'] != $_GET['key'])
+			Kill(__("No."));
+
 	if(isset($_GET['ignore']))
 	{
 		if(!$isIgnored)
@@ -55,12 +62,12 @@ $links = new PipeMenu();
 
 if($loguserid)
 {
-	$links->add(new PipeMenuLinkEntry(__("Mark forum read"), "forum", $fid, "action=markasread", "ok"));
+	$links->add(new PipeMenuLinkEntry(__("Mark forum read"), "forum", $fid, "action=markasread&key=".$loguser['token'], "ok"));
 
 	if($isIgnored)
-		$links->add(new PipeMenuLinkEntry(__("Unignore forum"), "forum", $fid, "unignore", "eye-open"));
+		$links->add(new PipeMenuLinkEntry(__("Unignore forum"), "forum", $fid, "unignore&key=".$loguser['token'], "eye-open"));
 	else
-		$links->add(new PipeMenuLinkEntry(__("Ignore forum"), "forum", $fid, "ignore", "eye-close"));
+		$links->add(new PipeMenuLinkEntry(__("Ignore forum"), "forum", $fid, "ignore&key=".$loguser['token'], "eye-close"));
 
 	if($forum['minpowerthread'] <= $loguser['powerlevel'])
 		$links->add(new PipeMenuLinkEntry(__("Post thread"), "newthread", $fid, "", "comment"));
