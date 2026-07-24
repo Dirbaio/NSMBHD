@@ -118,7 +118,7 @@ function randomString($len, $chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789")
    $s = "";
    for ($i = 0; $i < $len; $i++)
    {
-       $p = rand(0, strlen($chars)-1);
+       $p = random_int(0, strlen($chars)-1);
        $s .= $chars[$p];
    }
    return $s;

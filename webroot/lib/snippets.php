@@ -281,11 +281,14 @@ function SendSystemPM($to, $message, $title)
 
 function Shake()
 {
+	// This makes session IDs, password reset keys and per-user salts, so it
+	// has to be a CSPRNG: mt_rand()'s state is recoverable from its output,
+	// and the register page hands out two Shake()s to anyone who asks.
 	$cset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPRQSTUVWXYZ0123456789";
 	$salt = "";
 	$chct = strlen($cset) - 1;
 	while (strlen($salt) < 16)
-		$salt .= $cset[mt_rand(0, $chct)];
+		$salt .= $cset[random_int(0, $chct)];
 	return $salt;
 }
 

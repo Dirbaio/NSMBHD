@@ -120,7 +120,7 @@ else
 {
 	$loguser = array("name"=>"", "powerlevel"=>0, "threadsperpage"=>50, "postsperpage"=>20, "theme"=>Settings::get("defaultTheme"),
 		"dateformat"=>"m-d-y", "timeformat"=>"h:i A", "fontsize"=>80, "timezone"=>0, "blocklayouts"=>!Settings::get("guestLayouts"),
-		'token'=>hash('sha1', rand()));
+		'token'=>hash('sha1', random_bytes(16)));
 	$loguserid = 0;
 }
 
