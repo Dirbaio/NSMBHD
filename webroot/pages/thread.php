@@ -308,6 +308,7 @@ if($loguserid && $loguser['powerlevel'] >= $forum['minpowerreply'] && (!$thread[
 	write(
 	"
 	<form action=\"".actionLink("newreply", $tid)."\" method=\"post\">
+		<input type=\"hidden\" name=\"key\" value=\"".htmlspecialchars($loguser['token'])."\" />
 		<input type=\"hidden\" name=\"ninja\" value=\"{0}\" />
 		<table class=\"outline margin width75\" style=\"margin: 4px auto;\" id=\"quickreply\">
 			<tr class=\"header1\">

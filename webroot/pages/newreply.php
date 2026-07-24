@@ -84,6 +84,9 @@ if(isset($_POST['actionpreview']))
 }
 else if(isset($_POST['actionpost']))
 {
+	if(!isset($_POST['key']) || !hash_equals($loguser['token'], $_POST['key']))
+		Kill(__("No."));
+
 	//Now check if the post is acceptable.
 	$rejected = false;
 
@@ -255,6 +258,7 @@ if(CanMod($loguserid, $fid))
 
 $form = "
 		<form name=\"postform\" action=\"".actionLink("newreply", $tid)."\" method=\"post\">
+			<input type=\"hidden\" name=\"key\" value=\"".htmlspecialchars($loguser['token'])."\" />
 			<input type=\"hidden\" name=\"ninja\" value=\"$ninja\" />
 			<table class=\"outline margin width100\">
 				<tr class=\"header1\">
