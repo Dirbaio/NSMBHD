@@ -108,6 +108,9 @@ else
 
 if($_POST['action'] == __("Send") || $_POST['action'] == __("Save as Draft"))
 {
+	if(!isset($_POST['key']) || !hash_equals($loguser['token'], $_POST['key']))
+		Kill(__("No."));
+
 	if($_POST['title'])
 	{
 		$_POST['title'] = $_POST['title'];
@@ -191,6 +194,7 @@ if(!isset($_POST['iconid']))
 
 $form = "
 	<form name=\"postform\" action=\"".actionLink("sendprivate")."\" method=\"post\">
+		<input type=\"hidden\" name=\"key\" value=\"".htmlspecialchars($loguser['token'])."\" />
 		<table class=\"outline margin width100\">
 			<tr class=\"header1\">
 				<th colspan=\"2\">
