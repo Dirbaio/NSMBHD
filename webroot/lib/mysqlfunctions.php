@@ -126,11 +126,17 @@ function Upgrade()
 				}
 			}
 			$newindexes = array();
+			// The regex is case-insensitive but SHOW INDEX below always reports the
+			// type in lowercase, so fold the parsed one too. Otherwise a schema
+			// that shouts -- wikixd's 'UNIQUE KEY `wpt`' -- never compares equal to
+			// the 'unique' read back, and the index is dropped and re-added on
+			// every run, as a *plain* one, since the add branches below only test
+			// for lowercase. That is how prod ended up with a non-unique `wpt`.
 			preg_match_all('@((primary|unique|fulltext)\s*)?key\s+(`(\w+)`\s+)?\(([\w`,\s]+)\)@si', $tableSchema['special'], $idxs, PREG_SET_ORDER);
 			foreach ($idxs as $idx)
 			{
 				$name = $idx[4] ? $idx[4] : 'PRIMARY';
-				$newindexes[$name]['type'] = $idx[2];
+				$newindexes[$name]['type'] = strtolower($idx[2]);
 				$newindexes[$name]['fields'] = preg_replace('@\s+@s', '', $idx[5]);
 			}
 			$curindexes = array();
