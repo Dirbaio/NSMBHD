@@ -257,6 +257,22 @@ spec:
             secretKeyRef:
               name: nsmbhd
               key: sfs-key
+        # Cloudflare Turnstile, the bot check on the registration form. The site
+        # key is not secret -- it ships in the page's HTML -- but it lives in
+        # the Secret alongside its secret key so the pair is rotated in one
+        # place. Both are required: webroot/lib/config.php has no fallback, so a
+        # pod missing either refuses to serve rather than serving an
+        # unprotected form.
+        - name: ABXD_TURNSTILE_SITE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: nsmbhd
+              key: turnstile-site-key
+        - name: ABXD_TURNSTILE_SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: nsmbhd
+              key: turnstile-secret-key
         - name: SMTP_HOST
           value: smtp.gmail.com
         - name: SMTP_PORT

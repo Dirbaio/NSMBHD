@@ -6,10 +6,6 @@ $crumbs = new PipeMenu();
 $crumbs->add(new PipeMenuLinkEntry(__("Register"), "register"));
 makeBreadcrumbs($crumbs);
 
-$haveSecurimage = is_file("securimage/securimage.php");
-if($haveSecurimage)
-	session_start();
-
 $title = __("Register");
 
 class StopForumSpam
@@ -159,44 +155,45 @@ function validateSex($sex)
 
 if(isset($_POST['name']))
 {
-	$name = trim($_POST['name']);
-	$cname = str_replace(" ","", strtolower($name));
-
-	$rUsers = Query("select name, displayname from {users}");
-	while($user = Fetch($rUsers))
+	// The bot check comes first, before anything else touches the database:
+	// the name collision check below reads the whole user table, and an
+	// unverified POST has no business costing that.
+	if(!turnstileCheck())
+		$err = __("The bot check didn't go through. Please try again.");
+	else
 	{
-		$uname = trim(str_replace(" ", "", strtolower($user['name'])));
+		$name = trim($_POST['name']);
+		$cname = str_replace(" ","", strtolower($name));
+
+		$rUsers = Query("select name, displayname from {users}");
+		while($user = Fetch($rUsers))
+		{
+			$uname = trim(str_replace(" ", "", strtolower($user['name'])));
+			if($uname == $cname)
+				break;
+			$uname = trim(str_replace(" ", "", strtolower($user['displayname'])));
+			if($uname == $cname)
+				break;
+		}
+
+		$ipKnown = FetchResult("select COUNT(*) from {users} where lastip={0}", $_SERVER['REMOTE_ADDR']);
+
+		//This makes testing faster.
+		if($_SERVER['REMOTE_ADDR'] == "127.0.0.1")
+			$ipKnown = 0;
+
 		if($uname == $cname)
-			break;
-		$uname = trim(str_replace(" ", "", strtolower($user['displayname'])));
-		if($uname == $cname)
-			break;
-	}
-
-	$ipKnown = FetchResult("select COUNT(*) from {users} where lastip={0}", $_SERVER['REMOTE_ADDR']);
-
-	//This makes testing faster.
-	if($_SERVER['REMOTE_ADDR'] == "127.0.0.1")
-		$ipKnown = 0;
-
-	if($uname == $cname)
-		$err = __("This user name is already taken. Please choose another.");
-	else if($name == "" || $cname == "")
-		$err = __("The user name must not be empty. Please choose one.");
-	else if(strpos($name, ";") !== false)
-		$err = __("The user name cannot contain semicolons.");
-	elseif($ipKnown >= 3)
-		$err = __("Another user is already using this IP address.");
-	else if (strlen($_POST['pass']) < 4)
-		$err = __("Your password should atleast be 4 characters.");
-	else if ($_POST['pass'] !== $_POST['pass2'])
-		$err = __("The passwords you entered don't match.");
-	else if($haveSecurimage)
-	{
-		include("securimage/securimage.php");
-		$securimage = new Securimage();
-		if($securimage->check($_POST['captcha_code']) == false)
-			$err = __("You got the CAPTCHA wrong.");
+			$err = __("This user name is already taken. Please choose another.");
+		else if($name == "" || $cname == "")
+			$err = __("The user name must not be empty. Please choose one.");
+		else if(strpos($name, ";") !== false)
+			$err = __("The user name cannot contain semicolons.");
+		elseif($ipKnown >= 3)
+			$err = __("Another user is already using this IP address.");
+		else if (strlen($_POST['pass']) < 4)
+			$err = __("Your password should atleast be 4 characters.");
+		else if ($_POST['pass'] !== $_POST['pass2'])
+			$err = __("The passwords you entered don't match.");
 	}
 
 	if(!$err)
@@ -312,20 +309,14 @@ echo "
 			</td>
 		</tr>";
 
-if($haveSecurimage)
-{
-	echo "
-		<tr>
-			<td class=\"cell2\">
-				".__("Security")."
-			</td>
-			<td class=\"cell1\">
-				<img width=\"200\" height=\"80\" id=\"captcha\" src=\"".actionLink("captcha", shake())."\" alt=\"CAPTCHA Image\" />
-				<button onclick=\"document.getElementById('captcha').src = '".actionLink("captcha", shake())."?' + Math.random(); return false;\">".__("New")."</button><br />
-				<input type=\"text\" name=\"captcha_code\" size=\"10\" maxlength=\"6\" class=\"required\" />
-			</td>
-		</tr>";
-}
+echo "
+			<tr>
+				<td class=\"cell2\">
+					".__("Security")."
+				</td>
+				<td class=\"cell1\">".turnstileWidget()."
+				</td>
+			</tr>";
 
 echo "
 		<tr class=\"cell2\">

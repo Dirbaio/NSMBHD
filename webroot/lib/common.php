@@ -36,6 +36,7 @@ include("language.php");
 include("write.php");
 include("snippets.php");
 include("links.php");
+include("turnstile.php");
 
 
 class KillException extends Exception { }
