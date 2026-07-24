@@ -75,12 +75,20 @@ function Upgrade()
 			$primaryKey = "";
 			$changes = 0;
 			$foundFields = array();
-			$scan = Query("show columns from `{".$table."}`");
+			$scan = Query("show full columns from `{".$table."}`");
 			while($field = $scan->fetch_assoc())
 			{
 				$fieldName = $field['Field'];
 				$foundFields[] = $fieldName;
 				$type = $field['Type'];
+				// A CHANGE without a COLLATE clause resets the column to the table's
+				// default collation. users.name is deliberately case-insensitive while
+				// the users table is utf8mb4_bin, and losing that silently broke login
+				// for anyone who typed their name with the wrong case. So when the
+				// schema pins a collation, compare against the live one too.
+				$wanted = $tableSchema['fields'][$fieldName] ?? '';
+				if($field['Collation'] && stripos($wanted, "collate") !== false)
+					$type .= " CHARACTER SET ".strtok($field['Collation'], "_")." COLLATE ".$field['Collation'];
 				if($field['Null'] == "NO")
 					$type .= " NOT NULL";
 				//if($field['Default'] != "")

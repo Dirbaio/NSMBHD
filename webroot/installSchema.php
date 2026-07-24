@@ -363,7 +363,9 @@ $tables = array
 		"fields" => array
 		(
 			"id" => $AI,
-			"name" => "varchar(32)".$notNull,
+			// Login looks users up by name, so the lookup has to be
+			// case-insensitive - everything else here is utf8mb4_bin.
+			"name" => "varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci".$notNull,
 			"displayname" => "varchar(32)".$notNull,
 			"password" => $var256,
 			"pss" => "varchar(16)".$notNull,
