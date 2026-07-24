@@ -16,6 +16,14 @@ $crumbs->add(new PipeMenuLinkEntry(__("Admin"), "admin"));
 $crumbs->add(new PipeMenuLinkEntry(__("IP bans"), "ipbans"));
 makeBreadcrumbs($crumbs);
 
+if(isset($_POST['actionadd']) || isset($_GET['action']))
+{
+	// Both the add and the delete below change state, so they need the token.
+	$key = isset($_POST['key']) ? $_POST['key'] : (isset($_GET['key']) ? $_GET['key'] : '');
+	if(!hash_equals($loguser['token'], $key))
+		Kill(__("No."));
+}
+
 if(isset($_POST['actionadd']))
 {
 	//This doesn't allow you to ban IP ranges...
@@ -53,7 +61,7 @@ while($ipban = Fetch($rIPBan))
 		<td>".htmlspecialchars($ipban['reason'])."</td>
 		<td>$date</td>
 		<td>".($ipban['whitelisted'] ? "Yes" : "No")."
-		<td><a href=\"".actionLink("ipbans", "", "ip=".htmlspecialchars($ipban['ip'])."&action=delete")."\">&#x2718;</a></td>
+		<td><a href=\"".actionLink("ipbans", "", "ip=".htmlspecialchars($ipban['ip'])."&action=delete&key=".$loguser['token'])."\">&#x2718;</a></td>
 	</tr>";
 }
 
@@ -70,6 +78,7 @@ print "
 </table>
 
 <form action=\"".actionLink("ipbans")."\" method=\"post\">
+	<input type=\"hidden\" name=\"key\" value=\"".htmlspecialchars($loguser['token'])."\" />
 	<table class=\"outline margin width50\">
 		<tr class=\"header1\">
 			<th colspan=\"2\">
