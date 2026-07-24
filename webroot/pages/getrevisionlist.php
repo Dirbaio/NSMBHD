@@ -4,20 +4,23 @@ $ajaxPage = true;
 
 $id = (int)$_GET["id"];
 
-$qPost = "select currentrevision, thread from {posts} where id={0}";
+$qPost = "select p.currentrevision, p.thread, p.user, f.id fid, f.minpower
+			from {posts} p
+			left join {threads} t on t.id=p.thread
+			left join {forums} f on f.id=t.forum
+			where p.id={0}";
 $rPost = Query($qPost, $id);
 if(NumRows($rPost))
 	$post = Fetch($rPost);
 else
 	die(format(__("Unknown post ID #{0}."), $id)." ".$hideTricks);
 
-$qThread = "select forum from {threads} where id={0}";
-$rThread = Query($qThread, $post['thread']);
-$thread = Fetch($rThread);
-$qForum = "select minpower from {forums} where id={0}";
-$rForum = Query($qForum, $thread['forum']);
-$forum = Fetch($rForum);
-if($forum['minpower'] > $loguser['powerlevel'])
+if($post['minpower'] > $loguser['powerlevel'])
+	die(__("No.")." ".$hideTricks);
+
+// Same gate as getpost.php: the edit history is for the author and the
+// moderators only, not for everyone who can see the forum.
+if(!CanMod($loguserid, $post['fid']) && $loguserid != $post['user'])
 	die(__("No.")." ".$hideTricks);
 
 
