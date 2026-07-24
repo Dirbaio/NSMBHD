@@ -35,7 +35,7 @@ if(isset($_POST['actionadd']))
 	else
 	{
 		$whitelist = $_POST['whitelisted'] ? 'TRUE' : 'FALSE';
-		$rIPBan = Query("insert into {ipbans} (ip, reason, date, whitelisted) values ({0}, {1}, {2}, $whitelist)", $_POST['ip'], $_POST['reason'], ((int)$_POST['days'] > 0 ? time() + ((int)$_POST['days'] * 86400) : 0));
+		$rIPBan = Query("insert into {ipbans} (ip, reason, date, whitelisted, addedby, dateadded) values ({0}, {1}, {2}, $whitelist, {3}, {4})", $_POST['ip'], $_POST['reason'], ((int)$_POST['days'] > 0 ? time() + ((int)$_POST['days'] * 86400) : 0), $loguser['id'], time());
 		Alert(__("Added."), __("Notice"));
 	}
 }
@@ -45,7 +45,58 @@ elseif(isset($_POST['actiondelete']))
 	Alert(__("Removed."), __("Notice"));
 }
 
-$rIPBan = Query("select * from {ipbans} order by date desc");
+// Sortable columns: the key is what shows up in the URL, the value is what
+// goes into the ORDER BY. Never take the sort straight from the query string.
+$sortFields = array(
+	"ip" => "b.ip",
+	"reason" => "b.reason",
+	"expiry" => "b.date",
+	"user" => "if(u.displayname != '', u.displayname, u.name)",
+	"added" => "b.dateadded",
+	"whitelisted" => "b.whitelisted",
+);
+//Text sorts read better ascending, dates newest-first.
+$sortDefaultDirs = array(
+	"ip" => "asc",
+	"reason" => "asc",
+	"expiry" => "desc",
+	"user" => "asc",
+	"added" => "desc",
+	"whitelisted" => "desc",
+);
+
+$sort = $_GET['sort'];
+if(!isset($sortFields[$sort]))
+	$sort = "added";
+
+$dir = $_GET['dir'];
+if($dir != "asc" && $dir != "desc")
+	$dir = $sortDefaultDirs[$sort];
+
+function ipBanSortHeader($label, $key)
+{
+	global $sort, $dir, $sortDefaultDirs;
+
+	if($sort == $key)
+	{
+		$newDir = ($dir == "asc" ? "desc" : "asc");
+		$arrow = " ".($dir == "asc" ? "&#x25B2;" : "&#x25BC;");
+	}
+	else
+	{
+		$newDir = $sortDefaultDirs[$key];
+		$arrow = "";
+	}
+
+	$url = htmlspecialchars(actionLink("ipbans", "", "sort=$key&dir=$newDir"));
+	return "<a href=\"$url\">".$label."</a>".$arrow;
+}
+
+//Ties broken by IP so the order stays stable when the sort key repeats.
+$rIPBan = Query("select b.*, u.(_userfields)
+	from {ipbans} b
+	left join {users} u on u.id = b.addedby
+	order by ".$sortFields[$sort]." ".$dir.", b.ip asc");
 
 $banList = "";
 while($ipban = Fetch($rIPBan))
@@ -55,11 +106,24 @@ while($ipban = Fetch($rIPBan))
 		$date = formatdate($ipban['date'])." (".TimeUnits($ipban['date']-time())." left)";
 	else
 		$date = __("Permanent");
+
+	if($ipban['u_id'])
+		$addedBy = UserLink(getDataPrefix($ipban, "u_"));
+	else
+		$addedBy = __("Unknown");
+
+	if($ipban['dateadded'])
+		$dateAdded = formatdate($ipban['dateadded']);
+	else
+		$dateAdded = __("Unknown");
+
 	$banList .= "
 	<tr class=\"cell$cellClass\">
 		<td>".htmlspecialchars($ipban['ip'])."</td>
 		<td>".htmlspecialchars($ipban['reason'])."</td>
 		<td>$date</td>
+		<td>$addedBy</td>
+		<td>$dateAdded</td>
 		<td>".($ipban['whitelisted'] ? "Yes" : "No")."
 		<td>
 			<form action=\"".actionLink("ipbans")."\" method=\"post\" style=\"display: inline;\">
@@ -74,10 +138,12 @@ while($ipban = Fetch($rIPBan))
 print "
 <table class=\"outline margin width50\">
 	<tr class=\"header1\">
-		<th>".__("IP")."</th>
-		<th>".__("Reason")."</th>
-		<th>".__("Date")."</th>
-		<th>".__("Whitelisted")."</th>
+		<th>".ipBanSortHeader(__("IP"), "ip")."</th>
+		<th>".ipBanSortHeader(__("Reason"), "reason")."</th>
+		<th>".ipBanSortHeader(__("Date"), "expiry")."</th>
+		<th>".ipBanSortHeader(__("Added by"), "user")."</th>
+		<th>".ipBanSortHeader(__("Added on"), "added")."</th>
+		<th>".ipBanSortHeader(__("Whitelisted"), "whitelisted")."</th>
 		<th>&nbsp;</th>
 	</tr>
 	$banList

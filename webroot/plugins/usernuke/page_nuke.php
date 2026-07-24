@@ -56,9 +56,9 @@ if(isset($_POST["currpassword"]))
 				where id={0}", $uid);
 
 		//and then IP BAN HIM
-		query("insert into {ipbans} (ip, reason, date)
-				values ({0}, {1}, 0)
-				on duplicate key update ip=ip", $user["lastip"], "Nuking ".$user["name"]);
+		query("insert into {ipbans} (ip, reason, date, addedby, dateadded)
+				values ({0}, {1}, 0, {2}, {3})
+				on duplicate key update ip=ip", $user["lastip"], "Nuking ".$user["name"], $loguser["id"], time());
 
 		echo "User nuked!<br/>";
 		echo "You will need to ", actionLinkTag("Recalculate statistics now", "recalc");

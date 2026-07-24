@@ -138,6 +138,8 @@ $tables = array
 			"reason" => "varchar(100)".$notNull,
 			"date" => $genericInt,
 			"whitelisted" => $bool,
+			"addedby" => $genericInt,
+			"dateadded" => $genericInt,
 		),
 		"special" => "unique key `ip` (`ip`), key `date` (`date`)"
 	),
