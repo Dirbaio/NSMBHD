@@ -37,12 +37,10 @@ RUN userdel -r ubuntu && \
     groupadd -r app -g 1000 && \
     useradd -u 1000 -r -g app -d /app -s /bin/bash -c "Docker image user" app && \
     ln -sf /tmp/msmtprc /etc/msmtprc && \
-    chown -R app:app /var/lib/nginx && \
     chown -R root:app /app && \
     chmod -R g-w /app
 
 USER 1000
 
-VOLUME /var/lib/nginx
 EXPOSE 8000
 CMD ["/app/conf/launch.sh"]
