@@ -43,4 +43,10 @@ RUN userdel -r ubuntu && \
 USER 1000
 
 EXPOSE 8000
-CMD ["/app/conf/launch.sh"]
+
+# ENTRYPOINT, not CMD: a Kubernetes `args` (or a `docker run <image> upgrade`)
+# replaces CMD wholesale, so with the launcher in CMD the init container tried
+# to exec "upgrade" itself and died with "executable file not found in $PATH".
+# As ENTRYPOINT it stays put and args become its arguments.
+ENTRYPOINT ["/app/conf/launch.sh"]
+CMD ["serve"]
