@@ -13,6 +13,17 @@ if(isset($_POST['action']))
 	$_GET['action'] = $_POST['action'];
 if(isset($_POST['fid']))
 	$_GET['fid'] = $_POST['fid'];
+// The per-file delete is a button inside the listing form, so it arrives as a
+// POST alongside the form's hidden action; it wins over that.
+if(isset($_POST['delfid']))
+	$_GET['action'] = "delete";
+
+// Anything below that writes needs the token. It rides in the forms, so no
+// URL grows a key.
+$writeActions = array("delete" => true, "multidel" => true, "multimove" => true, __("Upload") => true);
+if(isset($writeActions[$_GET['action']]))
+	if(!isset($_POST['key']) || !hash_equals($loguser['token'], $_POST['key']))
+		Kill(__("No."));
 
 $quota = Settings::pluginGet('uploaderCap') * 1024 * 1024;
 $pQuota = Settings::pluginGet('personalCap') * 1024 * 1024;
@@ -42,6 +53,7 @@ if($_GET['action'] == "uploadform")
 			window.addEventListener(\"load\", function() { hookUploadCheck(\"newfile\", 1, {1}) }, false);
 		</script>
 		<form action=\"".actionLink("uploader")."\" method=\"post\" enctype=\"multipart/form-data\">
+			<input type='hidden' name='key' value='".htmlspecialchars($loguser['token'])."'>
 			<input type='hidden' name='cat' value='${_GET["cat"]}'>
 			<table class=\"outline margin\">
 				<tr class=\"header0\">
@@ -175,7 +187,8 @@ else if($loguserid && $_GET['action'] == "multimove" && $_POST['del']) //several
 
 else if($_GET['action'] == "delete") //single file
 {
-	$fid = (int)$_GET['fid'];
+	// File IDs are random strings, so no (int) cast here — Query() escapes it.
+	$fid = isset($_POST['delfid']) ? $_POST['delfid'] : $_GET['fid'];
 
 	if($loguser['powerlevel'] > 2)
 		$check = FetchResult("select count(*) from {uploader} where id = {0}", $fid);

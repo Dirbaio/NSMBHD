@@ -113,9 +113,8 @@ function listCategory($cat)
 				$multidel = "<td><input type=\"checkbox\" name=\"delete[".$entry['id']."]\" disabled=\"disabled\" /></td>";
 			if($loguserid == $entry['user'] || $loguser['powerlevel'] > 2)
 			{
-				$delete = "&nbsp;<sup>"
-					.actionLinkTagUnescaped("&#x2718;", "uploader", "", "action=delete&fid=".$entry['id']."&cat=".$_GET["cat"])
-					."</sup>";
+				$delete = "&nbsp;<sup><button type=\"submit\" name=\"delfid\" value=\"".$entry['id']."\""
+					." style=\"border: none; background: none; padding: 0; cursor: pointer; color: inherit; font: inherit;\">&#x2718;</button></sup>";
 				$multidel = "<td><input type=\"checkbox\" name=\"del[".$entry['id']."]\" /></td>";
 			}
 			$cellClass = ($cellClass+1) % 2;
@@ -185,6 +184,7 @@ $crumbs->add(new PipeMenuLinkEntry($cat["name"], "uploaderlist", "", "cat=".$cat
 makeBreadcrumbs($crumbs);
 
 print "<form method=\"post\" action=\"".actionLink("uploader", "", "cat=${_GET["cat"]}")."\">";
+print "<input type=\"hidden\" name=\"key\" value=\"".htmlspecialchars($loguser['token'])."\" />";
 listCategory($_GET["cat"]);
 print "</form>";
 
