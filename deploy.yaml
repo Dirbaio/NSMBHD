@@ -4,6 +4,10 @@ metadata:
   name: nsmbhd
   labels:
     kubernetes.io/metadata.name: nsmbhd
+    # Both pods below satisfy "restricted"; enforce it so a future edit that
+    # drops a securityContext gets rejected instead of quietly running as root.
+    pod-security.kubernetes.io/enforce: restricted
+    pod-security.kubernetes.io/enforce-version: latest
 
 ############################
 ###         MYSQL
@@ -55,9 +59,25 @@ spec:
       labels:
         app: mysql
     spec:
+      # The entrypoint normally starts as root and gosu's down to mysql. Start as
+      # mysql (999) directly instead, so nothing in the pod ever holds root and
+      # every capability can go. fsGroup fixes up the mountpoint's ownership,
+      # which the provisioner creates as root.
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 999
+        runAsGroup: 999
+        fsGroup: 999
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile:
+          type: RuntimeDefault
       containers:
       - name: mysql
         image:  mysql:8.4.10
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop: ["ALL"]
         ports:
         - name: mysql
           containerPort: 8806
@@ -128,6 +148,12 @@ spec:
       labels:
         app: nsmbhd
     spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        seccompProfile:
+          type: RuntimeDefault
       # The schema migrations are not reachable over HTTP. Run them here instead,
       # before any traffic hits the new image. Upgrade() is idempotent.
       initContainers:
@@ -137,6 +163,9 @@ spec:
         args: ["upgrade"]
         securityContext:
           readOnlyRootFilesystem: true
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop: ["ALL"]
         env:
         - name: MYSQL_HOST
           value: mysql
@@ -158,6 +187,9 @@ spec:
         args: ["serve"]
         securityContext:
           readOnlyRootFilesystem: true
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop: ["ALL"]
         ports:
         - name: web
           containerPort: 8000
