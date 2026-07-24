@@ -200,6 +200,19 @@ spec:
             secretKeyRef:
               name: nsmbhd
               key: salt
+        # Not used by the migrations, but lib/config.php requires every env var
+        # it reads, and upgrade.php loads it. Deliberately not given a fallback
+        # there -- see the note on the main container below.
+        - name: ABXD_TURNSTILE_SITE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: nsmbhd
+              key: turnstile-site-key
+        - name: ABXD_TURNSTILE_SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: nsmbhd
+              key: turnstile-secret-key
       containers:
       - name: nsmbhd
         image: $IMAGE
