@@ -72,7 +72,6 @@ cell2(actionLinkTag(__("Optimize tables"), "optimize"));
 cell2(actionLinkTag(__("View log"), "log"));
 cell2(actionLinkTag(__("Update table structure"), "updateschema"));
 cell2(actionLinkTag(__("PHP info"), "phpinfo"));
-cell2(actionLinkTag(__("Query error log"), "queryerrors"));
 
 $bucket = "adminleft"; include("./lib/pluginloader.php");
 

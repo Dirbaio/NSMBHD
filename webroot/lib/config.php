@@ -15,7 +15,6 @@ $dbuser = mygetenv("MYSQL_USER");
 $dbpass = mygetenv("MYSQL_PASSWORD");
 $dbname = mygetenv("MYSQL_DATABASE");
 
-$logSqlErrors = true;
 $debugMode = true;
 $urlRewriting = true;
 

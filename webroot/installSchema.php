@@ -267,22 +267,6 @@ $tables = array
 		),
 		"special" => $keyID.", unique key `ip` (`ip`)"
 	),
-	"queryerrors" => array
-	(
-		"fields" => array
-		(
-			"id" => $AI,
-			"user" => $genericInt,
-			"ip" => "varchar(50)".$notNull,
-			"time" => $genericInt,
-			"query" => $text,
-			"get" => $text,
-			"post" => $text,
-			"cookie" => $text,
-			"error" => $text
-		),
-		"special" => $keyID
-	),
 	"log" => array
 	(
 		"fields" => array

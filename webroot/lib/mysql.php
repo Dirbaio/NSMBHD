@@ -6,6 +6,12 @@ $dberror = "";
 function sqlConnect()
 {
 	global $dbserv, $dbuser, $dbpass, $dbname, $dblink, $dberror;
+
+	// PHP 8.1+ makes mysqli throw on its own, which would bypass the error
+	// handling below and lose the offending query. Report through return values
+	// instead, the way the rest of this file expects.
+	mysqli_report(MYSQLI_REPORT_OFF);
+
 	$dblink = new mysqli($dbserv, $dbuser, $dbpass);
 	if($dblink->connect_error)
 	{
@@ -133,47 +139,14 @@ function query()
 
 function rawQuery($query)
 {
-	global $queries, $querytext, $loguser, $dblink, $debugMode, $logSqlErrors, $dbpref, $loguserid, $mysqlCellClass, $debugQueries;
-
-//	if($debugMode)
-//		$queryStart = usectime();
+	global $queries, $querytext, $dblink, $mysqlCellClass, $debugQueries;
 
 	$res = @$dblink->query($query);
 
+	// Let it crash: the uncaught exception lands in the PHP error log like any
+	// other fatal, stack trace included.
 	if(!$res)
-	{
-		$theError = $dblink->error;
-
-		if($logSqlErrors == 1)
-		{
-			$thequery = sqlEscape($query);
-			$ip = sqlEscape($_SERVER["REMOTE_ADDR"]);
-			$time = time();
-			if(!$loguserid) $loguserid = 0;
-			$get = sqlEscape(var_export($_GET, true));
-			$post = sqlEscape(var_export($_POST, true));
-			$cookie = sqlEscape(var_export($_COOKIE, true));
-			$theError = sqlEscape($theError);
-			$logQuery = "INSERT INTO {$dbpref}queryerrors (`user`,`ip`,`time`,`query`,`get`,`post`,`cookie`, `error`) VALUES ($loguserid, '$ip', $time, '$thequery', '$get', '$post', '$cookie', '$theError')";
-			$res = @$dblink->query($logQuery);
-		}
-		if($debugMode)
-		{
-			$bt = "";
-			if(function_exists("backTrace"))
-				$bt = backTrace();
-			echo (nl2br($bt).
-				"<br><br>".htmlspecialchars($theError).
-				"<br><br>Query was: <code>".htmlspecialchars($query)."</code>");
-/*				<br>This could have been caused by a database layout change in a recent git revision. Try running the installer again to fix it. <form action=\"install/doinstall.php\" method=\"POST\"><br>
-			<input type=\"hidden\" name=\"action\" value=\"Install\" />
-			<input type=\"hidden\" name=\"existingSettings\" value=\"true\" />
-			<input type=\"submit\" value=\"Click here to re-run the installation script\" /></form>");*/
-		}
-		else
-			trigger_error("MySQL Error.", E_USER_ERROR);
-		die("MySQL Error.");
-	}
+		throw new Exception("MySQL error: ".$dblink->error." -- Query was: ".$query);
 
 	$queries++;
 
