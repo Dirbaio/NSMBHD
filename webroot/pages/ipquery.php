@@ -69,6 +69,7 @@ else
 	$userList = "<tr class=\"cell0\"><td colspan=\"6\">".__("No users")."</td></tr>";
 
 echo "<form id=\"banform\" action=\"".actionLink('ipbans')."\" method=\"post\">
+	<input type=\"hidden\" name=\"key\" value=\"".htmlspecialchars($loguser['token'])."\">
 	<input type=\"hidden\" name=\"ip\" value=\"$ip\">
 	<input type=\"hidden\" name=\"reason\" value=\"".htmlentities($ipBanComment)."\">
 	<input type=\"hidden\" name=\"days\" value=\"0\">
