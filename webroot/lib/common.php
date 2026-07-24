@@ -1,8 +1,7 @@
 <?php
 // AcmlmBoard XD support - Main hub
 
-// I can't believe there are PRODUCTION servers that have E_NOTICE turned on. What are they THINKING? -- Kawa
-error_reporting(E_ALL ^ E_NOTICE | E_STRICT);
+// error_reporting is set in php.ini. Don't override it here.
 
 require("../vendor/autoload.php");
 
