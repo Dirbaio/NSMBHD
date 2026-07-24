@@ -57,6 +57,7 @@ case $task in
             -e MYSQL_PASSWORD=${appname} \
             -e MYSQL_DATABASE=${appname} \
             -e ABXD_SALT=dev-salt-not-a-secret \
+            -e PHP_INI_SCAN_DIR=/etc/php/8.5/fpm/conf.d:/app/conf/dev \
             -v $PWD:/app \
             -v $PWD/data:/data \
             ${appname}
