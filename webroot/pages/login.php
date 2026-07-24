@@ -47,9 +47,7 @@ elseif(isset($_POST['actionlogin']))
 			if(validateConvertPassword($pass, $user["convertpassword"], $user["convertpasswordsalt"], $user["convertpasswordtype"]))
 			{
 				//If the user has entered password correctly, upgrade it to ABXD hash and wipe the legacy hash.
-				$newsalt = Shake();
-				$sha = doHash($pass.$salt.$newsalt);
-				query("UPDATE {users} SET convertpassword='', convertpasswordsalt='', convertpasswordtype='', password={0}, pss={1} WHERE id={2}", $sha, $newsalt, $user["id"]);
+				query("UPDATE {users} SET convertpassword='', convertpasswordsalt='', convertpasswordtype='', password={0}, pss={1} WHERE id={2}", hashPassword($pass), Shake(), $user["id"]);
 				
 				//Login successful.
 				$okay = true;
@@ -57,10 +55,12 @@ elseif(isset($_POST['actionlogin']))
 		}
 		else
 		{
-			//No legacy password, check regular ABXD hash.
-			$sha = doHash($pass.$salt.$user['pss']);
-			if($user['password'] == $sha)
+			//No legacy password, check the stored hash.
+			if(verifyPassword($pass, $user))
+			{
+				upgradePasswordHash($pass, $user);
 				$okay = true;
+			}
 		}
 
 		if(!$okay)

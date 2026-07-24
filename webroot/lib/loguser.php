@@ -98,6 +98,29 @@ function doHash($data)
 	return hash('sha256', $data, FALSE);
 }
 
+function hashPassword($pass)
+{
+	return password_hash($pass, PASSWORD_DEFAULT);
+}
+
+// Passwords used to be stored as sha256($pass . $salt . $user['pss']), which a
+// GPU chews through at billions of guesses a second. New ones are bcrypt;
+// old ones still verify and get upgraded on the next successful login.
+function verifyPassword($pass, $user)
+{
+	global $salt;
+	if(isset($user['password'][0]) && $user['password'][0] == '$')
+		return password_verify($pass, $user['password']);
+	return hash_equals($user['password'], doHash($pass.$salt.$user['pss']));
+}
+
+function upgradePasswordHash($pass, $user)
+{
+	if($user['password'][0] == '$' && !password_needs_rehash($user['password'], PASSWORD_DEFAULT))
+		return;
+	Query("UPDATE {users} SET password={0} WHERE id={1}", hashPassword($pass), $user['id']);
+}
+
 $loguser = NULL;
 
 if($_COOKIE['logsession'] && !$ipban)

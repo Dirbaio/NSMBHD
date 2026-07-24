@@ -17,8 +17,7 @@ $passwordFailed = false;
 
 if(isset($_POST["currpassword"]))
 {
-	$sha = doHash($_POST["currpassword"].$salt.$loguser['pss']);
-	if($loguser['password'] == $sha)
+	if(verifyPassword($_POST["currpassword"], $loguser))
 	{
 
 		//Delete posts from threads by user

@@ -22,7 +22,7 @@ if(isset($_GET['key']) && isset($_GET['id']))
 
 	$newsalt = Shake();
 	$newPass = randomString(8);
-	$sha = doHash($newPass.$salt.$newsalt);
+	$sha = hashPassword($newPass);
 
 	logAction('lostpass2', array('user' => $user["id"]));
 

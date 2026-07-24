@@ -229,7 +229,7 @@ if(isset($_POST['name']))
 	else
 	{
 		$newsalt = Shake();
-		$sha = doHash($_POST['pass'].$salt.$newsalt);
+		$sha = hashPassword($_POST['pass']);
 
 		$sex = validateSex($_POST["sex"]);
 		$rUsers = Query("insert into {users} (name, password, pss, regdate, lastactivity, lastip, email, sex, theme) values ({0}, {1}, {2}, {3}, {3}, {4}, {5}, {6}, {7})", $_POST['name'], $sha, $newsalt, time(), $_SERVER['REMOTE_ADDR'], $_POST['email'], $sex, Settings::get("defaultTheme"));
