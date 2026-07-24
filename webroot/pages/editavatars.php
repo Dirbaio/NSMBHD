@@ -13,6 +13,9 @@ if(!$loguserid)
 
 if(isset($_POST['action']))
 {
+	if(!isset($_POST['key']) || !hash_equals($loguser['token'], $_POST['key']))
+		Kill(__("No."));
+
 	$mid = (int)$_POST['mid'];
 	if($_POST['action'] == __("Rename"))
 	{
@@ -116,6 +119,7 @@ while($mood = Fetch($rMoods))
 			</td>
 			<td>
 				<form method=\"post\" action=\"".actionLink("editavatars")."\">
+					<input type=\"hidden\" name=\"key\" value=\"".htmlspecialchars($loguser['token'])."\" />
 					<input type=\"hidden\" name=\"mid\" value=\"{2}\" />
 					<input type=\"text\" id=\"name{2}\" name=\"name\" style=\"width: 60%;\" value=\"{3}\" />
 					<input type=\"submit\" name=\"action\" value=\"".__("Rename")."\" />
@@ -145,6 +149,7 @@ write(
 			</td>
 			<td>
 				<form method=\"post\" action=\"".actionLink("editavatars")."\" enctype=\"multipart/form-data\">
+					<input type=\"hidden\" name=\"key\" value=\"".htmlspecialchars($loguser['token'])."\" />
 					<label for=\"newName\">".__("Name:")."</label>
 					<input type=\"text\" id=\"newName\" name=\"name\" style=\"width: 60%;\" /><br />
 
