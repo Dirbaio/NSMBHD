@@ -87,7 +87,7 @@ spec:
             memory: 1Gi
         ports:
         - name: mysql
-          containerPort: 8806
+          containerPort: 3306
         env:
         - name: MYSQL_ROOT_PASSWORD
           value: root
