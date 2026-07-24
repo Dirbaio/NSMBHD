@@ -36,6 +36,9 @@ $invalidsettings = array();
 
 if(isset($_POST["_plugin"]))
 {
+	if(!isset($_POST['key']) || !hash_equals($loguser['token'], $_POST['key']))
+		Kill(__("No."));
+
 	//Save the settings.
 	$valid = true;
 
@@ -158,7 +161,7 @@ print "			<tr class=\"cell2\">
 				<td>
 					<input type=\"submit\" name=\"_exit\" value=\"".__("Save and Exit")."\" />
 					<input type=\"submit\" name=\"_action\" value=\"".__("Save")."\" />
-					<input type=\"hidden\" name=\"key\" value=\"{31}\" />
+					<input type=\"hidden\" name=\"key\" value=\"".htmlspecialchars($loguser['token'])."\" />
 				</td>
 			</tr>
 		</table>
