@@ -164,18 +164,14 @@ if(NumRows($rPosts))
 		$text = preg_replace("'<td (.*?)style=\"(.*?)\"(.*?)>'si", "<td \\1\\3>", $text);
 		$text = preg_replace("'<a (.*?)style=\"(.*?)\"(.*?)>'si", "<a \\1\\3>", $text);
 
-		$tags = array();
-		$rankHax = $post['posts'];
-		$post['posts'] = $post['num'];
 		$tags = array
 		(
 			"numposts" => $post['num'],
 			"5000" => 5000 - $post['num'],
 			"20000" => 20000 - $post['num'],
 			"30000" => 30000 - $post['num'],
-			"rank" => GetRank($post),
+			"rank" => GetRank($post['rankset'], $post['num']),
 		);
-		$post['posts'] = $rankHax;
 		$text = ApplyTags($text, $tags);
 
 		write(

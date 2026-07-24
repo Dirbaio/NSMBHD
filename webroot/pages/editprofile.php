@@ -554,7 +554,7 @@ if($_POST['action'] == __("Edit profile"))
 	$sets[] = "pluginsettings = '".SqlEscape(serialize($pluginSettings))."'";
 	if ((int)$_POST['powerlevel'] != $user['powerlevel']) $sets[] = "tempbantime = 0";
 
-	$query .= join($sets, ", ")." WHERE id = ".$userid;
+	$query .= implode(", ", $sets)." WHERE id = ".$userid;
 	if(!$failed)
 	{
 		RawQuery($query);
@@ -635,7 +635,7 @@ function HandlePicture($field, $type, $errorname, $allowOversize = false)
 
 	$extension = strtolower(strrchr($fileName, "."));
 	if(!in_array($extension, $extensions))
-		return format(__("Invalid extension used for {0}. Allowed: {1}"), $errorname, join($extensions, ", "));
+		return format(__("Invalid extension used for {0}. Allowed: {1}"), $errorname, implode(", ", $extensions));
 
 	if($fileSize > $maxSize && !$allowOversize)
 		return format(__("File size for {0} is too high. The limit is {1} bytes, the uploaded image is {2} bytes."), $errorname, $maxSize, $fileSize)."</li>";
