@@ -15,7 +15,7 @@ function actionLink($action, $id="", $args="", $urlname="")
 	if($action != $mainPage)
 		$res .= "$action/";
 
-	if($id != "")
+	if($id !== "" && $id !== 0 && $id !== "0" && $id !== null)
 	{
 		$res .= $id;
 		if($urlname)

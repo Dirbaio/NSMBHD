@@ -60,7 +60,7 @@ else
 		if($action != $mainPage)
 			$res .= "&page=$action";
 
-		if($id != "")
+		if($id !== "" && $id !== 0 && $id !== "0" && $id !== null)
 			$res .= "&id=".urlencode($id);
 		if($args)
 			$res .= "&$args";
