@@ -5,6 +5,9 @@ if($loguserid == 0)
 
 if(isset($_POST['action']) && $_POST['action'] == "Install")
 {
+	if(!isset($_POST['key']) || !hash_equals($loguser['token'], $_POST['key']))
+		Kill(__("No."));
+
 	//Changed this to not to use the uploader since it's now a plugin. ~Dirbaio
 	if(!is_dir("layoutmaker"))
 		mkdir("layoutmaker/");

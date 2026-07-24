@@ -40,6 +40,7 @@ MakePost($previewPost, POST_SAMPLE);
 
 write("
 <form action=\"".actionLink("layoutmakerinstall")."\" method=\"post\">
+<input type=\"hidden\" name=\"key\" value=\"".htmlspecialchars($loguser['token'])."\" />
 <table class=\"outline margin width100\">
 	<tr class=\"header1\">
 		<th colspan=\"2\">
