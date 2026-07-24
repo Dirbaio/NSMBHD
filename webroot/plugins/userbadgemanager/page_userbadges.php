@@ -16,6 +16,15 @@ $crumbs->add(new PipeMenuLinkEntry(__("Admin"), "admin"));
 $crumbs->add(new PipeMenuLinkEntry(__("User Badges Manager"), "userbadges"));
 makeBreadcrumbs($crumbs);
 
+// Every write below is a POST carrying the token, so no URL grows a key.
+// "deleteall" arrives as a plain link from the profile page and gets a
+// confirmation step instead.
+if($_POST['action'] == __("Add") || $_POST['action'] == "delete" || $_POST['action'] == "deleteall")
+{
+	if(!isset($_POST['key']) || !hash_equals($loguser['token'], $_POST['key']))
+		kill(__("No."));
+}
+
 if($_POST['action'] == __("Add"))
 {
 	if($_POST['color'] == -1 || empty($_POST['userid']) || empty($_POST['name']))
@@ -30,18 +39,34 @@ if($_POST['action'] == __("Add"))
 		alert(__("Added."), __("Notice"));
 	}
 }
-elseif($_GET['action'] == "delete")
+elseif($_POST['action'] == "delete")
 {
 	query("delete from {badges} where owner = {0} and name = {1}",
-		(int)$_GET['userid'], $_GET['name']);
+		(int)$_POST['userid'], $_POST['name']);
 
 	alert(__("Removed."), __("Notice"));
 }
-elseif($_GET['action'] == "deleteall")
+elseif($_POST['action'] == "deleteall")
 {
 	query("delete from {badges} where owner = {0}",
-	(int)$_GET['userid']);
+	(int)$_POST['userid']);
 	alert(__("Removed all badges of the user."), __("Notice"));
+}
+elseif($_GET['action'] == "deleteall")
+{
+	$badgeUser = (int)$_GET['userid'];
+	write("
+	<form action=\"".actionLink("userbadges")."\" method=\"post\">
+		<input type=\"hidden\" name=\"key\" value=\"".htmlspecialchars($loguser['token'])."\" />
+		<input type=\"hidden\" name=\"userid\" value=\"$badgeUser\" />
+		<table class=\"outline margin width50\">
+			<tr class=\"header1\"><th>".__("Delete all badges of this user")."</th></tr>
+			<tr class=\"cell1\"><td>".format(__("Really delete every badge of user #{0}?"), $badgeUser)."</td></tr>
+			<tr class=\"cell2\"><td>
+				<input type=\"submit\" name=\"action\" value=\"deleteall\" />
+			</td></tr>
+		</table>
+	</form>");
 }
 elseif($_GET['action'] == "newbadge")
 {
@@ -73,7 +98,12 @@ while($badges = Fetch($rBadge))
 			{4}
 		</td>
 		<td>
-			<a href=\"".actionLink("userbadges", "", "userid={2}&name={3}&action=delete")."\">&#x2718;</a>
+			<form action=\"".actionLink("userbadges")."\" method=\"post\" style=\"display: inline;\">
+				<input type=\"hidden\" name=\"key\" value=\"".htmlspecialchars($loguser['token'])."\" />
+				<input type=\"hidden\" name=\"userid\" value=\"{2}\" />
+				<input type=\"hidden\" name=\"name\" value=\"{3}\" />
+				<button type=\"submit\" name=\"action\" value=\"delete\" style=\"border: none; background: none; padding: 0; cursor: pointer; color: inherit; font: inherit;\">&#x2718;</button>
+			</form>
 		</td>
 	</tr>
 ", $cellClass, $badges['username'], $badges['owner'], $badges['name'], $colors[$badges['color']]);
@@ -91,6 +121,7 @@ write("
 </table>
 
 <form action=\"".actionLink("userbadges")."\" method=\"post\">
+	<input type=\"hidden\" name=\"key\" value=\"".htmlspecialchars($loguser['token'])."\" />
 	<table class=\"outline margin width50\">
 		<tr class=\"header1\">
 			<th colspan=\"2\">
