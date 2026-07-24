@@ -1,6 +1,7 @@
 <?php
-// Protect from <iframe> password steal hack
-header('X-Frame-Options: DENY');
+// X-Frame-Options: DENY -- and the rest of the security headers -- come from
+// nginx now, for the static files too. Setting it here as well produced two
+// conflicting headers on every page.
 
 $ajaxPage = false;
 if(isset($_GET["ajax"]))
