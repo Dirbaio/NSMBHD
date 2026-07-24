@@ -86,7 +86,6 @@ else if($_GET['action'] == __("Upload"))
 		$privateFlag = 0;
 		if($_POST['cat'] == -1)
 			$privateFlag = 1;
-		var_dump($file);
 		if($file['size'] == 0)
 		{
 			if($file['tmp_name'] == "")

@@ -446,7 +446,6 @@ if($_POST['action'] == __("Edit profile"))
 						break;
 					case "color":
 						$val = $_POST[$field];
-						var_dump($val);
 						if(!preg_match("/^#[0-9a-fA-F]*$/", $val))
 							$val = "";
 						$sets[] = $field." = '".SqlEscape($val)."'";
