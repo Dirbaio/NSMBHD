@@ -22,7 +22,11 @@ if (isset($_POST['upload']) && $loguser['powerlevel'] > 2)
 {
 	if (!trim($_POST['name'])) Kill("You must enter a name.");
 
-	$filename = $_FILES['file']['name'];
+	// The name comes from the client, so strip any path off it before it ends
+	// up in copy(): "../../index.php" would otherwise write outside downloads/.
+	$filename = preg_replace('/[^A-Za-z0-9._-]/', '_', basename($_FILES['file']['name']));
+	if ($filename === '' || $filename[0] == '.') Kill("Invalid file name.");
+
 	$tmpfile = $_FILES['file']['tmp_name'];
 	if (!file_exists($tmpfile)) Kill("File upload failed.");
 
