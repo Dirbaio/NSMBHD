@@ -16,11 +16,11 @@ $crumbs->add(new PipeMenuLinkEntry(__("Admin"), "admin"));
 $crumbs->add(new PipeMenuLinkEntry(__("IP bans"), "ipbans"));
 makeBreadcrumbs($crumbs);
 
-if(isset($_POST['actionadd']) || isset($_GET['action']))
+if(isset($_POST['actionadd']) || isset($_POST['actiondelete']))
 {
 	// Both the add and the delete below change state, so they need the token.
-	$key = isset($_POST['key']) ? $_POST['key'] : (isset($_GET['key']) ? $_GET['key'] : '');
-	if(!hash_equals($loguser['token'], $key))
+	// It rides in the forms, so the ban list keeps clean URLs.
+	if(!isset($_POST['key']) || !hash_equals($loguser['token'], $_POST['key']))
 		Kill(__("No."));
 }
 
@@ -39,9 +39,9 @@ if(isset($_POST['actionadd']))
 		Alert(__("Added."), __("Notice"));
 	}
 }
-elseif($_GET['action'] == "delete")
+elseif(isset($_POST['actiondelete']))
 {
-	$rIPBan = Query("delete from {ipbans} where ip={0} limit 1", $_GET['ip']);
+	$rIPBan = Query("delete from {ipbans} where ip={0} limit 1", $_POST['ip']);
 	Alert(__("Removed."), __("Notice"));
 }
 
@@ -61,7 +61,13 @@ while($ipban = Fetch($rIPBan))
 		<td>".htmlspecialchars($ipban['reason'])."</td>
 		<td>$date</td>
 		<td>".($ipban['whitelisted'] ? "Yes" : "No")."
-		<td><a href=\"".actionLink("ipbans", "", "ip=".htmlspecialchars($ipban['ip'])."&action=delete&key=".$loguser['token'])."\">&#x2718;</a></td>
+		<td>
+			<form action=\"".actionLink("ipbans")."\" method=\"post\" style=\"display: inline;\">
+				<input type=\"hidden\" name=\"key\" value=\"".htmlspecialchars($loguser['token'])."\" />
+				<input type=\"hidden\" name=\"ip\" value=\"".htmlspecialchars($ipban['ip'])."\" />
+				<button type=\"submit\" name=\"actiondelete\" value=\"1\" style=\"border: none; background: none; padding: 0; cursor: pointer; color: inherit; font: inherit;\">&#x2718;</button>
+			</form>
+		</td>
 	</tr>";
 }
 
