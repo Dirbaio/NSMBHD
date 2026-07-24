@@ -128,10 +128,34 @@ spec:
       labels:
         app: nsmbhd
     spec:
+      # The schema migrations are not reachable over HTTP. Run them here instead,
+      # before any traffic hits the new image. Upgrade() is idempotent.
+      initContainers:
+      - name: upgrade
+        image: $IMAGE
+        imagePullPolicy: Never
+        args: ["upgrade"]
+        securityContext:
+          readOnlyRootFilesystem: true
+        env:
+        - name: MYSQL_HOST
+          value: mysql
+        - name: MYSQL_USER
+          value: nsmbhd
+        - name: MYSQL_PASSWORD
+          value: nsmbhd
+        - name: MYSQL_DATABASE
+          value: nsmbhd
+        - name: ABXD_SALT
+          valueFrom:
+            secretKeyRef:
+              name: nsmbhd
+              key: salt
       containers:
       - name: nsmbhd
         image: $IMAGE
         imagePullPolicy: Never
+        args: ["serve"]
         securityContext:
           readOnlyRootFilesystem: true
         ports:
