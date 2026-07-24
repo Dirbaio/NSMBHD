@@ -16,6 +16,9 @@ makeBreadcrumbs($crumbs);
 
 if($_POST['action'] == "logout")
 {
+	if(!isset($_POST['key']) || !hash_equals($loguser['token'], $_POST['key']))
+		Kill(__("No."));
+
 	setcookie("logsession", "", 2147483647, $boardroot, "", false, true);
 	setcookie("logsession", "", 2147483647, $boardroot, "", true, true);
 	Query("UPDATE {users} SET loggedin = 0 WHERE id={0}", $loguserid);
@@ -26,6 +29,11 @@ if($_POST['action'] == "logout")
 }
 elseif(isset($_POST['actionlogin']))
 {
+	// Guests carry their token in the csrftoken cookie (see lib/loguser.php),
+	// so a cross-site form can't log the victim into someone else's account.
+	if(!isset($_POST['key']) || !hash_equals($loguser['token'], $_POST['key']))
+		Kill(__("No."));
+
 	$okay = false;
 	$pass = $_POST['pass'];
 
@@ -69,7 +77,10 @@ elseif(isset($_POST['actionlogin']))
 
 		$sessionID = Shake();
 
-		setcookie("logsession", $sessionID, 2147483647, $boardroot, "", isHttps(), true);
+		setcookie("logsession", $sessionID, array(
+			'expires' => 2147483647, 'path' => $boardroot, 'secure' => isHttps(),
+			'httponly' => true, 'samesite' => 'Lax',
+		));
 
 		Query("INSERT INTO {sessions} (id, user, autoexpire) VALUES ({0}, {1}, {2})", doHash($sessionID.$salt), $user["id"], $_POST["session"]?1:0);
 
@@ -86,6 +97,7 @@ if(Settings::get("mailResetSender") != "")
 
 echo "
 	<form name=\"loginform\" action=\"".actionLink("login")."\" method=\"post\">
+		<input type=\"hidden\" name=\"key\" value=\"".htmlspecialchars($loguser['token'])."\" />
 		<table class=\"outline margin width50\">
 			<tr class=\"header0\">
 				<th colspan=\"2\">

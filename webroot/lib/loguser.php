@@ -118,9 +118,23 @@ if($loguser)
 }
 else
 {
+	// Guests get their token from a cookie, so that it survives across
+	// requests and the login form can be CSRF-checked like everything else.
+	if(isset($_COOKIE['csrftoken']) && preg_match('/^[0-9a-f]{40}$/', $_COOKIE['csrftoken']))
+		$guesttoken = $_COOKIE['csrftoken'];
+	else
+	{
+		$guesttoken = hash('sha1', random_bytes(16));
+		setcookie("csrftoken", $guesttoken, array(
+			'expires' => 0, 'path' => $boardroot, 'secure' => isHttps(),
+			'httponly' => true, 'samesite' => 'Lax',
+		));
+		$_COOKIE['csrftoken'] = $guesttoken;
+	}
+
 	$loguser = array("name"=>"", "powerlevel"=>0, "threadsperpage"=>50, "postsperpage"=>20, "theme"=>Settings::get("defaultTheme"),
 		"dateformat"=>"m-d-y", "timeformat"=>"h:i A", "fontsize"=>80, "timezone"=>0, "blocklayouts"=>!Settings::get("guestLayouts"),
-		'token'=>hash('sha1', random_bytes(16)));
+		'token'=>$guesttoken);
 	$loguserid = 0;
 }
 

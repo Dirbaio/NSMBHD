@@ -51,6 +51,7 @@
 	</div>
 	<form action="<?php print actionLink('login'); ?>" method="post" id="logout">
 		<input type="hidden" name="action" value="logout" />
+		<input type="hidden" name="key" value="<?php print htmlspecialchars($loguser['token']); ?>" />
 	</form>
 
 	<?php print $layout_bars; ?>

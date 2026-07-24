@@ -60,6 +60,7 @@
 	<div id="main" style="padding-left:8px; padding-right:8px;">
 <form action="<?php print actionLink('login'); ?>" method="post" id="logout">
 		<input type="hidden" name="action" value="logout" />
+		<input type="hidden" name="key" value="<?php print htmlspecialchars($loguser['token']); ?>" />
 	</form>
 
 	<?php print $layout_bars; ?>

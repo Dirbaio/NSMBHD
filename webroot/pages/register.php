@@ -249,7 +249,10 @@ if(isset($_POST['name']))
 		$bucket = "newuser"; include("lib/pluginloader.php");
 
 		$sessionID = Shake();
-		setcookie("logsession", $sessionID, 0, $boardroot, "", isHttps(), true);
+		setcookie("logsession", $sessionID, array(
+			'expires' => 0, 'path' => $boardroot, 'secure' => isHttps(),
+			'httponly' => true, 'samesite' => 'Lax',
+		));
 		Query("INSERT INTO {sessions} (id, user, autoexpire) VALUES ({0}, {1}, {2})", doHash($sessionID.$salt), $user["id"], 0);
 		redirectAction("board");
 	}
