@@ -78,6 +78,13 @@ spec:
           allowPrivilegeEscalation: false
           capabilities:
             drop: ["ALL"]
+        resources:
+          requests:
+            cpu: 100m
+            memory: 512Mi
+          limits:
+            cpu: "2"
+            memory: 1Gi
         ports:
         - name: mysql
           containerPort: 8806
@@ -166,6 +173,13 @@ spec:
           allowPrivilegeEscalation: false
           capabilities:
             drop: ["ALL"]
+        resources:
+          requests:
+            cpu: 50m
+            memory: 64Mi
+          limits:
+            cpu: "1"
+            memory: 256Mi
         env:
         - name: MYSQL_HOST
           value: mysql
@@ -190,6 +204,15 @@ spec:
           allowPrivilegeEscalation: false
           capabilities:
             drop: ["ALL"]
+        # Sized for pm.max_children = 5 in conf/php-fpm.conf. If that goes up,
+        # so does the memory limit.
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi
+          limits:
+            cpu: "1"
+            memory: 768Mi
         ports:
         - name: web
           containerPort: 8000
