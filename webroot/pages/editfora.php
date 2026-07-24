@@ -239,63 +239,6 @@ switch($_POST['action'])
 		dieAjax("Ok");
 		break;
 
-	case 'deleteprivuser':
-		if(!isset($_GET['fid']))
-			Kill(__("Forum ID unspecified."));
-		if(!isset($_GET['uid']))
-			Kill(__("User ID unspecified."));
-
-		$fid = (int)$_GET['fid'];
-		$uid = (int)$_GET['uid'];
-
-		$allowedusers = FetchResult("SELECT allowedusers FROM {forums} WHERE id={0}", $fid);
-		if (strlen($allowedusers) < 3) $allowed = array();
-		else $allowed = explode('|', substr($allowedusers,1,-1));
-
-		foreach ($allowed as $k=>$id)
-		{
-			if ($uid == $id)
-			{
-				unset($allowed[$k]);
-				break;
-			}
-		}
-		Query("UPDATE {forums} SET allowedusers={0} WHERE id={1}", '|'.implode('|', $allowed).'|', $fid);
-
-		dieAjax("Ok");
-		break;
-	case 'addprivuser':
-		if(!isset($_GET['fid']))
-			Kill(__("Forum ID unspecified."));
-		if(!isset($_GET['name']))
-			Kill(__("User name unspecified."));
-
-		$fid = (int)$_GET['fid'];
-		$name = $_GET['name'];
-
-		$uid = FetchResult("SELECT id FROM {users} WHERE name={0} OR displayname={0}", $name);
-		if ($uid < 1) dieAjax('Unknown user name.');
-
-		$allowedusers = FetchResult("SELECT allowedusers FROM {forums} WHERE id={0}", $fid);
-		if (strlen($allowedusers) < 3) $allowed = array();
-		else $allowed = explode('|', substr($allowedusers,1,-1));
-
-		$alreadyin = false;
-		foreach ($allowed as $id)
-		{
-			if ($uid == $id)
-			{
-				$alreadyin = true;
-				break;
-			}
-		}
-		if (!$alreadyin)
-			$allowed[] = $uid;
-		Query("UPDATE {forums} SET allowedusers={0} WHERE id={1}", '|'.implode('|', $allowed).'|', $fid);
-
-		dieAjax("Ok");
-		break;
-
 	case '': //No action, do main code
 		break;
 
@@ -447,7 +390,6 @@ function WriteForumEditContents($fid)
 		$boxtitle = __("New Forum");
 		$delbutton = "";
 		$localmods = "(Create the forum before managing mods)";
-		$privusers = '<small>(create the forum before adding users here)</small>';
 	}
 
 	echo "
