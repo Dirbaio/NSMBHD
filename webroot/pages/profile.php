@@ -98,10 +98,22 @@ if($user['homepageurl'])
 	if(Settings::get("nofollow"))
 		$nofollow = "rel=\"nofollow\"";
 
-	if($user['homepagename'])
-		$homepage = "<a $nofollow target=\"_blank\" href=\"".htmlspecialchars($user['homepageurl'])."\">".htmlspecialchars($user['homepagename'])."</a> - ".htmlspecialchars($user['homepageurl']);
+	// htmlspecialchars() escapes the quotes but not the scheme, so
+	// "javascript:alert(1)" would come out as a working link. Pin the scheme
+	// here: http(s) as-is, schemeless gets http:// (plenty of old profiles are
+	// stored that way), anything else doesn't get linked at all.
+	$homepageurl = trim($user['homepageurl']);
+	if(!preg_match('~^https?://~i', $homepageurl))
+		$homepageurl = preg_match('~^[a-z][a-z0-9+.\-]*:~i', $homepageurl) ? "" : "http://".$homepageurl;
+
+	$homepagetext = $user['homepagename'] ? $user['homepagename'] : $user['url'];
+	if($homepageurl == "")
+		$homepage = htmlspecialchars($homepagetext);
 	else
-		$homepage = "<a $nofollow target=\"_blank\" href=\"".htmlspecialchars($user['homepageurl'])."\">".htmlspecialchars($user['url'])."</a>";
+		$homepage = "<a $nofollow target=\"_blank\" href=\"".htmlspecialchars($homepageurl)."\">".htmlspecialchars($homepagetext)."</a>";
+
+	if($user['homepagename'])
+		$homepage .= " - ".htmlspecialchars($user['homepageurl']);
 }
 
 $emailField = __("Private");
