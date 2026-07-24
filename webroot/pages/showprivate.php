@@ -99,6 +99,12 @@ if($draftEditor)
 		$pmtitle = $_POST['title'];
 	}
 
+	if($_POST['action'] == __("Discard Draft") || $_POST['action'] == __("Update Draft") || $_POST['action'] == __("Send"))
+	{
+		if(!isset($_POST['key']) || !hash_equals($loguser['token'], $_POST['key']))
+			Kill(__("No."));
+	}
+
 	if($_POST['action'] == __("Discard Draft"))
 	{
 		Query("delete from {pmsgs} where id = {0}", $pmid);
@@ -213,6 +219,7 @@ if($draftEditor)
 
 	$form = "
 		<form action=\"".actionLink("showprivate")."\" method=\"post\">
+			<input type=\"hidden\" name=\"key\" value=\"".htmlspecialchars($loguser['token'])."\" />
 			<table class=\"outline margin width100\">
 				<tr class=\"header1\">
 					<th colspan=\"2\">
