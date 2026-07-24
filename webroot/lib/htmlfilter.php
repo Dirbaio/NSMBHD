@@ -259,6 +259,13 @@ $filter_tags = array(
 	'wbr' => array(),
 );
 
+// Attributes that hold an URL, wherever they show up. Used to filter the nodes
+// bbcode callbacks generate, which don't go through $filter_tags.
+$filter_url_args = array(
+	'href', 'src', 'poster', 'cite', 'action', 'formaction', 'background',
+	'data', 'xlink:href',
+);
+
 $filter_mandatory = array(
 	'button' => array(
 		// Buttons are fine, provided they don't work
@@ -310,7 +317,14 @@ function process(DOMNode $current_node)
 				$nodes = array($nodes);
 			}
 			foreach ($nodes as $node)
-				$current_node->parentNode->insertBefore($node, $current_node);
+			{
+				$inserted = $current_node->parentNode->insertBefore($node, $current_node);
+				// The callback built these from the raw bbcode argument, and
+				// they're siblings that weren't in the child list this call is
+				// iterating over, so process() will never see them. Filter
+				// their URLs here, or [url=javascript:...] gets through.
+				process_generated_urls($inserted);
+			}
 
 			// Remove bbcodehack from DOM
 			$current_node->parentNode->removeChild($current_node);
@@ -359,6 +373,24 @@ function process(DOMNode $current_node)
 		// Unsafe because of conditional comments
 		$current_node->parentNode->removeChild($current_node);
 	}
+}
+
+// Drop dangerous URLs from a node tree built by a bbcode callback. Only the
+// URLs are checked: the tags and the other attributes come from our own code,
+// and running the full process() over them would eat the markup the callbacks
+// are allowed to emit but users aren't (iframes, for one).
+function process_generated_urls(DOMNode $current_node)
+{
+	global $filter_url_args;
+	if (!($current_node instanceof DOMElement))
+		return;
+
+	foreach ($filter_url_args as $attr)
+		if ($current_node->hasAttribute($attr) && process_url($current_node->getAttribute($attr)) === NULL)
+			$current_node->removeAttribute($attr);
+
+	foreach (iterator_to_array($current_node->childNodes) as $node)
+		process_generated_urls($node);
 }
 
 function add_css($css, $node) {
