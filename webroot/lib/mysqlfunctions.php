@@ -66,7 +66,7 @@ function Upgrade()
 			}
 			if(isset($tableSchema['special']))
 				$create .= ",\n\t".$tableSchema['special'];
-			$create .= "\n) ENGINE=MyISAM;";
+			$create .= "\n);";
 			//print "<pre>".$create."</pre>";
 			Query($create);
 		}
@@ -86,6 +86,16 @@ function Upgrade()
 				//if($field['Default'] != "")
 				if($field['Extra'] == "auto_increment")
 					$type .= " AUTO_INCREMENT";
+				else if(strpos($field['Extra'], "DEFAULT_GENERATED") !== false)
+				{
+					// Expression default, e.g. `text DEFAULT ('')` - BLOB/TEXT can't
+					// take a literal one. SHOW COLUMNS reports these with a charset
+					// introducer and escaped quotes (_utf8mb4\'\'), which would never
+					// match the schema, so normalise back to the written form.
+					$default = preg_replace('/^_[a-z0-9]+/', '', $field['Default']);
+					$default = str_replace("\\'", "'", $default);
+					$type .= " DEFAULT (".$default.")";
+				}
 				else
 					$type .= " DEFAULT '".$field['Default']."'";
 				if($field['Key'] == "PRI")

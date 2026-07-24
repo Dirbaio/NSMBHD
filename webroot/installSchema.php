@@ -1,16 +1,19 @@
 <?php
 
-$hugeInt = "bigint(20) NOT NULL DEFAULT '0'";
-$genericInt = "int(11) NOT NULL DEFAULT '0'";
-$smallerInt = "int(8) NOT NULL DEFAULT '0'";
+$hugeInt = "bigint NOT NULL DEFAULT '0'";
+$genericInt = "int NOT NULL DEFAULT '0'";
+$smallerInt = "int NOT NULL DEFAULT '0'";
 $bool = "tinyint(1) NOT NULL DEFAULT '0'";
 $notNull = " NOT NULL DEFAULT ''";
-$text = "text DEFAULT ''"; //NOT NULL breaks in certain versions/settings.
-$postText = "mediumtext DEFAULT ''";
+//NOT NULL breaks in certain versions/settings.
+//BLOB/TEXT can't take a literal default, but MySQL 8.0.13+ allows an expression
+//default - note the parentheses. `text DEFAULT ''` is a syntax error, `text DEFAULT ('')` isn't.
+$text = "text DEFAULT ('')";
+$longText = "longtext DEFAULT ('')";
 $var128 = "varchar(128)".$notNull;
 $var256 = "varchar(256)".$notNull;
 $var1024 = "varchar(1024)".$notNull;
-$AI = "int(11) NOT NULL AUTO_INCREMENT";
+$AI = "int NOT NULL AUTO_INCREMENT";
 $keyID = "primary key (`id`)";
 
 $tables = array
@@ -121,8 +124,8 @@ $tables = array
 	(
 		"fields" => array
 		(
-			"ip_from" => "bigint(12) NOT NULL DEFAULT '0'",
-			"ip_to" => "bigint(12) NOT NULL DEFAULT '0'",
+			"ip_from" => "bigint NOT NULL DEFAULT '0'",
+			"ip_to" => "bigint NOT NULL DEFAULT '0'",
 			"cc" => "varchar(2) DEFAULT ''",
 		),
 		"special" => "key `ip_from` (`ip_from`)"
@@ -176,7 +179,7 @@ $tables = array
 			"date" => $genericInt,
 			"ip" => "varchar(45)".$notNull,
 			"msgread" => $bool,
-			"deleted" => "tinyint(4) NOT NULL DEFAULT '0'",
+			"deleted" => "tinyint NOT NULL DEFAULT '0'",
 			"drafting" => $bool,
 		),
 		"special" => $keyID.", key `userto` (`userto`), key `userfrom` (`userfrom`), key `msgread` (`msgread`), key `date` (`date`)"
@@ -187,7 +190,7 @@ $tables = array
 		(
 			"pid" => $genericInt,
 			"title" => $var256,
-			"text" => $postText,
+			"text" => $longText,
 		),
 		"special" => "primary key (`pid`)"
 	),
@@ -237,7 +240,7 @@ $tables = array
 			"deleted" => $bool,
 			"deletedby" => $genericInt,
 			"reason" => $text,
-			"options" => "tinyint(4) NOT NULL DEFAULT '0'",
+			"options" => "tinyint NOT NULL DEFAULT '0'",
 			"mood" => $genericInt,
 			"currentrevision" => $genericInt,
 		),
@@ -248,7 +251,7 @@ $tables = array
 		"fields" => array
 		(
 			"pid" => $genericInt,
-			"text" => $postText,
+			"text" => $longText,
 			"revision" => $genericInt,
 			"user" => $genericInt,
 			"date" => $genericInt,
@@ -386,8 +389,8 @@ $tables = array
 			"title" => $var256,
 			"postheader" => $text,
 			"signature" => $text,
-			"bio" => $text,
-			"sex" => "tinyint(2) NOT NULL DEFAULT '2'",
+			"bio" => $longText,
+			"sex" => "tinyint NOT NULL DEFAULT '2'",
 			"rankset" => $var128,
 			"realname" => "varchar(60)".$notNull,
 			"lastknownbrowser" => $text,
@@ -402,14 +405,14 @@ $tables = array
 			"lasturl" => $var128,
 			"lasturlminpower" => $smallerInt,
 			"lastforum" => $genericInt,
-			"postsperpage" => "int(8) NOT NULL DEFAULT '20'",
-			"threadsperpage" => "int(8) NOT NULL DEFAULT '50'",
+			"postsperpage" => "int NOT NULL DEFAULT '20'",
+			"threadsperpage" => "int NOT NULL DEFAULT '50'",
 			"timezone" => "float NOT NULL DEFAULT '0'",
 			"theme" => "varchar(64)".$notNull,
 			"signsep" => $bool,
 			"dateformat" => "varchar(20) NOT NULL DEFAULT 'm-d-y'",
 			"timeformat" => "varchar(20) NOT NULL DEFAULT 'h:i a'",
-			"fontsize" => "int(8) NOT NULL DEFAULT '80'",
+			"fontsize" => "int NOT NULL DEFAULT '80'",
 			"karma" => $genericInt,
 			"blocklayouts" => $bool,
 			"globalblock" => $bool,

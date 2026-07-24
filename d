@@ -22,15 +22,35 @@ case $task in
                 -e MYSQL_PASSWORD=${appname} \
                 -e MYSQL_DATABASE=${appname} \
                 -v $PWD/data/mysql:/var/lib/mysql \
-                mysql:5.7
+                mysql:8.4.10
         fi
         docker start ${appname}_db
-        sleep 2
+
+        # First init of an empty datadir takes ~30s, and the app user only exists
+        # once it's done, so poll for it rather than guessing with a sleep.
+        echo -n "Waiting for mysql"
+        for i in $(seq 1 120); do
+            docker exec ${appname}_db mysql -u${appname} --password=${appname} \
+                -e 'SELECT 1' ${appname} > /dev/null 2>&1 && break
+            echo -n .
+            sleep 1
+        done
+        echo
+
+        # vendor/ is gitignored, so the -v $PWD:/app below hides the copy that
+        # `composer install` put in the image at build time.
+        # HOME is /app for the app user, so point composer's caches elsewhere to
+        # keep .cache/.config/.local out of the source tree.
+        if [ ! -d vendor ]; then
+            docker run --rm -v $PWD:/app -w /app \
+                -e HOME=/tmp -e COMPOSER_HOME=/tmp/composer \
+                ${appname} composer install
+        fi
 
         docker run \
             -it --rm \
             --name ${appname} \
-            -p 0.0.0.0:80:80 \
+            -p 0.0.0.0:8000:8000 \
             --link ${appname}_db:db \
             -e MYSQL_HOST=${appname}_db \
             -e MYSQL_USER=${appname} \

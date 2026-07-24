@@ -19,7 +19,7 @@ $tables['wiki_pages_text'] = array
 			'revision' => $genericInt,
 			'date' => $genericInt,
 			'user' => $genericInt,
-			'text' => $text,
+			'text' => $longText,
 		),
 		'special' => 'UNIQUE KEY `wpt` (`id`,`revision`)'
 	);

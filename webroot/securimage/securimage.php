@@ -1282,7 +1282,7 @@ class Securimage
             $length = strlen($code['display']);
 
             for($i = 0; $i < $length; ++$i) {
-                $letter    = $code['display']{$i};
+                $letter    = $code['display'][$i];
                 $letters[] = $letter;
             }
         }
@@ -1330,7 +1330,7 @@ class Securimage
         $code = '';
 
         for($i = 1, $cslen = strlen($this->charset); $i <= $this->code_length; ++$i) {
-            $code .= $this->charset{rand(0, $cslen - 1)};
+            $code .= $this->charset[rand(0, $cslen - 1)];
         }
 
         //return 'testing';  // debug, set the code to given string
