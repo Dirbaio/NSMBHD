@@ -15,7 +15,6 @@ $dbuser = mygetenv("MYSQL_USER");
 $dbpass = mygetenv("MYSQL_PASSWORD");
 $dbname = mygetenv("MYSQL_DATABASE");
 
-$debugMode = true;
 $urlRewriting = true;
 
 $stopForumSpamKey = mygetenv("ABXD_SFS_KEY", '');
