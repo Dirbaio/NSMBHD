@@ -9,7 +9,9 @@ COPY composer.json composer.lock /app/
 RUN composer install --no-dev --no-scripts --no-progress --prefer-dist
 
 
-FROM ubuntu:26.04
+# Debian rather than Ubuntu: Debian ships PHP security fixes as upstream
+# releases them, where Ubuntu has lagged behind. Trixie carries PHP 8.4, not 8.5.
+FROM debian:trixie
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -22,8 +24,8 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 RUN ln -sf /app/conf/nginx.conf /etc/nginx/nginx.conf && \
-    ln -sf /app/conf/php-fpm.conf /etc/php/8.5/fpm/php-fpm.conf && \
-    ln -sf /app/conf/php.ini /etc/php/8.5/fpm/php.ini
+    ln -sf /app/conf/php-fpm.conf /etc/php/8.4/fpm/php-fpm.conf && \
+    ln -sf /app/conf/php.ini /etc/php/8.4/fpm/php.ini
 
 WORKDIR /app
 
@@ -32,9 +34,7 @@ COPY --from=deps /app/vendor /app/vendor
 # Install app source
 COPY . /app
 
-# Ubuntu >=24.04 ships a default "ubuntu" user occupying uid/gid 1000.
-RUN userdel -r ubuntu && \
-    groupadd -r app -g 1000 && \
+RUN groupadd -r app -g 1000 && \
     useradd -u 1000 -r -g app -d /app -s /bin/bash -c "Docker image user" app && \
     ln -sf /tmp/msmtprc /etc/msmtprc && \
     chown -R root:app /app && \

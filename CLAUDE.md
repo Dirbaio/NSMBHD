@@ -1,6 +1,6 @@
 # nsmbhd
 
-AcmlmBoard XD fork running the nsmbhd.net forum. PHP 8.5 + nginx + php-fpm in a
+AcmlmBoard XD fork running the nsmbhd.net forum. PHP 8.4 + nginx + php-fpm in a
 single container, MySQL alongside it, deployed to Kubernetes via `deploy.yaml`.
 
 - `webroot/` — the application. Legacy PHP, no framework, no autoloader.

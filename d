@@ -59,7 +59,7 @@ case $task in
             -e ABXD_SALT=dev-salt-not-a-secret \
             -e ABXD_TURNSTILE_SITE_KEY=1x00000000000000000000AA \
             -e ABXD_TURNSTILE_SECRET_KEY=1x0000000000000000000000000000000AA \
-            -e PHP_INI_SCAN_DIR=/etc/php/8.5/fpm/conf.d:/app/conf/dev \
+            -e PHP_INI_SCAN_DIR=/etc/php/8.4/fpm/conf.d:/app/conf/dev \
             -v $PWD:/app \
             -v $PWD/data:/data \
             ${appname}
