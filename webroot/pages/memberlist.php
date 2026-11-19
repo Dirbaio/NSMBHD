@@ -32,7 +32,7 @@ function PageLinks2($url, $epp, $from, $total)
 			$pageLinks[] = "<a class=\"pagelink\" href=\"".$url.(($p-1) * $epp).")\">".$p."</a>";
 	}
 
-	return $first.$prev.join(array_slice($pageLinks, 0, 11), " ").$next.$last;
+	return $first.$prev.join(" ", array_slice($pageLinks, 0, 11)).$next.$last;
 }
 
 
