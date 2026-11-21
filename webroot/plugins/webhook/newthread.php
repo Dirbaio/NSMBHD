@@ -30,6 +30,7 @@ postWebhook("The __{$thread["title"]}__ thread was created in {$forum["title"]}"
 			$link,
 			Settings::pluginGet("newThreadColor"),
 			$thename,
+			$loguserid,
 			$webhookUrl,
 			$webhookUsername,
 			$webhookAvatar
